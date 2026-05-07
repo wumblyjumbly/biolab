@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 LO Quiz</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#4f8ef7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:2px;}
+.logo{font-weight:700;font-size:.95rem;color:var(--accent);margin-right:auto;white-space:nowrap;text-decoration:none;}
+nav button{background:none;border:none;color:var(--muted);font-size:.8rem;padding:6px 14px;cursor:pointer;
+  border-bottom:2px solid transparent;height:52px;transition:all .15s;}
+nav button.active,nav button:hover{color:var(--text);border-bottom-color:var(--accent);}
+
+/* ── PAGES ── */
+.page{display:none;max-width:860px;margin:0 auto;padding:28px 20px 60px;}
+.page.active{display:block;}
+h1{font-size:1.4rem;margin-bottom:6px;}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px;}
+
+/* ── SETUP ── */
+.setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.setup-title{font-size:1.15rem;font-weight:800;
+  background:linear-gradient(135deg,#4f8ef7 0%,#a78bfa 60%,#f472b6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.setup-chips{display:flex;gap:6px;}
+.setup-chip{background:var(--card2);border:1px solid var(--border);border-radius:99px;
+  font-size:.67rem;padding:3px 9px;color:var(--muted);}
+.setup-chip span{color:var(--text);font-weight:600;}
+.setup-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.mode-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.mode-seg button{background:var(--card);border:none;border-right:1px solid var(--border);
+  color:var(--muted);font-size:.85rem;font-weight:500;
+  padding:10px 20px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.mode-seg button:last-child{border-right:none;}
+.mode-seg button:hover{color:var(--text);background:var(--card2);}
+.mode-seg button.active{background:var(--accent);color:#fff;font-weight:700;}
+.count-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.count-seg button{background:var(--card);border:none;border-right:1px solid var(--border);
+  color:var(--muted);font-size:.82rem;font-weight:500;
+  padding:10px 14px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.count-seg button:last-child{border-right:none;}
+.count-seg button:hover{color:var(--text);background:var(--card2);}
+.count-seg button.active{background:var(--card2);color:var(--text);font-weight:700;}
+
+/* ── CATEGORY PILLS ── */
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cat-label-row label{font-size:.78rem;color:var(--muted);}
+.cat-label-row button{font-size:.68rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;}
+.cat-label-row button:hover{text-decoration:underline;}
+.cat-pills{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.cat-group{display:flex;flex-direction:column;gap:5px;}
+.cat-pill{display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  padding:10px 12px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--card);color:var(--muted);
+  cursor:pointer;user-select:none;transition:border-color .15s,background .15s,color .15s;}
+.cat-pill:hover{color:var(--text);}
+.cat-pill.on{color:var(--text);}
+.cat-pill .cp-icon{font-size:1.4rem;line-height:1;margin-bottom:2px;}
+.cat-pill .cp-label{font-size:.75rem;font-weight:600;line-height:1.3;}
+.cat-pill .cp-count{font-size:.62rem;opacity:.55;}
+.pool-preview{font-size:.74rem;color:var(--muted);margin-top:8px;min-height:1.1em;}
+.cat-pill.struggling{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.06);color:var(--amber);}
+.cat-pill.struggling.on{border-color:var(--amber);background:rgba(245,158,11,.15);}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;
+  border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;
+  transition:opacity .15s,transform .12s,box-shadow .15s;}
+.btn:hover{opacity:.88;}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text);}
+.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted);}
+.btn.ghost:hover{color:var(--text);border-color:var(--accent);}
+.btn.primary{background:linear-gradient(135deg,#4f8ef7,#7c3aed);
+  box-shadow:0 4px 20px rgba(79,142,247,.35);font-size:.95rem;padding:12px 28px;}
+.btn.primary:hover{opacity:1;transform:translateY(-2px);box-shadow:0 6px 28px rgba(79,142,247,.5);}
+.btn.shuffle{background:linear-gradient(135deg,#059669,#0891b2);
+  box-shadow:0 4px 16px rgba(8,145,178,.3);}
+.btn.shuffle:hover{opacity:1;transform:translateY(-2px);}
+
+/* ── PROGRESS BAR ── */
+.prog-wrap{margin-bottom:20px;}
+.prog-bar{height:7px;background:var(--border);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#4f8ef7,#a78bfa);border-radius:99px;transition:width .4s ease;}
+.prog-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:6px;}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.q-header{padding:14px 20px 0;display:flex;align-items:center;gap:8px;}
+.q-num{font-size:.78rem;color:var(--muted);}
+.q-tag{background:rgba(79,142,247,.12);color:var(--accent);font-size:.7rem;border-radius:99px;padding:2px 9px;}
+.q-pts{font-size:.7rem;color:var(--muted);margin-left:auto;}
+.q-body{padding:16px 20px 20px;font-size:.95rem;line-height:1.65;}
+
+/* ── OPTIONS ── */
+@keyframes optIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.opts{padding:0 20px 4px;display:flex;flex-direction:column;gap:9px;}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:12px;
+  padding:12px 16px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:12px;
+  transition:border-color .12s,background .12s,transform .1s,box-shadow .12s;line-height:1.5;
+  animation:optIn .22s ease both;}
+.opt:hover:not(.locked){border-color:var(--accent);background:rgba(79,142,247,.07);transform:translateX(3px);}
+.ltr{min-width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  flex-shrink:0;margin-top:1px;transition:all .15s;}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08);box-shadow:0 0 0 1px rgba(34,197,94,.15);}
+.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff;}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08);box-shadow:0 0 0 1px rgba(239,68,68,.15);}
+.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff;}
+.opt.locked{cursor:default;}
+.opt.show-correct{border-color:rgba(34,197,94,.5);}
+.opt.show-correct .ltr{border-color:var(--green);color:var(--green);}
+
+/* ── FREE TEXT ── */
+.fib-wrap{padding:0 20px 4px;}
+.fib-input{background:#11141f;border:1px solid var(--border);border-radius:10px;
+  padding:11px 16px;width:100%;font-size:.875rem;color:var(--text);outline:none;transition:border-color .12s;}
+.fib-input:focus{border-color:var(--accent);}
+.fib-input.correct{border-color:var(--green);background:rgba(34,197,94,.07);}
+.fib-input.wrong{border-color:var(--red);background:rgba(239,68,68,.07);}
+.fib-check-btn{margin-top:8px;}
+
+/* ── FEEDBACK ── */
+@keyframes fbIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.feedback{margin:12px 20px 0;padding:14px 18px;border-radius:12px;
+  font-size:.84rem;line-height:1.65;display:none;font-weight:500;}
+.feedback.show{display:block;animation:fbIn .2s ease both;}
+.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.feedback .exp{font-size:.79rem;margin-top:7px;opacity:.85;font-weight:400;font-style:italic;
+  padding-top:7px;border-top:1px solid rgba(255,255,255,.1);}
+
+/* ── QUIZ NAV ── */
+.q-nav{padding:14px 20px 18px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px;}
+.q-nav .go{margin-left:auto;}
+
+/* ── RESULTS ── */
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:40px 20px 20px;}
+.ring-wrap{width:140px;height:140px;margin:0 auto 18px;position:relative;}
+.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both;}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-pct{font-size:2rem;font-weight:800;background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ring-sub{font-size:.68rem;color:var(--muted);}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:16px 0 26px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;}
+.stat .val{font-size:1.4rem;font-weight:700;color:var(--accent);}
+.stat .lbl{font-size:.68rem;color:var(--muted);margin-top:2px;}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+/* ── BROWSE ── */
+.browse-q{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  margin-bottom:14px;overflow:hidden;}
+.browse-header{padding:12px 16px;border-bottom:1px solid var(--border);
+  font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.browse-body{padding:12px 16px;font-size:.88rem;line-height:1.6;}
+.browse-answers{padding:0 16px 12px;font-size:.82rem;}
+.browse-answers .ba{padding:5px 10px;border-radius:6px;margin-top:4px;display:flex;align-items:center;gap:8px;}
+.ba.ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);}
+.ba .bk{width:16px;height:16px;border-radius:50%;background:var(--border);
+  font-size:.6rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ba.ok .bk{background:var(--green);color:#fff;}
+
+/* ── PROGRESS PAGE ── */
+.pg-sect{margin-bottom:28px;}
+.pg-title{font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ov-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;flex:1;min-width:90px;text-align:center;}
+.ov-card .ov-v{font-size:1.5rem;font-weight:700;}
+.ov-card .ov-l{font-size:.67rem;color:var(--muted);margin-top:3px;line-height:1.3;}
+.struggle-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);
+  border-radius:12px;padding:16px 18px;margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.struggle-banner h3{font-size:.95rem;margin-bottom:4px;}
+.struggle-banner p{font-size:.78rem;color:var(--muted);}
+.cat-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
+.cat-row:last-child{border-bottom:none;}
+.cr-name{font-size:.84rem;min-width:175px;flex-shrink:0;}
+.cr-bar{flex:1;height:7px;background:var(--border);border-radius:99px;overflow:hidden;min-width:40px;}
+.cr-fill{height:100%;border-radius:99px;transition:width .4s;}
+.cr-acc{font-size:.78rem;font-weight:700;min-width:36px;text-align:right;}
+.cr-badge{font-size:.7rem;min-width:88px;text-align:right;line-height:1.4;}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty h2{font-size:1.1rem;margin-bottom:8px;color:var(--text);}
+
+/* ── MODAL (image zoom) ── */
+#modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);
+  align-items:center;justify-content:center;padding:20px;}
+#modal.open{display:flex;}
+#modal-inner{position:relative;max-width:92vw;max-height:92vh;overflow:auto;}
+#modal-img{max-width:100%;max-height:88vh;border-radius:10px;display:block;}
+#modal-close{position:fixed;top:16px;right:16px;background:rgba(0,0,0,.7);
+  border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:34px;height:34px;
+  font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── ADDITIONAL OPT STATES ── */
+.opt.selected-ma{border-color:var(--accent);background:rgba(79,142,247,.12);}
+.opt.selected-ma .ltr{background:var(--accent);border-color:var(--accent);color:#fff;}
+.feedback.info{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.3);color:#93c5fd;}
+.q-body img{max-width:100%;height:auto;border-radius:8px;margin:8px 0;display:block;cursor:zoom-in;
+  border:1px solid var(--border);}
+.q-body p{margin-bottom:.5em;}
+.browse-body img{max-width:100%;height:auto;border-radius:6px;margin:6px 0;
+  border:1px solid var(--border);cursor:zoom-in;}
+
+/* ── SUB-CATEGORY PILLS ── */
+.cat-subpills{display:flex;flex-wrap:wrap;gap:4px;padding-left:8px;}
+.cat-subpill{display:inline-flex;align-items:center;gap:6px;
+  padding:6px 11px;border-radius:8px;
+  border:1.5px dashed var(--border);background:var(--card);color:var(--muted);
+  cursor:pointer;user-select:none;font-size:.74rem;font-weight:600;
+  transition:border-color .15s,background .15s,color .15s;}
+.cat-subpill:hover{color:var(--text);}
+.cat-subpill.on{color:var(--text);}
+.cat-subpill .sp-icon{font-size:1rem;}
+
+@media(max-width:640px){
+  .cat-pills{grid-template-columns:repeat(2,1fr);}
+  .stat-row{gap:6px;}
+  .stat{padding:10px 12px;}
+  .cr-name{min-width:120px;}
+  .cr-badge{min-width:70px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="quiz_lo.html" class="logo">BIO 212 · LO Quiz</a>
+  <button class="active" id="nav-btn-quiz" onclick="showTab('quiz',this)">Quiz</button>
+  <button onclick="showTab('browse',this)">Browse All</button>
+  <button onclick="showTab('progress',this)">Progress</button>
+</nav>
+
+<!-- ══════════ QUIZ TAB ══════════ -->
+<div class="page active" id="page-quiz">
+
+  <!-- SETUP -->
+  <div id="pane-setup">
+    <div class="setup-header">
+      <div class="setup-title">BIO 212 · Learning Objectives Quiz</div>
+      <div class="setup-chips">
+        <div class="setup-chip"><span id="setup-q-count">111</span> questions</div>
+      </div>
+    </div>
+
+    <div class="cat-label-row">
+      <label>Categories</label>
+      <button onclick="toggleAllCats()">All / None</button>
+    </div>
+    <div class="cat-pills" id="cat-pills"></div>
+    <div class="pool-preview" id="pool-preview"></div>
+
+    <div class="setup-controls">
+      <div class="mode-seg">
+        <button id="mode-mc" onclick="setAnswerMode('mc')">Multiple Choice</button>
+        <button class="active" id="mode-ft" onclick="setAnswerMode('ft')">✏️ Free Text</button>
+      </div>
+      <div class="count-seg" id="count-seg">
+        <button onclick="setCount('10',this)">10</button>
+        <button onclick="setCount('25',this)">25</button>
+        <button onclick="setCount('50',this)">50</button>
+        <button class="active" onclick="setCount('all',this)">All</button>
+      </div>
+      <button class="btn primary" onclick="startQuiz()" style="margin-left:auto">▶ Start Quiz</button>
+      <button class="btn shuffle" onclick="startShuffle()">🔀 Shuffle</button>
+    </div>
+    <input type="hidden" id="sel-count" value="all">
+  </div>
+
+  <!-- ACTIVE QUIZ -->
+  <div id="pane-quiz" style="display:none">
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+      <div class="prog-label">
+        <span id="prog-txt"></span>
+        <span id="prog-score"></span>
+      </div>
+    </div>
+    <div id="q-render"></div>
+    <div class="q-nav" id="q-nav">
+      <button class="btn ghost" onclick="exitToSetup()">✕ Exit</button>
+      <button class="btn ghost" id="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn ghost" onclick="resetQ()">↺ Reset</button>
+      <button class="btn ghost" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" onclick="nextQ()" style="display:none">Next →</button>
+      <button class="btn sec" onclick="showResults()">✓ Done</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="pane-results" style="display:none">
+    <div class="results">
+      <div class="ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="11"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--accent)" stroke-width="11"
+            stroke-dasharray="339.3" stroke-dashoffset="339.3" id="ring-arc" stroke-linecap="round"/>
+        </svg>
+        <div class="ring-txt">
+          <div class="ring-pct" id="r-pct">–</div>
+          <div class="ring-sub">score</div>
+        </div>
+      </div>
+      <h2 id="r-grade" style="margin-bottom:6px"></h2>
+      <p id="r-msg" style="color:var(--muted);margin-bottom:20px"></p>
+      <div class="stat-row">
+        <div class="stat"><div class="val" id="r-cor">–</div><div class="lbl">Correct</div></div>
+        <div class="stat"><div class="val" id="r-wrg">–</div><div class="lbl">Wrong</div></div>
+        <div class="stat"><div class="val" id="r-skp">–</div><div class="lbl">Skipped</div></div>
+      </div>
+      <div class="act-row">
+        <button class="btn sec" onclick="reviewAnswers()">Review Answers</button>
+        <button class="btn" id="btn-retry-wrong" onclick="retryWrong()" style="background:linear-gradient(135deg,#ef4444,#b91c1c);display:none">↩ Retry Wrong</button>
+        <button class="btn" onclick="backToSetup()">Try Again</button>
+      </div>
+    </div>
+    <div id="review-out" style="margin-top:20px"></div>
+  </div>
+
+</div>
+
+<!-- ══════════ BROWSE TAB ══════════ -->
+<div class="page" id="page-browse">
+  <h1>Browse All Questions</h1>
+  <p class="sub">Scroll through every LO question with correct answers shown.</p>
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+    <input id="browse-search" type="text" placeholder="Search questions…"
+      style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);
+        border-radius:8px;padding:9px 14px;font-size:.875rem;min-width:180px;"
+      oninput="renderBrowse()">
+    <select id="browse-cat-filter" onchange="renderBrowse()"
+      style="background:var(--card);border:1px solid var(--border);color:var(--text);
+        border-radius:8px;padding:9px 12px;font-size:.875rem;cursor:pointer;appearance:none;min-width:160px;">
+      <option value="all">All categories</option>
+    </select>
+    <button class="btn sec" onclick="document.getElementById('browse-search').value='';document.getElementById('browse-cat-filter').value='all';renderBrowse()">Clear</button>
+  </div>
+  <div id="browse-out"></div>
+</div>
+
+<!-- ══════════ PROGRESS TAB ══════════ -->
+<div class="page" id="page-progress">
+  <h1>My Progress</h1>
+  <p class="sub">Saved across sessions — tracks every question you answer.</p>
+  <div id="progress-content"></div>
+  <div style="margin-top:12px">
+    <button class="btn ghost" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="clearProgress()">🗑 Clear All Progress</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const LO_DATA = [
+
+// ── PHYLOGENETICS (10) ──────────────────────────────────────────────────────
+{id:1,cat:'phylogenetics',q:'What term describes a group that contains an ancestor and ALL of its descendants?',
+ a:['Monophyletic (clade)','Paraphyletic','Polyphyletic','Synapomorphic'],c:0},
+{id:2,cat:'phylogenetics',q:'A group that includes an ancestor but excludes some of its descendants is called:',
+ a:['Paraphyletic','Monophyletic','Polyphyletic','Holophyletic'],c:0},
+{id:3,cat:'phylogenetics',q:'A group whose members come from multiple separate lineages and share only convergent traits is:',
+ a:['Polyphyletic','Paraphyletic','Monophyletic','Unranked'],c:0},
+{id:4,cat:'phylogenetics',q:'A shared derived character used to define a clade is called a:',
+ a:['Synapomorphy','Plesiomorphy','Autapomorphy','Homoplasy'],c:0},
+{id:5,cat:'phylogenetics',q:'On a phylogenetic tree, the lineage that diverged earliest from all others in the group is described as:',
+ a:['Basal','Derived','Terminal','Apical'],c:0},
+{id:6,cat:'phylogenetics',q:'A branching point on a phylogenetic tree representing a common ancestor is called a:',
+ a:['Node','Tip','Branch','Clade'],c:0},
+{id:7,cat:'phylogenetics',q:'Which Linnean rank falls between Class and Family?',
+ a:['Order','Genus','Phylum','Kingdom'],c:0},
+{id:8,cat:'phylogenetics',q:'In protostomes, the blastopore develops into the:',
+ a:['Mouth','Anus','Coelom','Notochord'],c:0},
+{id:9,cat:'phylogenetics',q:'A clade WITH a corresponding Linnean rank (e.g. Class Insecta) is called a:',
+ a:['Ranked clade','Unranked clade','Synapomorphy','Paraphyletic group'],c:0},
+{id:10,cat:'phylogenetics',q:'From broadest to most specific, which sequence of Linnean ranks is correct?',
+ a:['Kingdom → Phylum → Class → Order → Family → Genus → Species',
+    'Phylum → Kingdom → Class → Family → Order → Genus → Species',
+    'Kingdom → Class → Phylum → Order → Family → Genus → Species',
+    'Domain → Class → Phylum → Order → Family → Genus → Species'],c:0},
+
+// ── PORIFERA (7) ───────────────────────────────────────────────────────────
+{id:11,cat:'porifera',q:'Which cells in a sponge use flagella to generate water current and capture food particles?',
+ a:['Choanocytes','Amoebocytes','Epithelial cells','Cnidocytes'],c:0},
+{id:12,cat:'porifera',q:'Which cells transport digested nutrients throughout the sponge body?',
+ a:['Amoebocytes','Choanocytes','Ostia cells','Spongocoel cells'],c:0},
+{id:13,cat:'porifera',q:'Water exits a sponge through which structure?',
+ a:['Osculum','Ostium','Spongocoel','Spicule'],c:0},
+{id:14,cat:'porifera',q:'Water enters a sponge through which structure(s)?',
+ a:['Ostia (pores)','Osculum','Spongocoel','Choanocytes'],c:0},
+{id:15,cat:'porifera',q:'What is the central cavity of a sponge called?',
+ a:['Spongocoel','Gastrovascular cavity','Coelenteron','Pseudocoel'],c:0},
+{id:16,cat:'porifera',q:'What is the correct water flow pathway through a sponge?',
+ a:['Ostia → Spongocoel → Osculum','Osculum → Spongocoel → Ostia',
+    'Spongocoel → Ostia → Osculum','Osculum → Ostia → Spongocoel'],c:0},
+{id:17,cat:'porifera',q:'What is the feeding strategy of sponges?',
+ a:['Filter feeder','Carnivore','Parasite','Photosynthesis'],c:0},
+
+// ── CNIDARIA (10) ──────────────────────────────────────────────────────────
+{id:18,cat:'cnidaria',q:'The stinging cells unique to cnidarians are called:',
+ a:['Cnidocytes','Choanocytes','Amoebocytes','Nematodes'],c:0},
+{id:19,cat:'cnidaria',q:'Which cnidarian body form is sessile (attached)?',
+ a:['Polyp','Medusa','Larva','Planula'],c:0},
+{id:20,cat:'cnidaria',q:'Which cnidarian body form is free-swimming?',
+ a:['Medusa','Polyp','Spore','Cyst'],c:0},
+{id:21,cat:'cnidaria',q:'What is the jelly-like middle layer between epidermis and gastrodermis in cnidarians?',
+ a:['Mesoglea','Mesoderm','Mesenchyme','Mesophyll'],c:0},
+{id:22,cat:'cnidaria',q:'The single internal cavity used for both digestion and nutrient distribution in cnidarians is:',
+ a:['Gastrovascular cavity (coelenteron)','Coelom','Pseudocoel','Hemocoel'],c:0},
+{id:23,cat:'cnidaria',q:'Which class of Cnidaria includes hydra and exhibits BOTH polyp and medusa body forms?',
+ a:['Hydrozoa','Scyphozoa','Anthozoa','Cubozoa'],c:0},
+{id:24,cat:'cnidaria',q:'Jellyfish belong to which class of Cnidaria?',
+ a:['Scyphozoa','Hydrozoa','Anthozoa','Polypoida'],c:0},
+{id:25,cat:'cnidaria',q:'Sea anemones and corals belong to which class of Cnidaria?',
+ a:['Anthozoa','Hydrozoa','Scyphozoa','Polypoza'],c:0},
+{id:26,cat:'cnidaria',q:'The four structures extending around the mouth of a jellyfish (Scyphozoa) are called:',
+ a:['Oral arms','Chelicerae','Tentacles (ocular)','Parapodia'],c:0},
+{id:27,cat:'cnidaria',q:'In Class Anthozoa, which body form is present throughout the adult life?',
+ a:['Polyp only','Medusa only','Both polyp and medusa','Neither'],c:0},
+
+// ── PLATYHELMINTHES (12) ───────────────────────────────────────────────────
+{id:28,cat:'platyhelminthes',q:'Platyhelminthes are described as "acoelomate" because they:',
+ a:['Lack a body cavity entirely','Have a pseudocoel','Have a reduced coelom','Have a hemocoel'],c:0},
+{id:29,cat:'platyhelminthes',q:'Flatworms have an "incomplete" digestive system, meaning:',
+ a:['One opening serves as both mouth and anus','No digestive system at all',
+    'Food absorbed through skin','Two openings but no stomach'],c:0},
+{id:30,cat:'platyhelminthes',q:'The solid tissue filling the body of planarians (Turbellaria) is called:',
+ a:['Mesenchyme (parenchyma)','Mesoglea','Mesoderm','Coelom'],c:0},
+{id:31,cat:'platyhelminthes',q:'What is the feeding strategy of free-living flatworms (Class Turbellaria)?',
+ a:['Carnivore / predator','Filter feeder','Parasite','Detritivore'],c:0},
+{id:32,cat:'platyhelminthes',q:'In which environment are free-living flatworms (Turbellaria) most commonly found?',
+ a:['Freshwater (also marine and damp terrestrial)','Desert','Deep ocean only','Intestines of animals'],c:0},
+{id:33,cat:'platyhelminthes',q:'What is the anterior attachment organ of a tapeworm, used to anchor it to the intestine?',
+ a:['Scolex','Rostellum','Proglottid','Pharynx'],c:0},
+{id:34,cat:'platyhelminthes',q:'The ring of hooks on the anterior end of a tapeworm scolex is called the:',
+ a:['Rostellum','Genital pore','Proglottid','Sucker'],c:0},
+{id:35,cat:'platyhelminthes',q:'Each repeated body unit of a tapeworm that contains a full set of reproductive organs is a:',
+ a:['Proglottid','Segment','Somite','Clitellum'],c:0},
+{id:36,cat:'platyhelminthes',q:'Unlike Turbellaria and Trematoda, tapeworms (Cestoda) have NO:',
+ a:['Digestive system (no gut)','Reproductive organs','Cuticle','Body wall muscles'],c:0},
+{id:37,cat:'platyhelminthes',q:'Flukes belong to which class of Platyhelminthes?',
+ a:['Trematoda','Cestoda','Turbellaria','Hirudinea'],c:0},
+{id:38,cat:'platyhelminthes',q:'The duct carrying sperm from testis to genital pore in tapeworms is the:',
+ a:['Ductus deferens','Oviduct','Vagina','Uterus'],c:0},
+{id:39,cat:'platyhelminthes',q:'Which structure in Turbellaria is a muscular tube extending from the mouth to draw in food?',
+ a:['Pharynx','Scolex','Rostellum','Beak'],c:0},
+
+// ── MOLLUSCA (14) ──────────────────────────────────────────────────────────
+{id:40,cat:'mollusca',q:'Which THREE structures are shared by ALL mollusks?',
+ a:['Foot, mantle, visceral mass','Foot, radula, gills','Mantle, shell, radula','Siphon, foot, pen'],c:0},
+{id:41,cat:'mollusca',q:'The mantle of a mollusk primarily functions to:',
+ a:['Secrete the shell and enclose the mantle cavity','Provide locomotion',
+    'Pump blood through the body','Store eggs'],c:0},
+{id:42,cat:'mollusca',q:'The coelom is greatly reduced in mollusks. The main body cavity is instead the:',
+ a:['Hemocoel (blood-filled)','Pseudocoel','Gastrovascular cavity','Spongocoel'],c:0},
+{id:43,cat:'mollusca',q:'The toothed, tongue-like rasping organ used for feeding in gastropods is the:',
+ a:['Radula','Beak','Rostellum','Chelicera'],c:0},
+{id:44,cat:'mollusca',q:'The oldest, most dorsal part of a bivalve shell that points toward the anterior is the:',
+ a:['Umbo','Siphon','Adductor','Mantle'],c:0},
+{id:45,cat:'mollusca',q:"What muscles close a clam's shell?",
+ a:['Adductor muscles (anterior + posterior)','Circular muscles','Retractor muscles','Longitudinal muscles'],c:0},
+{id:46,cat:'mollusca',q:'In bivalves (clams), water carrying food and oxygen enters through the:',
+ a:['Incurrent siphon','Excurrent siphon','Osculum','Ostium'],c:0},
+{id:47,cat:'mollusca',q:'Besides gas exchange, bivalve gills serve what additional important function?',
+ a:['Filter feeding — trapping food particles from water','Jet propulsion',
+    'Ink production','Sperm storage'],c:0},
+{id:48,cat:'mollusca',q:'How many ARMS does a squid have?',
+ a:['8 arms','2 arms','6 arms','10 arms'],c:0},
+{id:49,cat:'mollusca',q:'How many TENTACLES does a squid have?',
+ a:['2 tentacles (longer, used to strike prey)','8 tentacles','4 tentacles','0 tentacles'],c:0},
+{id:50,cat:'mollusca',q:'The reduced, internal chitinous shell remnant of a squid is called the:',
+ a:['Pen','Beak','Radula','Spicule'],c:0},
+{id:51,cat:'mollusca',q:"The squid's siphon (funnel) is primarily used for:",
+ a:['Jet propulsion by expelling water','Filter feeding','Gas exchange','Egg laying'],c:0},
+{id:52,cat:'mollusca',q:'What breathing structure allows terrestrial gastropods (snails) to exchange gas with air?',
+ a:['Pneumostome (pore in mantle cavity)','Spiracle','Gill','Trachea'],c:0},
+{id:53,cat:'mollusca',q:'Which class of Mollusca is identified by 8 overlapping shell plates?',
+ a:['Polyplacophora (chitons)','Cephalopoda','Bivalvia','Gastropoda'],c:0},
+
+// ── ANNELIDA (13) ──────────────────────────────────────────────────────────
+{id:54,cat:'annelida',q:'Which swollen band of glandular tissue on an earthworm is used in reproduction?',
+ a:['Clitellum','Scolex','Rostrum','Somite'],c:0},
+{id:55,cat:'annelida',q:'The small bristles on each earthworm segment that grip soil for locomotion are called:',
+ a:['Setae (= chaetae)','Spicules','Cilia','Parapodia'],c:0},
+{id:56,cat:'annelida',q:'The internal walls separating consecutive segments of an earthworm are called:',
+ a:['Septa (sing. septum)','Parapodia','Proglottids','Somites'],c:0},
+{id:57,cat:'annelida',q:'What is the function of the typhlosole in the earthworm intestine?',
+ a:['Increases surface area for nutrient absorption','Grinds food like a gizzard',
+    'Stores food temporarily','Excretes waste'],c:0},
+{id:58,cat:'annelida',q:'The excretory organs found in each segment of an earthworm are called:',
+ a:['Nephridia','Gonads','Malpighian tubules','Flame cells'],c:0},
+{id:59,cat:'annelida',q:'In the earthworm digestive tract, which organ STORES food before it reaches the gizzard?',
+ a:['Crop','Esophagus','Intestine','Typhlosole'],c:0},
+{id:60,cat:'annelida',q:'Which earthworm organ GRINDS food using muscular contractions?',
+ a:['Gizzard','Crop','Typhlosole','Nephridium'],c:0},
+{id:61,cat:'annelida',q:'The paddle-like lateral appendages used for locomotion and gas exchange in polychaetes are:',
+ a:['Parapodia','Chelipeds','Setae','Pedipalps'],c:0},
+{id:62,cat:'annelida',q:'What structures allow leeches to attach to their hosts?',
+ a:['Oral (anterior) sucker + caudal (posterior) sucker','Chelipeds','Setae','Chelicerae'],c:0},
+{id:63,cat:'annelida',q:'What type of body cavity do annelids have?',
+ a:['True coelom','Pseudocoel','Hemocoel','No cavity (acoelomate)'],c:0},
+{id:64,cat:'annelida',q:'Leeches and earthworms both belong to which clade within Annelida?',
+ a:['Clitellata','Polychaeta','Hirudinida','Chelicerata'],c:0},
+{id:65,cat:'annelida',q:'The dorsal blood vessel in an earthworm carries blood in which direction?',
+ a:['Anteriorly (toward the head)','Posteriorly','Laterally','It does not pump blood'],c:0},
+{id:66,cat:'annelida',q:'In Class Polychaeta, where are setae/chaetae typically located?',
+ a:['On the parapodia','Along the clitellum','Inside the coelom','On the oral sucker'],c:0},
+
+// ── NEMATODA (9) ──────────────────────────────────────────────────────────
+{id:67,cat:'nematoda',q:'What type of body cavity do nematodes have?',
+ a:['Pseudocoel (not fully lined by mesoderm)','True coelom','Hemocoel','No cavity (acoelomate)'],c:0},
+{id:68,cat:'nematoda',q:'The tough outer layer of nematodes that resists host digestion is the:',
+ a:['Cuticle','Mesoglea','Epidermis','Basal lamina'],c:0},
+{id:69,cat:'nematoda',q:'How do nematodes grow despite having a rigid cuticle?',
+ a:['By molting (shedding) the cuticle — this is why they are Ecdysozoa',
+    'By stretching the cuticle','By cell division in the cuticle','They do not grow after hatching'],c:0},
+{id:70,cat:'nematoda',q:'Where does Ascaris lumbricoides live as a parasite in mammals?',
+ a:['Small intestine','Lungs','Blood','Muscle tissue'],c:0},
+{id:71,cat:'nematoda',q:'The female reproductive duct that carries eggs from the ovary in Ascaris is the:',
+ a:['Oviduct','Ductus deferens','Vagina','Uterus'],c:0},
+{id:72,cat:'nematoda',q:'The male reproductive duct carrying sperm from the testis in Ascaris is the:',
+ a:['Ductus deferens','Oviduct','Uterus','Seminal vesicle'],c:0},
+{id:73,cat:'nematoda',q:'Nematodes belong to which superphylum, alongside Arthropoda?',
+ a:['Ecdysozoa','Lophotrochozoa','Deuterostomia','Radiata'],c:0},
+{id:74,cat:'nematoda',q:'How does the nematode body cavity (pseudocoel) differ from the annelid body cavity (true coelom)?',
+ a:['Pseudocoel is NOT fully lined by mesoderm; true coelom IS fully lined by mesoderm',
+    'Pseudocoel is larger than the true coelom','Pseudocoel is filled with blood; coelom with air',
+    'There is no difference'],c:0},
+{id:75,cat:'nematoda',q:'Nematodes have a complete digestive system, meaning:',
+ a:['Two separate openings: mouth AND anus','One opening serving as both mouth and anus',
+    'Food absorbed through skin only','No digestive system'],c:0},
+
+// ── ARTHROPODA (12) ───────────────────────────────────────────────────────
+{id:76,cat:'arthropoda',q:'The fang-like, venom-injecting mouthparts of chelicerates (spiders, scorpions) are called:',
+ a:['Chelicerae','Maxillipeds','Pedipalps','Mandibles'],c:0},
+{id:77,cat:'arthropoda',q:'The sensory appendages used for manipulation and mating in arachnids are:',
+ a:['Pedipalps','Chelipeds','Antennae','Parapodia'],c:0},
+{id:78,cat:'arthropoda',q:"The large claws of a crayfish used for defense and prey capture are called:",
+ a:['Chelipeds','Pedipalps','Maxillipeds','Walking legs'],c:0},
+{id:79,cat:'arthropoda',q:"The appendages near a crayfish's mouth that manipulate food are called:",
+ a:['Maxillipeds','Chelipeds','Walking legs','Swimmerets'],c:0},
+{id:80,cat:'arthropoda',q:'The breathing pores in the exoskeleton of insects that lead to the tracheal system are:',
+ a:['Spiracles','Pneumostomes','Ostia','Oscula'],c:0},
+{id:81,cat:'arthropoda',q:'What are the four subphyla of Arthropoda?',
+ a:['Chelicerata, Crustacea, Hexapoda, Myriapoda',
+    'Chelicerata, Insecta, Crustacea, Arachnida',
+    'Arachnida, Malacostraca, Insecta, Chilopoda',
+    'Hexapoda, Myriapoda, Decapoda, Arachnida'],c:0},
+{id:82,cat:'arthropoda',q:'How many pairs of walking legs do arachnids (spiders, scorpions) have?',
+ a:['4 pairs (8 legs total)','3 pairs (6 legs)','5 pairs (10 legs)','2 pairs (4 legs)'],c:0},
+{id:83,cat:'arthropoda',q:'What are the three body regions of insects (Hexapoda)?',
+ a:['Head, Thorax, Abdomen','Cephalothorax, Abdomen, Tail',
+    'Head, Cephalothorax, Abdomen','Rostrum, Thorax, Abdomen'],c:0},
+{id:84,cat:'arthropoda',q:'Crayfish belong to which arthropod subphylum and class?',
+ a:['Crustacea, Class Malacostraca','Chelicerata, Class Arachnida',
+    'Hexapoda, Class Insecta','Myriapoda, Class Chilopoda'],c:0},
+{id:85,cat:'arthropoda',q:'What mechanism allows arthropods to grow despite having a rigid exoskeleton?',
+ a:['Molting (ecdysis) — shedding the old exoskeleton','The exoskeleton stretches elastically',
+    'New exoskeleton grows around the old one','Growth occurs only in soft-bodied larval stage'],c:0},
+{id:86,cat:'arthropoda',q:'Which class contains centipedes, with ONE pair of legs per segment?',
+ a:['Chilopoda','Diplopoda','Malacostraca','Insecta'],c:0},
+{id:87,cat:'arthropoda',q:'Which class contains millipedes, with TWO pairs of legs per segment?',
+ a:['Diplopoda','Chilopoda','Arachnida','Crustacea'],c:0},
+
+// ── ANIMAL TISSUES (14) ───────────────────────────────────────────────────
+{id:88,cat:'tissues',q:'What are the four major tissue types found in animals?',
+ a:['Epithelial, Connective, Muscle, Nervous','Epithelial, Blood, Muscle, Nerve',
+    'Squamous, Cuboidal, Columnar, Stratified','Cardiac, Smooth, Skeletal, Neural'],c:0},
+{id:89,cat:'tissues',q:'Which cell type is characteristic of cartilage?',
+ a:['Chondrocyte','Osteocyte','Fibroblast','Erythrocyte'],c:0},
+{id:90,cat:'tissues',q:'Which cell type is characteristic of bone tissue?',
+ a:['Osteocyte','Chondrocyte','Fibroblast','Leukocyte'],c:0},
+{id:91,cat:'tissues',q:'Red blood cells (RBCs) are also called:',
+ a:['Erythrocytes','Leukocytes','Thrombocytes','Chondrocytes'],c:0},
+{id:92,cat:'tissues',q:'Which cells produce collagen and elastin fibers in loose connective tissue?',
+ a:['Fibroblasts','Chondrocytes','Osteocytes','Erythrocytes'],c:0},
+{id:93,cat:'tissues',q:'Which epithelium lines blood vessels — a single layer of flat cells?',
+ a:['Simple squamous epithelium','Simple cuboidal epithelium',
+    'Simple columnar epithelium','Stratified squamous epithelium'],c:0},
+{id:94,cat:'tissues',q:'Which epithelium lines the jejunum (gut) and trachea, and contains goblet cells?',
+ a:['Simple columnar epithelium','Simple squamous epithelium',
+    'Simple cuboidal epithelium','Stratified squamous epithelium'],c:0},
+{id:95,cat:'tissues',q:'The epidermis of skin is composed of which type of epithelium?',
+ a:['Stratified squamous epithelium','Simple squamous epithelium',
+    'Simple columnar epithelium','Simple cuboidal epithelium'],c:0},
+{id:96,cat:'tissues',q:'Which epithelium lines the kidney tubules?',
+ a:['Simple cuboidal epithelium','Simple squamous epithelium',
+    'Simple columnar epithelium','Stratified squamous epithelium'],c:0},
+{id:97,cat:'tissues',q:'What are goblet cells, and where are they found?',
+ a:['Mucus-secreting cells in simple columnar epithelium (gut + trachea)',
+    'Staining cells in stratified squamous epithelium',
+    'Sensory cells in nervous tissue','Phagocytic cells in blood'],c:0},
+{id:98,cat:'tissues',q:'The thin acellular layer that anchors epithelium to underlying connective tissue is the:',
+ a:['Basal lamina','Mesoglea','Mesenchyme','Ground substance'],c:0},
+{id:99,cat:'tissues',q:'Dense connective tissue differs from loose areolar connective tissue by having:',
+ a:['More densely packed collagen fibers with fewer cells',
+    'More cells and fewer fibers','Abundant elastin and adipocytes','Fluid matrix (plasma)'],c:0},
+{id:100,cat:'tissues',q:'Which type of muscle tissue is found ONLY in the heart?',
+ a:['Cardiac muscle','Skeletal muscle','Smooth muscle','Striated voluntary muscle'],c:0},
+{id:101,cat:'tissues',q:'Skeletal muscle is described as "striated" and:',
+ a:['Voluntary (consciously controlled)','Involuntary','Found in blood vessel walls','Non-striated'],c:0},
+
+// ── EMBRYOLOGY (10) ───────────────────────────────────────────────────────
+{id:102,cat:'embryology',q:'Which is the correct order of early animal developmental stages?',
+ a:['Fertilized egg → Blastula → Gastrula → Early neurula → Late neurula',
+    'Fertilized egg → Gastrula → Blastula → Neurula',
+    'Blastula → Fertilized egg → Gastrula → Neurula',
+    'Gastrula → Blastula → Fertilized egg → Neurula'],c:0},
+{id:103,cat:'embryology',q:'The fluid-filled cavity inside the blastula is called the:',
+ a:['Blastocoel','Gastrocoel','Coelom','Pseudocoel'],c:0},
+{id:104,cat:'embryology',q:'During which stage do the three primary germ layers (ectoderm, mesoderm, endoderm) form?',
+ a:['Gastrulation (gastrula stage)','Cleavage','Neurulation','Fertilization'],c:0},
+{id:105,cat:'embryology',q:'The cavity formed during gastrulation that becomes the future gut is called the:',
+ a:['Gastrocoel (archenteron)','Blastocoel','Coelom','Spongocoel'],c:0},
+{id:106,cat:'embryology',q:'The neural plate is found in which embryonic stage?',
+ a:['Early neurula','Late neurula','Gastrula','Blastula'],c:0},
+{id:107,cat:'embryology',q:'The neural tube — precursor to the brain and spinal cord — is present in which stage?',
+ a:['Late neurula','Early neurula','Gastrula','Blastula'],c:0},
+{id:108,cat:'embryology',q:'The notochord is derived from which primary germ layer?',
+ a:['Mesoderm','Ectoderm','Endoderm','Blastoderm'],c:0},
+{id:109,cat:'embryology',q:'What are somites, and in which embryo are they best identified in lab?',
+ a:['Paired mesodermal blocks flanking the neural tube; identified in chick embryo cross-sections',
+    'Segments of the neural tube; identified in frog embryos',
+    'Layers of endoderm around the notochord; identified in sea star embryos',
+    'Folds of ectoderm forming the brain; identified in human embryos'],c:0},
+{id:110,cat:'embryology',q:'The neural plate forms when cells from which germ layer thicken on the dorsal surface?',
+ a:['Ectoderm','Mesoderm','Endoderm','Blastoderm'],c:0},
+{id:111,cat:'embryology',q:'In adult vertebrates, what structure replaces the notochord?',
+ a:['Vertebral column (spine)','Spinal cord','Neural tube','Dorsal aorta'],c:0},
+
+// ── PHYLOGENETICS — additional (Q112–119) ────────────────────────────────────
+{id:112,cat:'phylogenetics',q:'What does a "tip" (terminal branch) on a phylogenetic tree represent?',
+ a:['An extant (living) taxon or group','A common ancestor shared by two lineages','A speciation event','An extinct intermediate form'],c:0},
+{id:113,cat:'phylogenetics',q:'A character inherited from a distant common ancestor and shared by ALL members of a large group (not useful for defining subclades) is called a:',
+ a:['Plesiomorphy (ancestral character)','Synapomorphy','Autapomorphy','Apomorphy'],c:0},
+{id:114,cat:'phylogenetics',q:'Animals with bilateral symmetry, three germ layers, and a defined anterior-posterior axis belong to which major clade?',
+ a:['Bilateria','Radiata','Parazoa','Diploblastica'],c:0},
+{id:115,cat:'phylogenetics',q:'Lophotrochozoa and Ecdysozoa together make up which major animal clade?',
+ a:['Protostomia','Deuterostomia','Bilateria','Radiata'],c:0},
+{id:116,cat:'phylogenetics',q:'Which superphylum unites animals that grow by MOLTING (shedding) their cuticle or exoskeleton?',
+ a:['Ecdysozoa','Lophotrochozoa','Deuterostomia','Ambulacraria'],c:0},
+{id:117,cat:'phylogenetics',q:'In deuterostomes, the blastopore develops into the:',
+ a:['Anus','Mouth','Coelom','Notochord'],c:0},
+{id:118,cat:'phylogenetics',q:'On the Lophotrochozoa phylogenetic tree, SEGMENTATION as a derived trait first appears in which phylum?',
+ a:['Annelida','Platyhelminthes','Mollusca','Nematoda'],c:0},
+{id:119,cat:'phylogenetics',q:'Loss of the coelom (acoelomate condition) as a derived trait marks the origin of which phylum on the Lophotrochozoa tree?',
+ a:['Platyhelminthes','Mollusca','Annelida','Ecdysozoa'],c:0},
+
+// ── PORIFERA — additional (Q120–122) ─────────────────────────────────────────
+{id:120,cat:'porifera',q:'The needle-like structural elements made of calcium carbonate or silica that provide support to the sponge body are called:',
+ a:['Spicules','Setae','Spines','Chaetae'],c:0},
+{id:121,cat:'porifera',q:'What is the primary habitat of most sponges (Phylum Porifera)?',
+ a:['Marine (saltwater) environments','Freshwater streams and ponds only','Moist terrestrial soils','Parasitic inside other animals'],c:0},
+{id:122,cat:'porifera',q:'Besides transporting nutrients, amoebocytes in sponges can also:',
+ a:['Differentiate into other cell types and secrete spicules (they are totipotent)','Generate water currents through the spongocoel','Capture food particles using flagella','Form the outer pinacocyte layer'],c:0},
+
+// ── CNIDARIA — additional (Q123–127) ─────────────────────────────────────────
+{id:123,cat:'cnidaria',q:'The stinging organelle INSIDE a cnidocyte that coils and fires like a harpoon is called a:',
+ a:['Nematocyst','Cnidoblast','Trichocyst','Spicule'],c:0},
+{id:124,cat:'cnidaria',q:'Cnidarians are "diploblastic," meaning their body wall is built from how many true tissue layers?',
+ a:['Two — epidermis (outer) and gastrodermis (inner)','Three — ectoderm, mesoderm, endoderm','One — epidermis only','Four — including mesoglea as a true tissue layer'],c:0},
+{id:125,cat:'cnidaria',q:'What is the primary habitat of cnidarians?',
+ a:['Aquatic, mostly marine','Terrestrial (moist soil)','Freshwater only','Parasitic inside vertebrate hosts'],c:0},
+{id:126,cat:'cnidaria',q:'In a cnidarian polyp, which layer faces OUTWARD (away from the gastrovascular cavity)?',
+ a:['Epidermis','Gastrodermis','Mesoglea','Cnidocyte layer'],c:0},
+{id:127,cat:'cnidaria',q:'The gonad of a Class Scyphozoa jellyfish is located in which part of the body?',
+ a:['In the gastrodermis of the subumbrella (underside of the bell)','In the oral arms','In the tentacles','In the mesoglea'],c:0},
+
+// ── PLATYHELMINTHES — additional (Q128–132) ──────────────────────────────────
+{id:128,cat:'platyhelminthes',q:'"Platyhelminthes" literally means:',
+ a:['Flat worms','Round worms','Segmented worms','Ribbon worms'],c:0},
+{id:129,cat:'platyhelminthes',q:'Class Trematoda (flukes) are parasites that attach to host tissue using:',
+ a:['Oral and ventral suckers','Hooks and a rostellum','Proglottids','Setae'],c:0},
+{id:130,cat:'platyhelminthes',q:'How do tapeworms (Cestoda) absorb nutrients given that they have NO digestive system?',
+ a:['Directly through the tegument (body wall) by absorbing host nutrients','Through a vestigial mouth opening','Via mutualistic gut bacteria','By osmosis through the proglottid membranes only'],c:0},
+{id:131,cat:'platyhelminthes',q:'The ciliated epidermis of Turbellaria (planarians) is used primarily for:',
+ a:['Locomotion — cilia beat to glide over surfaces','Gas exchange — cilia increase surface area','Defense — cilia deter predators','Feeding — cilia draw food toward the mouth'],c:0},
+{id:132,cat:'platyhelminthes',q:'Class Trematoda (flukes) are classified as what type of feeder?',
+ a:['Endoparasites (living and feeding inside host tissues)','Ectoparasites (attached to outer host surface)','Free-living carnivores','Filter feeders'],c:0},
+
+// ── MOLLUSCA — additional (Q133–143) ─────────────────────────────────────────
+{id:133,cat:'mollusca',q:'The ink sac of a squid releases dark ink primarily to:',
+ a:['Create a cloud to confuse predators and enable escape','Mark territory for rivals','Attract mates','Pre-digest prey externally'],c:0},
+{id:134,cat:'mollusca',q:'What is the function of the squid fin?',
+ a:['Stability and slow maneuvering','Primary propulsion (main jet engine)','Gas exchange','Prey capture via suction'],c:0},
+{id:135,cat:'mollusca',q:'The nidamental gland, found only in female squid, functions to:',
+ a:['Secrete a protective capsule material around the eggs','Store sperm after mating','Produce ink','Pump blood to the gills'],c:0},
+{id:136,cat:'mollusca',q:'The hard, parrot-like BEAK of a cephalopod is used to:',
+ a:['Bite and tear prey','Rasp algae off surfaces (like a radula)','Eject ink','Generate jet propulsion'],c:0},
+{id:137,cat:'mollusca',q:'In a clam, the LABIAL PALPS are located near the mouth and function to:',
+ a:['Sort and direct food particles into the mouth','Close the shell valves','Anchor the clam to substrate','Secrete the shell'],c:0},
+{id:138,cat:'mollusca',q:'The muscular FOOT of a bivalve clam is used primarily for:',
+ a:['Burrowing into sediment','Jet propulsion','Filter feeding','Secreting the shell'],c:0},
+{id:139,cat:'mollusca',q:'A squid has ONE systemic heart and TWO brachial hearts. The brachial hearts pump blood to the:',
+ a:['Gills (for oxygenation)','Body tissues (systemic circulation)','Ink sac','Gonad'],c:0},
+{id:140,cat:'mollusca',q:'The genus of squid used in BIO 212 lab dissection is:',
+ a:['Loligo','Octopus','Sepia','Nautilus'],c:0},
+{id:141,cat:'mollusca',q:'In a clam, the DIGESTIVE GLAND (hepatopancreas) functions to:',
+ a:['Secrete digestive enzymes and absorb nutrients','Filter blood and remove wastes','Produce gametes','Pump blood through the hemocoel'],c:0},
+{id:142,cat:'mollusca',q:'How do gastropods (snails and slugs) move?',
+ a:['Muscular waves of contraction along the foot','Jet propulsion via the siphon','Cilia beating in the mantle cavity','Parapodia beating laterally'],c:0},
+{id:143,cat:'mollusca',q:'In a bivalve, which structure ALWAYS points toward the ANTERIOR end of the animal?',
+ a:['Umbo','Excurrent siphon','Posterior adductor muscle','Anus'],c:0},
+
+// ── ANNELIDA — additional (Q144–150) ─────────────────────────────────────────
+{id:144,cat:'annelida',q:"The earthworm's \"hearts\" are more precisely described as:",
+ a:['Aortic arches — 5 pairs of muscular vessels that pump blood','True four-chambered hearts','Lateral hearts that branch from the dorsal vessel','Pericardial sacs surrounding the coelom'],c:0},
+{id:145,cat:'annelida',q:'During earthworm locomotion, which muscles CONTRACT to make a segment SHORTER and FATTER (increasing diameter)?',
+ a:['Longitudinal muscles','Circular muscles','Septal muscles','Setae retractor muscles'],c:0},
+{id:146,cat:'annelida',q:'What is the primary habitat of Class Polychaeta?',
+ a:['Marine (saltwater) environments','Freshwater streams only','Terrestrial soils','Parasitic in vertebrate hosts'],c:0},
+{id:147,cat:'annelida',q:'Leeches (Class Hirudinea) are primarily found in which habitat, and what is their feeding strategy?',
+ a:['Freshwater and moist terrestrial; ectoparasites or predators','Deep marine sediments; filter feeders','Terrestrial soils; detritivores','Freshwater; free-living herbivores'],c:0},
+{id:148,cat:'annelida',q:'The SEMINAL VESICLES of an earthworm store and:',
+ a:['Mature sperm before transfer','Receive sperm from another worm','Produce eggs by meiosis','Secrete the cocoon around fertilized eggs'],c:0},
+{id:149,cat:'annelida',q:'The SEMINAL RECEPTACLES of an earthworm function to:',
+ a:['Receive and store sperm from a mating partner','Produce and release sperm','Nourish developing embryos','Secrete mucus during copulation'],c:0},
+{id:150,cat:'annelida',q:'In earthworm locomotion, which muscles CONTRACT to make a segment LONGER and THINNER?',
+ a:['Circular muscles','Longitudinal muscles','Aortic arch muscles','Septal muscles'],c:0},
+
+// ── NEMATODA — additional (Q151–153) ─────────────────────────────────────────
+{id:151,cat:'nematoda',q:'In Ascaris, which sex is typically LARGER in body size?',
+ a:['Female','Male','Both sexes are the same size','Males are larger in all nematode species'],c:0},
+{id:152,cat:'nematoda',q:'The complete digestive tract of a nematode runs:',
+ a:['Mouth → pharynx → intestine → anus','Mouth → gastrovascular cavity → one opening','Mouth → crop → gizzard → anus','Mouth → stomach → typhlosole → anus'],c:0},
+{id:153,cat:'nematoda',q:'Ascaris eggs typically exit the definitive host and reach new hosts via:',
+ a:['Feces (eggs passed in stool, then ingested by another host)','Direct skin penetration','Respiratory secretions','Blood-feeding intermediate vectors'],c:0},
+
+// ── ARTHROPODA — additional (Q154–162) ───────────────────────────────────────
+{id:154,cat:'arthropoda',q:'How many body regions do arachnids (spiders, scorpions) have, and what are they called?',
+ a:['Two: cephalothorax and abdomen','Three: head, thorax, and abdomen','One fused region: cephalothorax-abdomen','Three: head, cephalothorax, and abdomen'],c:0},
+{id:155,cat:'arthropoda',q:'In crustaceans, the CEPHALOTHORAX is formed by the fusion of which body regions?',
+ a:['Head + thorax (covered dorsally by the carapace)','Thorax + abdomen','Head + abdomen','All three segments: head, thorax, and abdomen'],c:0},
+{id:156,cat:'arthropoda',q:'How many legs do insects have, and on which body segment are they attached?',
+ a:['6 legs (3 pairs), all attached to the thorax','8 legs (4 pairs), attached to the cephalothorax','4 legs (2 pairs), attached to the thorax','10 legs (5 pairs), attached to the abdomen'],c:0},
+{id:157,cat:'arthropoda',q:'Wood lice (pillbugs / sowbugs) belong to which arthropod group?',
+ a:['Crustacea, Order Isopoda','Hexapoda, Class Insecta','Arachnida, Class Chelicerata','Myriapoda, Class Chilopoda'],c:0},
+{id:158,cat:'arthropoda',q:'Butterflies and moths belong to which insect order?',
+ a:['Lepidoptera','Diptera','Coleoptera','Orthoptera'],c:0},
+{id:159,cat:'arthropoda',q:'Flies (houseflies, mosquitoes) belong to which insect order?',
+ a:['Diptera','Lepidoptera','Hymenoptera','Hemiptera'],c:0},
+{id:160,cat:'arthropoda',q:'Ticks belong to which arthropod class?',
+ a:['Arachnida (subphylum Chelicerata)','Insecta (subphylum Hexapoda)','Malacostraca (subphylum Crustacea)','Chilopoda (subphylum Myriapoda)'],c:0},
+{id:161,cat:'arthropoda',q:'The individual visual units that make up the compound eye of an insect are called:',
+ a:['Ommatidia','Facets','Ocelli','Retinal cells'],c:0},
+{id:162,cat:'arthropoda',q:'Beetles belong to which insect order?',
+ a:['Coleoptera','Diptera','Lepidoptera','Hymenoptera'],c:0},
+
+// ── TISSUES — additional (Q163–168) ──────────────────────────────────────────
+{id:163,cat:'tissues',q:'Smooth muscle is "involuntary" and "non-striated." Where is it primarily found?',
+ a:['Walls of blood vessels and the digestive tract (intestine)','Only in the heart','Attached to bones for voluntary movement','In tendons and ligaments'],c:0},
+{id:164,cat:'tissues',q:'Nervous tissue consists of two major cell types. What are they?',
+ a:['Neurons (signal transmission) and glial cells (support/insulation)','Neurons and fibroblasts','Chondrocytes and neurons','Astrocytes and erythrocytes'],c:0},
+{id:165,cat:'tissues',q:'Loose areolar connective tissue is characterized by which two types of protein fibers in its matrix?',
+ a:['Collagen fibers and elastin fibers','Keratin and reticular fibers','Actin and myosin fibers','Fibronectin and laminin fibers'],c:0},
+{id:166,cat:'tissues',q:'The liquid matrix of blood (fluid connective tissue) is called:',
+ a:['Plasma','Serum','Lymph','Interstitial fluid'],c:0},
+{id:167,cat:'tissues',q:'What does "simple" mean in the term "simple epithelium"?',
+ a:['A single layer of cells (all touching the basement membrane)','Small, flat squamous cells','Cells lacking a nucleus','A non-secretory epithelium'],c:0},
+{id:168,cat:'tissues',q:'Stratified squamous epithelium is found lining which structures?',
+ a:['Esophagus and the outer epidermis of skin','Blood vessel lumens','Kidney tubule lumens','Gut (jejunum) and trachea lumen'],c:0},
+
+// ── EMBRYOLOGY — additional (Q169–172) ───────────────────────────────────────
+{id:169,cat:'embryology',q:'In the adult animal, the ECTODERM germ layer gives rise to:',
+ a:['Skin (epidermis) and the nervous system','Muscles, bones, and the circulatory system','Gut lining and digestive organs','The notochord'],c:0},
+{id:170,cat:'embryology',q:'In the adult animal, the MESODERM germ layer gives rise to:',
+ a:['Muscles, bones, and the circulatory system','Skin and the nervous system','Gut lining and digestive organs','The blastocoel cavity'],c:0},
+{id:171,cat:'embryology',q:'In the adult animal, the ENDODERM germ layer gives rise to:',
+ a:['Gut lining and digestive organs','Skin and the nervous system','Muscles, bones, and blood','The neural tube and brain'],c:0},
+{id:172,cat:'embryology',q:'The BLASTOCOEL is the fluid-filled cavity of the blastula. What happens to it during gastrulation?',
+ a:['It is displaced/reduced as the gastrocoel (archenteron) forms by invagination','It becomes the coelom of the adult','It transforms into the neural tube','It enlarges to become the body cavity'],c:0},
+
+// ── TAXONOMY — phyla, classes & genus names (Q173–197) ───────────────────────
+{id:173,cat:'taxonomy',q:'Sponges belong to which phylum?',
+ a:['Porifera','Cnidaria','Platyhelminthes','Annelida'],c:0},
+{id:174,cat:'taxonomy',q:'Jellyfish, sea anemones, and hydra all belong to which phylum?',
+ a:['Cnidaria','Porifera','Platyhelminthes','Echinodermata'],c:0},
+{id:175,cat:'taxonomy',q:'Flatworms — planarians, tapeworms, and flukes — belong to which phylum?',
+ a:['Platyhelminthes','Nematoda','Annelida','Cnidaria'],c:0},
+{id:176,cat:'taxonomy',q:'Roundworms such as Ascaris belong to which phylum?',
+ a:['Nematoda','Platyhelminthes','Annelida','Arthropoda'],c:0},
+{id:177,cat:'taxonomy',q:'Segmented worms — earthworms, polychaetes, and leeches — belong to which phylum?',
+ a:['Annelida','Nematoda','Platyhelminthes','Arthropoda'],c:0},
+{id:178,cat:'taxonomy',q:'Snails, clams, and squid all belong to which phylum?',
+ a:['Mollusca','Arthropoda','Annelida','Echinodermata'],c:0},
+{id:179,cat:'taxonomy',q:'Insects, crustaceans, spiders, and centipedes all belong to which phylum?',
+ a:['Arthropoda','Mollusca','Annelida','Echinodermata'],c:0},
+{id:180,cat:'taxonomy',q:'Free-living flatworms such as planarians belong to which CLASS of Platyhelminthes?',
+ a:['Turbellaria','Cestoda','Trematoda','Hirudinea'],c:0},
+{id:181,cat:'taxonomy',q:'Tapeworms belong to which CLASS of Platyhelminthes?',
+ a:['Cestoda','Turbellaria','Trematoda','Clitellata'],c:0},
+{id:182,cat:'taxonomy',q:'Flukes (e.g. Fasciola, Schistosoma) belong to which CLASS of Platyhelminthes?',
+ a:['Trematoda','Cestoda','Turbellaria','Hirudinida'],c:0},
+{id:183,cat:'taxonomy',q:'True jellyfish (e.g. Aurelia) belong to which CLASS of Cnidaria?',
+ a:['Scyphozoa','Hydrozoa','Anthozoa','Cubozoa'],c:0},
+{id:184,cat:'taxonomy',q:'Hydra and Portuguese man-of-war belong to which CLASS of Cnidaria?',
+ a:['Hydrozoa','Scyphozoa','Anthozoa','Medusozoa'],c:0},
+{id:185,cat:'taxonomy',q:'Sea anemones and corals belong to which CLASS of Cnidaria?',
+ a:['Anthozoa','Hydrozoa','Scyphozoa','Polypoida'],c:0},
+{id:186,cat:'taxonomy',q:'Spiders and scorpions belong to which CLASS (Subphylum Chelicerata)?',
+ a:['Arachnida','Malacostraca','Insecta','Chilopoda'],c:0},
+{id:187,cat:'taxonomy',q:'Lobsters, crabs, and crayfish belong to which CLASS (Subphylum Crustacea)?',
+ a:['Malacostraca','Arachnida','Insecta','Diplopoda'],c:0},
+{id:188,cat:'taxonomy',q:'Centipedes belong to which CLASS of arthropods?',
+ a:['Chilopoda','Diplopoda','Malacostraca','Arachnida'],c:0},
+{id:189,cat:'taxonomy',q:'Millipedes belong to which CLASS of arthropods?',
+ a:['Diplopoda','Chilopoda','Insecta','Arachnida'],c:0},
+{id:190,cat:'taxonomy',q:'Snails and slugs belong to which CLASS of Mollusca?',
+ a:['Gastropoda','Bivalvia','Cephalopoda','Polyplacophora'],c:0},
+{id:191,cat:'taxonomy',q:'Clams, oysters, and mussels belong to which CLASS of Mollusca?',
+ a:['Bivalvia','Gastropoda','Cephalopoda','Polyplacophora'],c:0},
+{id:192,cat:'taxonomy',q:'Squid and octopus belong to which CLASS of Mollusca?',
+ a:['Cephalopoda','Bivalvia','Gastropoda','Polyplacophora'],c:0},
+{id:193,cat:'taxonomy',q:'Chitons (8 overlapping shell plates) belong to which CLASS of Mollusca?',
+ a:['Polyplacophora','Gastropoda','Bivalvia','Cephalopoda'],c:0},
+{id:194,cat:'taxonomy',q:'Earthworms and leeches both belong to which CLADE within Phylum Annelida?',
+ a:['Clitellata','Polychaeta','Hirudinea','Oligochaeta'],c:0},
+{id:195,cat:'taxonomy',q:'Marine segmented worms with parapodia belong to which CLASS of Annelida?',
+ a:['Polychaeta','Clitellata','Hirudinea','Oligochaeta'],c:0},
+{id:196,cat:'taxonomy',q:'The common lab earthworm belongs to which genus?',
+ a:['Lumbricus','Nereis','Hirudo','Tubifex'],c:0},
+{id:197,cat:'taxonomy',q:'The free-living flatworm (planarian) used in BIO 212 lab belongs to which genus?',
+ a:['Dugesia','Taenia','Ascaris','Nereis'],c:0},
+
+// ── MOLLUSCA — slug anatomy (Q198–201) ───────────────────────────────────────
+{id:198,cat:'mollusca',q:'In a slug (Class Gastropoda), the large dorsal lobe that covers the visceral mass (structure A) is the:',
+ a:['Mantle','Foot','Visceral mass','Pneumostome'],c:0},
+{id:199,cat:'mollusca',q:'In a slug (Class Gastropoda), the small opening on the right side of the mantle that allows gas exchange (structure B) is the:',
+ a:['Pneumostome','Osculum','Ostium','Spiracle'],c:0},
+{id:200,cat:'mollusca',q:'The pneumostome of a terrestrial gastropod opens into the:',
+ a:['Mantle cavity (lung-like space used for gas exchange)','Coelom','Hemocoel directly','Gastrovascular cavity'],c:0},
+{id:201,cat:'mollusca',q:'Unlike aquatic gastropods that use gills, terrestrial slugs and snails breathe by drawing air through the pneumostome into the:',
+ a:['Mantle cavity (acting as a lung)','Tracheal system','Book lungs','Gill chamber'],c:0},
+
+];
+
+// ── EXPLANATIONS ─────────────────────────────────────────────────────────────
+const LO_EXP = {
+  // PHYLOGENETICS
+  1:'A monophyletic group (clade) = ancestor + ALL its descendants. No members excluded, no outsiders added.',
+  2:'Paraphyletic = ancestor + SOME but not all descendants. Classic example: "Reptilia" excluding birds.',
+  3:'Polyphyletic members come from separate lineages that convergently evolved the same trait — e.g., grouping bats + birds + insects as "flyers."',
+  4:'A synapomorphy is a derived character that evolved in the common ancestor of a clade and is shared by all its members. Distinguishes it from a plesiomorphy (ancestral trait shared more broadly).',
+  5:'A basal lineage diverged earliest in the tree, sitting at the root before the other branching events occurred.',
+  6:'A node (branching point) on a phylogenetic tree represents the hypothetical common ancestor of all lineages that split from it.',
+  7:'Linnean hierarchy: Kingdom → Phylum → Class → Order → Family → Genus → Species. Mnemonic: "King Philip Came Over For Good Soup."',
+  8:'Protostome = "first mouth." The blastopore becomes the mouth. In deuterostomes the blastopore becomes the anus instead.',
+  9:'When a monophyletic group has a named Linnean rank (Class, Order, Family, etc.) assigned to it, it is a ranked clade.',
+  10:'Full sequence: Kingdom → Phylum → Class → Order → Family → Genus → Species. Mnemonic: "King Philip Came Over For Good Soup."',
+  112:'Tips (terminal nodes) represent living (extant) taxa or sampled specimens. Internal nodes represent common ancestors.',
+  113:'A plesiomorphy is an ancestral character state shared by ALL members of a large group — it predates the clade and cannot define a subclade. Synapomorphies (shared derived traits) define clades.',
+  114:'Bilateria = all bilaterally symmetric, triploblastic animals. Cnidaria (radially symmetric, diploblastic) and Porifera (no true tissues) are excluded.',
+  115:'Lophotrochozoa (annelids, molluscs, flatworms) + Ecdysozoa (arthropods, nematodes) = Protostomia. Deuterostomia (echinoderms, chordates) is the sister group.',
+  116:'Ecdysozoa = "molting animals." Arthropods and nematodes both shed their cuticle/exoskeleton to grow — this molting (ecdysis) is their defining synapomorphy.',
+  117:'Deuterostome = "second mouth." Blastopore → anus; mouth forms secondarily. Contrast with protostomes: blastopore → mouth.',
+  118:'Segmentation (body divided into repeated units) is a derived trait (synapomorphy) uniting Annelida within Lophotrochozoa.',
+  119:'Loss of the coelom (acoelomate condition) is derived within Lophotrochozoa and marks the origin of Platyhelminthes.',
+  // PORIFERA
+  11:'Choanocytes (collar cells) have a flagellum surrounded by a cytoplasmic collar. Flagellum beating creates water current; collar traps food particles by phagocytosis.',
+  12:'Amoebocytes are mobile, multipotent cells that receive digested food from choanocytes and carry it throughout the sponge body.',
+  13:'Water flows IN through ostia → spongocoel → OUT through the single large apical osculum. The osculum is the exit pore.',
+  14:'Ostia (singular: ostium) are the many small pores all over the sponge body surface. Water enters here and flows toward the spongocoel.',
+  15:'The spongocoel is the large central cavity lined by choanocytes. Water passes through it continuously before exiting via the osculum.',
+  16:'Water pathway: small entry pores (ostia) → central cavity (spongocoel) → single large exit (osculum). Choanocyte flagella drive this one-way flow.',
+  17:'Sponges are sessile filter feeders — they pump water through their body and choanocytes trap suspended food particles on their collars.',
+  120:'Spicules are the skeletal elements of sponges, made of calcium carbonate (calcareous sponges) or silica (glass sponges), or protein spongin. They provide structural rigidity.',
+  121:'Over 98% of sponge species are marine. Only a few families have colonized freshwater environments.',
+  122:'Amoebocytes are totipotent — they can differentiate into any sponge cell type. They also secrete spicules and spongin to build the skeleton.',
+  // CNIDARIA
+  18:'Cnidocytes are cells unique to phylum Cnidaria. Each contains a nematocyst that fires like a harpoon to inject venom or entangle prey.',
+  19:'The polyp form is sessile (attached at the base), cylindrical, with the mouth and tentacles pointing upward. Examples: hydra, coral polyp, sea anemone.',
+  20:'The medusa form is bell-shaped and free-swimming, with the mouth and tentacles pointing downward. Examples: jellyfish.',
+  21:'Mesoglea is the acellular, gelatinous layer between the outer epidermis and inner gastrodermis. In medusae it forms the bulk of the "jelly."',
+  22:'The gastrovascular cavity (GVC / coelenteron) serves as both digestive chamber and circulatory network. It has only ONE opening — the mouth — used for both ingestion and egestion.',
+  23:'Hydrozoa typically show alternation of both polyp and medusa stages. Hydra is unusual in having only the polyp; the Portuguese man-of-war has both forms.',
+  24:'"True jellyfish" (e.g., Aurelia) are Class Scyphozoa. The medusa is the large dominant stage; the polyp is small and short-lived.',
+  25:'Class Anthozoa = "flower animals." Includes sea anemones and all corals. Only the polyp form exists — no medusa stage at any point in life.',
+  26:'Scyphozoan jellyfish have four oral arms hanging from the central mouth on the underside of the bell. They direct captured food into the mouth.',
+  27:'Anthozoa have NO medusa stage. Sea anemones and corals spend their entire adult life as polyps.',
+  123:'The nematocyst is the capsule + coiled thread organelle inside a cnidocyte. When mechanically or chemically triggered, it fires, either piercing prey to inject venom or entangling it.',
+  124:'Cnidarians are diploblastic — body wall = epidermis (outer layer) + gastrodermis (inner layer). Mesoglea is acellular matrix, not a true tissue layer. Bilateria are triploblastic (3 true tissue layers).',
+  125:'Cnidarians are almost entirely aquatic and primarily marine. Hydra is a notable freshwater exception.',
+  126:'In a polyp, the epidermis (outer layer) faces away from the GVC; the gastrodermis (inner layer) lines the GVC and faces the lumen.',
+  127:'In Scyphozoa, the gonads are located in the gastrodermis on the subumbrella (underside of the bell), visible as four horseshoe-shaped structures.',
+  // PLATYHELMINTHES
+  28:'Acoelomate = NO body cavity. The space between gut and body wall is packed solid with mesenchyme (parenchyma) — no fluid-filled cavity exists.',
+  29:'An "incomplete" digestive system has only one opening (the mouth), which serves as both entrance and exit. Food enters and waste exits through the same pore.',
+  30:'Mesenchyme (parenchyma) is the loosely organized, solid tissue filling the space between organs in platyhelminthes — NOT a fluid-filled cavity.',
+  31:'Turbellaria (planarians) are free-living predators/scavengers. They detect prey chemically, extend the pharynx, and engulf small invertebrates or carrion.',
+  32:'Planarians live mostly under rocks in freshwater streams and ponds. Some are marine; a few are terrestrial in moist environments.',
+  33:'The scolex is the head of a tapeworm, bearing suckers (and often a rostellum with hooks) that anchor it to the host\'s intestinal wall.',
+  34:'The rostellum is the armed projection at the apex of the scolex, bearing a ring of hooks that help anchor the tapeworm to host tissue. Not all tapeworms have a rostellum.',
+  35:'Each proglottid is a hermaphroditic reproductive unit. Gravid (egg-filled) proglottids detach from the posterior end and pass out in feces.',
+  36:'Tapeworms (Cestoda) have evolved to lose their entire digestive system. They absorb pre-digested host nutrients directly through their specialized body wall (tegument).',
+  37:'Class Trematoda = flukes. Examples: Fasciola hepatica (liver fluke), Schistosoma (blood fluke). They attach using oral and ventral suckers.',
+  38:'In tapeworm reproductive anatomy: testis → ductus deferens (sperm duct) → genital pore. Each proglottid has a complete set of both male and female organs.',
+  39:'The pharynx of Turbellaria (planarians) is a muscular tube that can be extruded through the ventral mouth to engulf prey like a vacuum.',
+  128:'"Platys" = flat, "helminthes" = worms. Platyhelminthes are the flatworms — dorsoventrally flattened body, no coelom.',
+  129:'Trematodes (flukes) use an oral sucker (around the mouth) and a ventral sucker (acetabulum) to grip host tissue.',
+  130:'Tapeworms lack a gut entirely. Their entire body surface (tegument) is covered in microvilli (microtriches) that absorb nutrients from the host\'s intestinal fluid.',
+  131:'The ciliated epidermis of planarians beats against a mucus layer to glide smoothly over surfaces — the primary mode of locomotion.',
+  132:'Flukes are endoparasites living inside host organs (liver, blood vessels, intestines) where they feed on blood or tissue fluids.',
+  // MOLLUSCA
+  40:'The three universal molluscan body parts are: muscular foot (locomotion), mantle (secretes shell, encloses mantle cavity), and visceral mass (contains digestive, reproductive, excretory organs).',
+  41:'The mantle secretes the shell (when present) and forms the mantle cavity — the space housing the gills (or lung), receiving excretory openings and gametes.',
+  42:'Mollusks have an open circulatory system. Blood (hemolymph) flows through open sinuses (the hemocoel), bathing organs directly rather than through closed vessels.',
+  43:'The radula is a ribbon of chitin bearing many rows of teeth that rasps food off surfaces. Found in gastropods and cephalopods; absent in bivalves.',
+  44:'The umbo is the oldest, most pointed part of the bivalve shell — where shell growth began. It always points toward the anterior end of the animal.',
+  45:'Two adductor muscles (anterior and posterior) pull the shell valves closed. The elastic hinge ligament holds them open when muscles relax.',
+  46:'Water enters via the incurrent (inhalant) siphon, flows over the gills (picking up O2 and depositing food particles), then exits via the excurrent (exhalant) siphon.',
+  47:'Bivalve gills (ctenidia) both extract oxygen AND trap food particles via cilia. Particles are carried to the labial palps and directed into the mouth — this is filter feeding.',
+  48:'Squid have 8 arms (lined with suckers along their entire length) and 2 longer tentacles (suckers only at the club). Total = 10 appendages.',
+  49:'The 2 tentacles are longer than the arms and have suckers only at the expanded club tip. They shoot out rapidly to seize prey and retract.',
+  50:'The pen (gladius) is the vestigial internal shell of squid — a transparent, feather-shaped chitinous structure that provides some rigidity to the body.',
+  51:'The siphon (hyponome/funnel) directs a jet of water expelled from the mantle cavity for rapid locomotion. Direction of the jet controls direction of movement.',
+  52:'The pneumostome is a pore in the mantle wall that opens into the mantle cavity, which functions as a vascularized lung for gas exchange in terrestrial gastropods.',
+  53:'Class Polyplacophora = chitons. "Poly" = many, "placo" = plate. Eight overlapping dorsal shell plates and a broad muscular foot clinging to rocky substrates.',
+  133:'Ink (melanin suspended in mucus) creates a dark cloud that obscures the predator\'s vision and may interfere with chemoreception, buying time to escape.',
+  134:'Squid fins undulate for slow, precise maneuvering and stabilization. High-speed locomotion relies on siphon jet propulsion.',
+  135:'The nidamental gland (females only) secretes the gelatinous or leathery casing material that encapsulates squid egg masses.',
+  136:'The hard chitinous beak works like a parrot\'s beak — it bites and tears prey (fish, crustaceans). The beak is the only hard, indigestible part of a squid.',
+  137:'Labial palps are ciliated folds flanking the mouth. They sort particles arriving from the gills and direct acceptable food into the mouth.',
+  138:'The muscular foot of a bivalve extends into soft sediment, anchors by expanding its tip, and then contracts to pull the body forward — burrowing locomotion.',
+  139:'The two brachial hearts each pump deoxygenated blood to one gill for oxygenation. The single systemic heart then pumps oxygenated blood to the body tissues.',
+  140:'Loligo (also sold as Doryteuthis) is the common market squid used in BIO 212 lab dissections.',
+  141:'The digestive gland (hepatopancreas) secretes digestive enzymes into the stomach and absorbs the resulting nutrient-rich fluid.',
+  142:'Gastropods use rhythmic pedal waves — bands of muscle contraction that travel along the flat, ventral foot — to creep forward on a mucus track.',
+  143:'The umbo always points anteriorly. The posterior end has the excurrent siphon, hinge ligament, and the larger posterior adductor muscle.',
+  198:'In gastropods the mantle is the large dorsal sheet of tissue that covers the visceral mass. In shelled snails it secretes the shell; in slugs it forms the saddle-like dorsal lobe.',
+  199:'The pneumostome is the breathing pore on the right side of the mantle. It opens and closes rhythmically to regulate gas exchange with the environment.',
+  200:'The pneumostome opens into the mantle cavity, which is richly vascularized and functions as a simple lung — O2 diffuses in, CO2 diffuses out.',
+  201:'Terrestrial gastropods replaced aquatic gills with a vascularized mantle cavity (pulmonary cavity). Air enters through the pneumostome and gas exchange occurs across the cavity walls.',
+  // ANNELIDA
+  54:'The clitellum is a swollen, glandular band (segments 32–37 in Lumbricus) that secretes mucus during mating and a cocoon around fertilized eggs.',
+  55:'Setae are short, stiff chitinous bristles anchored in the body wall. They grip the substrate so longitudinal muscles can pull the worm forward without it slipping back.',
+  56:'Septa are fibromuscular walls between segments. They keep each segment\'s coelomic fluid compartmentalized, allowing independent hydrostatic pressure for locomotion.',
+  57:'The typhlosole is a dorsal infolding of the intestinal wall that increases absorptive surface area — analogous to intestinal villi in vertebrates.',
+  58:'Nephridia are tubular excretory organs — one pair per segment — that remove nitrogenous waste and excess water from the coelomic fluid.',
+  59:'The crop stores food temporarily before it enters the gizzard. It is thin-walled and can expand to hold a large volume.',
+  60:'The muscular gizzard grinds food using swallowed soil particles. Its thick, muscular walls contract powerfully to mechanically break down organic matter.',
+  61:'Parapodia are paired lateral extensions of each polychaete segment bearing bundles of setae. They function in both locomotion (rowing) and gas exchange.',
+  62:'Leeches have a large posterior (caudal) sucker for anchoring the body and a smaller anterior (oral) sucker around the mouth for gripping while feeding.',
+  63:'Annelids have a true coelom — a fluid-filled body cavity completely lined by a mesoderm-derived peritoneum. This provides a hydrostatic skeleton for movement.',
+  64:'Clitellata unites earthworms (Oligochaeta) and leeches (Hirudinea). The uniting synapomorphy is the clitellum — a glandular band used in reproduction.',
+  65:'The dorsal blood vessel is the main pumping vessel in earthworms, carrying blood anteriorly (toward the head) to the aortic arches.',
+  66:'In polychaetes, setae (chaetae) are borne in bundles on the notopodium (dorsal lobe) and neuropodium (ventral lobe) of each parapodium.',
+  144:'Earthworms have 5 pairs of aortic arches (in segments 7–11) — muscular vessels connecting the dorsal and ventral vessels. They are not true hearts but function similarly.',
+  145:'Longitudinal muscle contraction → segment shortens and gets fatter. Circular muscle contraction → segment elongates and gets thinner. These alternating contractions produce peristaltic locomotion.',
+  146:'Polychaetes are almost entirely marine, living in ocean sediments, on coral reefs, or in the water column. They are the dominant annelids in the sea.',
+  147:'Leeches inhabit freshwater and moist terrestrial environments. Most are predators of invertebrates; a minority are blood-sucking ectoparasites of vertebrates.',
+  148:'Seminal vesicles store sperm and allow them to mature. During copulation they are positioned adjacent to the other worm\'s seminal receptacles.',
+  149:'Seminal receptacles receive and store sperm from a mating partner during mutual copulation. The stored sperm later fertilize the worm\'s own eggs.',
+  150:'Circular muscle contraction → segment elongates and narrows (gets longer and thinner). Longitudinal muscle contraction does the opposite (shorter and fatter).',
+  // NEMATODA
+  67:'Pseudocoel = body cavity NOT fully lined by mesoderm. Mesoderm lines only the outer wall (body wall). A true coelom is lined by mesoderm on BOTH inner and outer surfaces.',
+  68:'The collagen-rich cuticle is secreted by the underlying epidermis and protects nematodes against host digestive enzymes, immune attack, and physical abrasion.',
+  69:'Because the cuticle is rigid, nematodes grow by ecdysis (molting) — shedding the old cuticle and secreting a new, larger one. This is the defining feature of Ecdysozoa.',
+  70:'Adult Ascaris lumbricoides live in the lumen of the human small intestine, feeding on host digesta.',
+  71:'Female Ascaris reproductive tract: ovary → oviduct → uterus → vagina → reproductive pore (on the ventral surface, ~1/3 of the way down).',
+  72:'Male Ascaris reproductive tract: testis → ductus deferens → seminal vesicle → cloaca (combined reproductive + excretory opening).',
+  73:'Ecdysozoa = molting animals. Includes Nematoda + Arthropoda (the two largest animal phyla) plus several minor phyla. All shed a cuticle to grow.',
+  74:'True coelom: mesoderm-derived peritoneum lines BOTH the body wall AND the gut. Pseudocoel: mesoderm lines only the body wall; the gut is not wrapped in peritoneum.',
+  75:'Nematodes have a complete, through-gut — food enters the mouth, passes through pharynx → intestine, and waste exits through the anus. More efficient than the incomplete (blind-sac) system of flatworms.',
+  151:'Female Ascaris are typically 20–35 cm with a straight tail; males are 15–30 cm with a curved tail and a visible spicule used to hold the female during mating.',
+  152:'Nematode digestive tract: mouth → muscular pharynx (pumps food in) → intestine (absorption) → anus. Simple and efficient.',
+  153:'Ascaris uses fecal-oral transmission. Eggs exit in host feces → contaminate soil/water/food → new host ingests embryonated eggs → larvae hatch and migrate.',
+  // ARTHROPODA
+  76:'Chelicerae are the first pair of appendages in Chelicerata. In spiders they are modified as hollow fangs that inject venom; in horseshoe crabs they are small pincers for feeding.',
+  77:'Pedipalps are the second pair of chelicerate appendages. In male spiders they transfer sperm; in scorpions they are enlarged into powerful claws (pincers) for prey capture.',
+  78:'Chelipeds are the large, claw-bearing first pair of walking legs (pereiopods 1) of decapod crustaceans. Used for defense, prey capture, and signaling.',
+  79:'Maxillipeds are mouth appendages just anterior to the walking legs. In crayfish there are three pairs; they hold and manipulate food while other mouthparts chew it.',
+  80:'Spiracles are valve-like openings in the insect exoskeleton that lead into branching tracheal tubes. O2 diffuses directly to tissues via these tubes — no blood-mediated gas transport.',
+  81:'Four arthropod subphyla: Chelicerata (chelicerae, no antennae; spiders, scorpions), Crustacea (2 pairs antennae, gills; crabs, shrimp), Hexapoda (6 legs; insects), Myriapoda (many legs; centipedes, millipedes).',
+  82:'Arachnida = 8 walking legs (4 pairs). Quick rule: spiders/scorpions/ticks = 8 legs (arachnids); insects = 6 legs; crustaceans = 10 legs (decapods).',
+  83:'Insects have 3 body regions: head (sensory + mouthparts), thorax (3 leg pairs + wings attach here), abdomen (digestion, reproduction). Never a cephalothorax in insects.',
+  84:'Crayfish are Subphylum Crustacea, Class Malacostraca, Order Decapoda (10 legs). The cephalothorax is covered by the carapace.',
+  85:'Arthropods grow by ecdysis (molting). The animal secretes a new, soft exoskeleton beneath the old one, then sheds the old cuticle and expands before the new one hardens.',
+  86:'Chilopoda = centipedes. ONE pair of legs per segment; dorsoventrally flattened; the first pair of legs are modified as venomous forcipules (fang-claws) for predation.',
+  87:'Diplopoda = millipedes. TWO pairs of legs per segment (most body segments are actually two fused segments); cylindrical body; detritivores, not predators.',
+  154:'Arachnids have 2 body regions: cephalothorax (fused head + thorax, bears chelicerae + pedipalps + 4 pairs of walking legs) and abdomen.',
+  155:'The carapace is a dorsal shield that covers and fuses the cephalothorax in decapod crustaceans. It is secreted by the dorsal mantle fold of the head.',
+  156:'Hexapoda = 6 legs (3 pairs), all attached to the thorax. The thorax has 3 segments (pro-, meso-, metathorax), one pair of legs each.',
+  157:'Pill bugs/wood lice are Order Isopoda, Subphylum Crustacea — they breathe through abdominal gills, NOT spiracles. They are among the few truly terrestrial crustaceans.',
+  158:'Lepidoptera = "scale-winged" (lepido = scale, ptera = wing). Butterflies and moths have wings covered with tiny, overlapping scales.',
+  159:'Diptera = "two-winged" (di = two). Flies have only ONE pair of functional wings; the hind wings are reduced to halteres (club-shaped balance organs).',
+  160:'Ticks are Class Arachnida — they have 8 legs (as adults), no antennae, and chelicerae. They are ectoparasites but are NOT insects (insects have 6 legs and antennae).',
+  161:'Each ommatidium is a self-contained photoreceptor unit with its own corneal lens, crystalline cone, and retinular cells. Compound eyes detect motion and UV light extremely well.',
+  162:'Coleoptera = "sheath-winged" (coleo = sheath). Beetles\' first pair of wings are hardened into elytra (protective covers) that enclose the flying wings. Largest insect order.',
+  // TISSUES
+  88:'The four animal tissue types are: Epithelial (covering/lining), Connective (support/binding), Muscle (contraction), Nervous (signaling). Every body part is made from combinations of these.',
+  89:'Chondrocytes are cartilage cells that sit in lacunae (spaces) within a flexible matrix of type II collagen and proteoglycans. Cartilage is avascular (no blood vessels).',
+  90:'Osteocytes are mature bone cells trapped in lacunae within mineralized bone matrix (hydroxyapatite crystals embedded in collagen). They maintain the bone matrix.',
+  91:'Erythrocytes (RBCs) contain hemoglobin and carry O2. In mammals they are anucleate (no nucleus) and biconcave — maximizing surface area for gas exchange.',
+  92:'Fibroblasts are the principal cells of connective tissue. They synthesize and secrete collagen, elastin, and proteoglycans that form the extracellular matrix.',
+  93:'Simple squamous epithelium is a single layer of flat cells — very thin cytoplasm minimizes diffusion distance. Lines blood and lymph vessels (endothelium) and air sacs (alveoli).',
+  94:'Simple columnar epithelium is a single layer of tall cells with abundant organelles for secretion and absorption. The goblet cells embedded within it secrete protective mucus.',
+  95:'Stratified squamous epithelium has multiple cell layers. Surface cells are flat and continuously sloughed off; deeper cells divide to replace them. Resists abrasion in skin/esophagus.',
+  96:'Simple cuboidal epithelium consists of cube-shaped cells with large, central nuclei — adapted for active secretion and reabsorption, as seen in kidney tubule walls.',
+  97:'Goblet cells are shaped like a goblet because of the large mucus droplet in their apical cytoplasm. Mucus they secrete traps pathogens and lubricates the gut and respiratory tract.',
+  98:'The basal lamina is a thin ECM sheet (laminin, type IV collagen, perlecan) that mechanically anchors epithelial cells, acts as a selective molecular filter, and guides cell migration.',
+  99:'Dense connective tissue has tightly packed collagen fibers with relatively few fibroblasts. Dense regular (parallel fibers) forms tendons and ligaments; dense irregular forms the dermis.',
+  100:'Cardiac muscle is involuntary, striated, and found only in the heart. Cells are branched and connected by intercalated discs (containing gap junctions for synchronized contraction).',
+  101:'Skeletal muscle is under voluntary (somatic) nervous control. Its regular sarcomere arrangement produces the striated (striped) appearance visible in histology slides.',
+  163:'Smooth muscle is found in the walls of blood vessels, the digestive tract, urinary bladder, and uterus. It contracts slowly and involuntarily under autonomic nervous and hormonal control.',
+  164:'Neurons transmit electrochemical signals. Glial cells (astrocytes, oligodendrocytes/Schwann cells, microglia) support neurons structurally, provide myelination, and maintain the neural environment.',
+  165:'Loose areolar CT has scattered collagen fibers (tensile strength) and elastin fibers (recoil) embedded in a gel-like ground substance. It fills spaces between organs and underlies most epithelium.',
+  166:'Plasma is the liquid portion of blood (~55% of volume). It contains proteins (albumin, clotting factors, immunoglobulins), nutrients, hormones, and dissolved gases. Serum = plasma minus clotting factors.',
+  167:'"Simple" means ONE cell layer thick, with all cells touching the basement membrane. "Stratified" means multiple layers. The shape suffix (-squamous, -cuboidal, -columnar) describes the surface cells.',
+  168:'Stratified squamous epithelium lines surfaces subjected to friction: the outer skin (keratinized) and the wet surfaces of the mouth, esophagus, and vagina (non-keratinized).',
+  // EMBRYOLOGY
+  102:'Development sequence: zygote (fertilized egg) → cleavage → blastula (hollow sphere) → gastrula (3 germ layers form) → early neurula (neural plate) → late neurula (neural tube).',
+  103:'The blastocoel is the fluid-filled central cavity of the blastula. It is not a true gut — it is displaced and obliterated as the gastrocoel forms during gastrulation.',
+  104:'Gastrulation = formation of the three primary germ layers (ectoderm, mesoderm, endoderm) by coordinated cell movements (invagination, ingression, epiboly).',
+  105:'The gastrocoel (archenteron = primitive gut) is the new cavity formed during gastrulation by invagination. It opens to the outside through the blastopore.',
+  106:'Early neurula: the neural plate (flat, thickened sheet of dorsal ectoderm) has formed due to induction by the notochord, but has not yet folded into a tube.',
+  107:'Late neurula: the neural plate edges have rolled up and fused, forming the closed neural tube (future brain + spinal cord). Somites flank the neural tube on either side.',
+  108:'The notochord is a mesodermal structure. It forms from axial mesoderm during gastrulation and induces the overlying ectoderm to become the neural plate.',
+  109:'Somites are paired, segmental blocks of paraxial mesoderm flanking the neural tube. In chick embryo cross-sections they appear as rectangular blocks. Each somite gives rise to vertebrae, ribs, skeletal muscle, and dermis.',
+  110:'The notochord (mesoderm) releases signals that induce the overlying dorsal ectoderm to thicken into the neural plate — the process called neural induction.',
+  111:'In vertebrates, the notochord persists only transiently. The vertebral column (spine) develops around it and largely replaces it. Remnants persist as the nucleus pulposus of intervertebral discs.',
+  169:'Ectoderm (outermost germ layer) → epidermis of skin + entire nervous system (neural tube → brain/spinal cord; neural crest cells → peripheral nervous system and more).',
+  170:'Mesoderm (middle germ layer) → skeletal muscle, cardiac muscle, bone, cartilage, blood, circulatory system, kidneys, gonads, and the connective tissue of most organs.',
+  171:'Endoderm (innermost germ layer) → epithelial lining of the gut and respiratory tract, plus the liver, pancreas, thyroid, and other glands derived from gut-tube outpocketings.',
+  172:'During gastrulation, cells invaginate and the old blastocoel is displaced/obliterated. The new internal cavity formed is the gastrocoel (archenteron), which becomes the digestive tract.',
+  // TAXONOMY
+  173:'Porifera = "pore-bearers." Sponges are the only members — asymmetric, sessile, no true tissues, filter feed by pumping water through their porous bodies.',
+  174:'All cnidarians share: cnidocytes (stinging cells), radial symmetry, diploblastic body wall, and a gastrovascular cavity. Includes jellyfish, sea anemones, hydra, and corals.',
+  175:'Platyhelminthes = flatworms. Acoelomate, bilaterally symmetric, triploblastic. Lab specimens: Turbellaria (planarians), Cestoda (tapeworms), Trematoda (flukes).',
+  176:'Nematoda = roundworms. Cylindrical, tapered at ends, pseudocoelomate, covered in cuticle. Ascaris lumbricoides is the lab roundworm.',
+  177:'Annelida = segmented worms. True coelom, setae, closed circulatory system. Lab specimens: Lumbricus (earthworm, Oligochaeta), leeches (Hirudinea), Nereis (Polychaeta).',
+  178:'Mollusca = foot + mantle + visceral mass (three universal body parts). The second-largest animal phylum; includes snails, clams, squid, octopus, and chitons.',
+  179:'Arthropoda = largest animal phylum. Jointed appendages, chitinous exoskeleton, segmented body. Four subphyla: Chelicerata, Crustacea, Hexapoda, Myriapoda.',
+  180:'Class Turbellaria = free-living flatworms. Ciliated epidermis for gliding, pharynx for feeding, found in freshwater. Dugesia tigrina is the lab planarian.',
+  181:'Class Cestoda = tapeworms. Endoparasites with scolex (attachment organ) + chain of proglottids (reproductive units), no digestive system — absorb nutrients through tegument.',
+  182:'Class Trematoda = flukes. Endoparasites with oral and ventral suckers. Examples: Fasciola hepatica (liver fluke), Schistosoma (blood fluke).',
+  183:'Class Scyphozoa = true jellyfish. Medusa is the dominant, large stage; polyp is small/reduced. Aurelia aurita (moon jelly) is the lab specimen.',
+  184:'Class Hydrozoa. Hydra is the lab specimen — only polyp form. The Portuguese man-of-war is a colonial hydrozoan with both polyp and medusa forms.',
+  185:'Class Anthozoa = "flower animals." Only polyp form — NO medusa stage ever. Includes sea anemones, reef-building corals, and sea pens.',
+  186:'Class Arachnida (Subphylum Chelicerata): 8 legs, 2 body regions (cephalothorax + abdomen), chelicerae, pedipalps. Includes spiders, scorpions, ticks, and mites.',
+  187:'Class Malacostraca (Subphylum Crustacea): largest crustacean class. Order Decapoda (10 legs) includes lobsters, crabs, crayfish, shrimp. Order Isopoda includes pill bugs.',
+  188:'Class Chilopoda (Subphylum Myriapoda) = centipedes. ONE pair of legs per body segment; venomous forcipules; predatory.',
+  189:'Class Diplopoda (Subphylum Myriapoda) = millipedes. TWO pairs of legs per body segment (most segments are fused double-segments); cylindrical; detritivores.',
+  190:'Class Gastropoda = snails and slugs. Muscular foot for locomotion, radula for feeding, torted visceral mass. The largest molluscan class.',
+  191:'Class Bivalvia = clams, oysters, mussels, scallops. Two hinged shell valves, no radula, filter feeders using ctenidia (gills).',
+  192:'Class Cephalopoda = squid, octopus, nautilus, cuttlefish. Foot modified into arms + tentacles + siphon; most intelligent invertebrates; closed circulatory system.',
+  193:'Class Polyplacophora = chitons. "Polyplaco" = many plates. Eight overlapping dorsal shell plates articulate to allow the animal to curl up. Broad foot clings to rocky shores.',
+  194:'Clade Clitellata unites Oligochaeta (earthworms, few setae per segment) + Hirudinea (leeches, no setae). Shared character: the clitellum.',
+  195:'Class Polychaeta = marine bristle worms (Nereis = lab specimen). Many setae on parapodia, no clitellum. Most diverse annelid class.',
+  196:'Lumbricus terrestris = the common European earthworm used in lab. Class Oligochaeta, Phylum Annelida. "Lumbricus" = earthworm in Latin.',
+  197:'Dugesia tigrina = the common lab planarian. Class Turbellaria, Phylum Platyhelminthes. Famous for its regenerative ability — cut it in half and both pieces regrow.',
+};
+
+// ── CATEGORIES ────────────────────────────────────────────────────────────────
+const CATS = [
+  {id:'phylogenetics', label:'Phylogenetics', icon:'🌳', color:'#22c55e'},
+  {id:'porifera',      label:'Porifera',      icon:'🧽', color:'#f97316'},
+  {id:'cnidaria',      label:'Cnidaria',      icon:'🪼', color:'#4f8ef7'},
+  {id:'platyhelminthes',label:'Platyhelminthes',icon:'🪱',color:'#a855f7'},
+  {id:'mollusca',      label:'Mollusca',      icon:'🐚', color:'#ec4899'},
+  {id:'annelida',      label:'Annelida',      icon:'🐌', color:'#ef4444'},
+  {id:'nematoda',      label:'Nematoda',      icon:'🔬', color:'#f59e0b'},
+  {id:'arthropoda',    label:'Arthropoda',    icon:'🦀', color:'#14b8a6'},
+  {id:'tissues',       label:'Tissues',       icon:'🔬', color:'#06b6d4'},
+  {id:'embryology',    label:'Embryology',    icon:'🐸', color:'#8b5cf6'},
+  {id:'taxonomy',      label:'Taxonomy',      icon:'🏷️', color:'#facc15'},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let pool = [], qi = 0, answers = [], answered = false, fibLastVal = null;
+let activeCats = new Set(['__none__']); // default: nothing selected
+let displayOrder = [];
+let freeTextMode = true;
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+const PROG_KEY = 'bio212_lo_progress';
+function loadProgress() { try { return JSON.parse(localStorage.getItem(PROG_KEY) || '{}'); } catch { return {}; } }
+function saveProgress(d) { localStorage.setItem(PROG_KEY, JSON.stringify(d)); }
+
+function recordAnswer(q, ok) {
+  const d = loadProgress();
+  const k = String(q.id);
+  if (!d[k]) d[k] = {a:0,c:0,w:0,t:null};
+  d[k].a++; if (ok) d[k].c++; else d[k].w++;
+  d[k].t = new Date().toISOString();
+  saveProgress(d);
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function isStruggling(s) { return s && s.a >= 2 && s.c / s.a < 0.6; }
+
+function getStrugglingIds() {
+  const d = loadProgress();
+  return Object.entries(d).filter(([,s]) => isStruggling(s)).map(([id]) => parseInt(id));
+}
+
+function clearProgress() {
+  if (!confirm('Clear all LO quiz progress? This cannot be undone.')) return;
+  localStorage.removeItem(PROG_KEY);
+  renderProgress();
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+// ── CATEGORY UI ───────────────────────────────────────────────────────────────
+function renderCategoryPills() {
+  const container = document.getElementById('cat-pills');
+  const counts = {};
+  LO_DATA.forEach(q => { counts[q.cat] = (counts[q.cat]||0)+1; });
+
+  let html = '';
+  for (const cat of CATS) {
+    const n = counts[cat.id] || 0;
+    if (!n) continue;
+    const on = activeCats.size === 0 || activeCats.has(cat.id);
+    const color = cat.color;
+    const bs = on ? `border-color:${color};` : `border-color:${color}44;`;
+    const bg = on ? `background:${color}18;color:var(--text);` : '';
+    html += `<div class="cat-group">
+      <span class="cat-pill${on ? ' on' : ''}" data-cat="${cat.id}" onclick="toggleCat('${cat.id}')"
+        style="${bs}${bg}">
+        <span class="cp-icon">${cat.icon}</span>
+        <span class="cp-label">${cat.label}</span>
+        <span class="cp-count">${n}q</span>
+      </span>
+    </div>`;
+  }
+
+  const strugCount = getStrugglingIds().length;
+  if (strugCount > 0) {
+    const on = activeCats.size === 0 || activeCats.has('__struggling__');
+    html += `<div class="cat-group"><span class="cat-pill struggling${on ? ' on' : ''}"
+      data-cat="__struggling__" onclick="toggleCat('__struggling__')">
+      <span class="cp-icon">⚠️</span><span class="cp-label">Struggling</span>
+      <span class="cp-count">${strugCount}q</span>
+    </span></div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function toggleCat(id) {
+  if (activeCats.size === 0) {
+    activeCats = new Set([id]);
+  } else if (activeCats.has('__none__')) {
+    activeCats = new Set([id]);
+  } else {
+    if (activeCats.has(id)) {
+      activeCats.delete(id);
+      if (activeCats.size === 0) activeCats = new Set(['__none__']);
+    } else {
+      activeCats.add(id);
+      const allIds = CATS.map(c => c.id);
+      if (allIds.every(c => activeCats.has(c))) activeCats = new Set();
+    }
+  }
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function toggleAllCats() {
+  activeCats = (activeCats.size === 0) ? new Set(['__none__']) : new Set();
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function updatePoolPreview() {
+  const p = buildPool(false);
+  const el = document.getElementById('pool-preview');
+  if (el) el.textContent = p.length
+    ? `${p.length} question${p.length !== 1 ? 's' : ''} match your filters`
+    : 'No questions match — select at least one category above';
+}
+
+// ── TAB NAV ───────────────────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'progress') renderProgress();
+  if (id === 'browse') renderBrowse();
+  try { window.parent.postMessage({type:'tabChange', tab:id}, '*'); } catch(e){}
+}
+
+// ── QUIZ SETUP ────────────────────────────────────────────────────────────────
+function buildPool(shuffle) {
+  const count = document.getElementById('sel-count').value;
+  let p = [...LO_DATA];
+
+  if (activeCats.size > 0) {
+    if (activeCats.has('__none__')) {
+      p = [];
+    } else {
+      const strugIds = activeCats.has('__struggling__') ? new Set(getStrugglingIds()) : null;
+      const regCats = new Set([...activeCats].filter(c => c !== '__struggling__'));
+      p = p.filter(q =>
+        (strugIds && strugIds.has(q.id)) ||
+        (regCats.size > 0 && regCats.has(q.cat))
+      );
+    }
+  }
+
+  if (shuffle) shuffleArr(p);
+  if (count !== 'all') p = p.slice(0, parseInt(count));
+  return p;
+}
+
+function startQuiz()    { launch(true); }
+function startShuffle() { launch(true); }
+
+function launch(shuffle) {
+  pool = buildPool(shuffle);
+  if (!pool.length) {
+    document.getElementById('pool-preview').textContent =
+      '⚠ No questions match — select at least one category above';
+    return;
+  }
+  qi      = 0;
+  answers = new Array(pool.length).fill(null);
+  document.getElementById('pane-setup').style.display   = 'none';
+  document.getElementById('pane-quiz').style.display    = 'block';
+  document.getElementById('pane-results').style.display = 'none';
+  renderQ();
+}
+
+function setAnswerMode(m) {
+  freeTextMode = m === 'ft';
+  document.getElementById('mode-mc').classList.toggle('active', !freeTextMode);
+  document.getElementById('mode-ft').classList.toggle('active',  freeTextMode);
+}
+
+function setCount(val, btn) {
+  document.getElementById('sel-count').value = val;
+  document.querySelectorAll('.count-seg button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePoolPreview();
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────────────────────
+function handleFibKey(e, checkFn) {
+  if (e.key !== 'Enter') return;
+  const inp = document.getElementById('fib-inp');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  if (answered && val === fibLastVal) {
+    nextQ();
+  } else {
+    answered = false;
+    fibLastVal = val;
+    checkFn();
+  }
+}
+
+function renderQ() {
+  answered = false;
+  fibLastVal = null;
+  const q = pool[qi];
+
+  const pct = qi / pool.length * 100;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = `Question ${qi + 1} / ${pool.length}`;
+  const cor = answers.slice(0, qi).filter(a => a === true).length;
+  document.getElementById('prog-score').textContent = `${cor} correct`;
+  document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-back').disabled = (qi === 0);
+
+  const catObj = CATS.find(c => c.id === q.cat) || {label:q.cat, color:'#4f8ef7', icon:'📋'};
+
+  let html = `<div class="q-card" style="border-top:3px solid ${catObj.color};">
+    <div class="q-header">
+      <span class="q-num">Q${qi + 1}</span>
+      <span class="q-tag" style="background:${catObj.color}18;color:${catObj.color}">${catObj.label}</span>
+      <span class="q-pts">1 pt</span>
+    </div>
+    <div class="q-body">${escHtml(q.q)}</div>`;
+
+  if (freeTextMode) {
+    html += `<div class="fib-wrap">
+      <input class="fib-input" id="fib-inp" placeholder="Type your answer…"
+        onkeydown="handleFibKey(event,checkFreeText)">
+    </div>`;
+  } else {
+    const idxs = q.a.map((_, i) => i);
+    shuffleArr(idxs);
+    displayOrder = idxs;
+    const letters = ['A','B','C','D','E'];
+    html += '<div class="opts">';
+    idxs.forEach((origIdx, di) => {
+      html += `<div class="opt" id="opt${di}" onclick="pickMC(${di},${origIdx === q.c})"
+        style="animation-delay:${di*0.06}s">
+        <div class="ltr">${letters[di]}</div>
+        <span>${escHtml(q.a[origIdx])}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="feedback" id="fb"></div></div>';
+  document.getElementById('q-render').innerHTML = html;
+  document.getElementById('q-render').scrollIntoView({behavior:'smooth', block:'start'});
+  // input NOT auto-focused; spacebar activates it (see keydown handler)
+}
+
+// ── ANSWER HANDLERS ───────────────────────────────────────────────────────────
+function pickMC(displayIdx, isCorrect) {
+  if (answered) return;
+  answered = true;
+  const q = pool[qi];
+  const correctDisplayIdx = displayOrder.indexOf(q.c);
+
+  document.querySelectorAll('.opt').forEach((el, j) => {
+    el.classList.add('locked');
+    if (j === correctDisplayIdx) el.classList.add('correct');
+    if (j === displayIdx && !isCorrect) el.classList.add('wrong');
+  });
+
+  answers[qi] = isCorrect;
+  recordAnswer(q, isCorrect);
+  showFeedback(isCorrect, q.a[q.c], LO_EXP[q.id]);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+// ── Required-keyword sets (ALL must appear in typed answer) ──────────────────
+// Used for unordered multi-item answers where any ordering should be accepted.
+const LO_KEYWORDS = {
+  10:  ['kingdom','phylum','class','order','family','genus','species'],
+  16:  ['ostia','spongocoel','osculum'],
+  40:  ['foot','mantle','visceral'],
+  62:  ['sucker'],
+  75:  ['mouth','anus'],
+  81:  ['chelicerata','crustacea','hexapoda','myriapoda'],
+  83:  ['head','thorax','abdomen'],
+  88:  ['epithelial','connective','muscle','nervous'],
+  102: ['blastula','gastrula','neurula'],
+  144: ['aortic'],
+  152: ['mouth','intestine','anus'],
+  154: ['cephalothorax','abdomen'],
+  164: ['neuron','glial'],
+  165: ['collagen','elastin'],
+};
+
+// ── Per-question extra accepted answers / synonyms ────────────────────────────
+const LO_ACCEPTED = {
+  // PHYLOGENETICS
+  1:  ['monophyletic','clade','holophyletic'],
+  2:  ['paraphyletic'],
+  3:  ['polyphyletic'],
+  4:  ['synapomorphy','shared derived character','shared derived trait','shared derived feature','apomorphy'],
+  5:  ['basal','outgroup','earliest diverging','first to diverge','most basal','sister to all'],
+  6:  ['node','branching point','internal node'],
+  7:  ['order'],
+  8:  ['mouth','blastopore becomes mouth'],
+  9:  ['ranked clade','has a rank','linnean rank','with a rank','corresponds to rank'],
+  10: ['kingdom phylum class order family genus species','kpcofgs'],
+  112:['living taxon','extant taxon','extant organism','living group','terminal taxon','tip'],
+  113:['plesiomorphy','ancestral character','ancestral trait','ancestral feature','ancestral','shared ancestral'],
+  114:['bilateria','bilateral symmetry','bilateral'],
+  115:['protostomia','protostome','protostomes'],
+  116:['ecdysozoa','molting','moulting','ecdysis'],
+  117:['anus','anal opening'],
+  118:['annelida','annelid'],
+  119:['platyhelminthes','flatworms','flat worms'],
+
+  // PORIFERA
+  11: ['choanocytes','collar cells','flagellated collar cells','collar cell'],
+  12: ['amoebocytes','archaeocytes','amebocytes','archaeocyte'],
+  13: ['osculum','excurrent opening','exit pore'],
+  14: ['ostia','pores','ostium','incurrent pores','pore'],
+  15: ['spongocoel','central cavity','atrium'],
+  16: ['ostia spongocoel osculum','ostia → spongocoel → osculum','pores spongocoel osculum'],
+  17: ['filter feeder','filter feeding','suspension feeder','suspension feeding'],
+  120:['spicules','spicule','needle-like','needles'],
+  121:['marine','saltwater','ocean','sea','mostly marine'],
+  122:['totipotent','differentiate','secrete spicules','form spicules','differentiate into other cell types'],
+
+  // CNIDARIA
+  18: ['cnidocytes','stinging cells','cnidocyte','nematocyte','cnidoblast'],
+  19: ['polyp','sessile form'],
+  20: ['medusa','free-swimming form','medusae'],
+  21: ['mesoglea','gelatinous middle layer','jelly','middle jelly'],
+  22: ['gastrovascular cavity','coelenteron','digestive cavity','gastrovascular','gvc'],
+  23: ['hydrozoa','hydra class'],
+  24: ['scyphozoa','jellyfish class'],
+  25: ['anthozoa','sea anemone class'],
+  26: ['oral arms','oral arm','mouth arms'],
+  27: ['polyp only','only polyp','polyp form','sessile polyp','polyp'],
+  123:['nematocyst','stinging organelle','stinging capsule','firing capsule','cnida'],
+  124:['two layers','two tissue layers','diploblastic','epidermis gastrodermis','two','2'],
+  125:['aquatic','marine','saltwater','water','mostly marine'],
+  126:['epidermis','outer layer','outer epidermis'],
+  127:['gastrodermis','subumbrella','underside','bell gastrodermis'],
+
+  // PLATYHELMINTHES
+  28: ['acoelomate','no coelom','no body cavity','lack coelom','lack a body cavity','without a body cavity'],
+  29: ['one opening','incomplete gut','incomplete digestive','mouth and anus','no anus','blind gut','single opening'],
+  30: ['mesenchyme','parenchyma','solid tissue','mesenchyme parenchyma'],
+  31: ['carnivore','predator','carnivorous','carnivore predator'],
+  32: ['freshwater','freshwater marine terrestrial','aquatic'],
+  33: ['scolex','holdfast','attachment head','head of tapeworm'],
+  34: ['rostellum','ring of hooks','hooks on scolex'],
+  35: ['proglottid','segment','body segment','reproductive segment','proglottids'],
+  36: ['no gut','no digestive system','no intestine','lacks a digestive system','absorb through body wall','tegument absorption'],
+  37: ['trematoda','flukes','fluke'],
+  38: ['ductus deferens','vas deferens','sperm duct'],
+  39: ['pharynx','muscular pharynx','extensible pharynx'],
+  128:['flat worms','flatworms','flat worm'],
+  129:['oral sucker','ventral sucker','suckers','sucker','oral and ventral suckers'],
+  130:['tegument','body wall','through body wall','absorb through skin','absorption through tegument'],
+  131:['cilia','locomotion','glide','gliding','ciliary gliding','cilia locomotion','cilia beat'],
+  132:['endoparasite','parasite','internal parasite','endoparasitic','endoparasites'],
+
+  // MOLLUSCA
+  40: ['foot mantle visceral mass','mantle foot visceral','foot mantle visceral'],
+  41: ['secretes shell','shell secretion','forms shell','makes shell','secrete shell'],
+  42: ['hemocoel','blood filled cavity','blood-filled cavity','open circulatory','blood cavity'],
+  43: ['radula','rasping organ','tongue-like','toothed tongue'],
+  44: ['umbo','beak','oldest part','shell beak','oldest shell'],
+  45: ['adductor','adductors','adductor muscles','closing muscles','close shell'],
+  46: ['incurrent siphon','incurrent','intake siphon','inhalant siphon','inhalant'],
+  47: ['filter feeding','filter feeder','trapping food','food from water','trap food particles'],
+  48: ['eight arms','eight','8','8 arms'],
+  49: ['two tentacles','two','2','2 tentacles'],
+  50: ['pen','gladius','chitinous shell','pen gladius','internal shell','internal skeleton'],
+  51: ['jet propulsion','jet','propulsion','expels water','water expulsion','propels by water'],
+  52: ['pneumostome','mantle lung','lung','breathing pore','pore in mantle','lung-like cavity'],
+  53: ['chiton','chitons','8 shell plates','eight shell plates','polyplacophora','8 plates'],
+  133:['escape predators','confuse predators','distraction','predator confusion','ink cloud','escape','defense'],
+  134:['stability','steering','maneuvering','maneuver','balance','slow movement','stabilization'],
+  135:['female','egg capsule','eggs','nidamental gland','protective coating for eggs'],
+  136:['bite','tear','cut prey','capture prey','pierce prey','biting and tearing'],
+  137:['sort food','direct food','food sorting','guide food','labial palp','sort particles'],
+  138:['burrow','dig','burrowing','locomotion','movement into sediment'],
+  139:['gills','gas exchange','oxygenation','oxygen','branchial hearts pump to gills'],
+  140:['loligo','loligo squid'],
+  141:['digestive enzymes','enzyme secretion','nutrient absorption','enzymes nutrients','digestion absorption'],
+  142:['muscular waves','foot waves','muscle waves foot','wave contraction foot'],
+  143:['umbo','points anterior','anterior end'],
+
+  // ANNELIDA
+  54: ['clitellum','band','saddle','reproductive band','girdle','clitellar band'],
+  55: ['setae','chaetae','bristles','hairs','hair-like','setae chaetae'],
+  56: ['septa','septum','internal walls','dividing walls','partitions','inter-segment walls'],
+  57: ['surface area','absorption','increase absorption','more surface area','absorptive surface'],
+  58: ['nephridia','excretory organs','nephridium','kidney-like organs'],
+  59: ['crop','food storage crop'],
+  60: ['gizzard','muscular gizzard','grinding organ'],
+  61: ['parapodia','parapodium','paddle-like','paddles','lateral appendages'],
+  62: ['oral sucker','caudal sucker','posterior sucker','anterior sucker','two suckers','suckers'],
+  63: ['true coelom','coelom','eucoelomate','true body cavity'],
+  64: ['clitellata','clitellate'],
+  65: ['toward the head','anterior','anteriorly','forward','to the head','head direction'],
+  66: ['parapodia','parapodium'],
+  144:['aortic arches','aortic arch','five pairs','5 pairs','5 pairs of aortic arches'],
+  145:['longitudinal muscles','longitudinal','long muscles'],
+  146:['marine','saltwater','ocean','sea'],
+  147:['freshwater','ectoparasite','parasite','predator','leeches freshwater','freshwater and terrestrial'],
+  148:['store sperm','mature sperm','sperm storage','sperm maturation'],
+  149:['receive sperm','store sperm from partner','receives sperm from another','sperm receptacle'],
+  150:['circular muscles','circular','ring muscles'],
+
+  // NEMATODA
+  67: ['pseudocoel','pseudocoelomate','false coelom','not lined by mesoderm','pseudocoelom'],
+  68: ['cuticle','outer cuticle','tough cuticle'],
+  69: ['molting','molt','ecdysis','shed cuticle','shedding','ecdysozoa','moult'],
+  70: ['small intestine','intestine','gut','small intestine of host'],
+  71: ['oviduct','egg duct'],
+  72: ['ductus deferens','vas deferens','sperm duct'],
+  73: ['ecdysozoa'],
+  74: ['not lined by mesoderm','pseudocoel not lined','incomplete mesoderm','mesoderm does not line','partially lined'],
+  75: ['two openings','mouth and anus','complete gut','complete digestive system','mouth anus'],
+  151:['female','females larger','female is larger','females are larger'],
+  152:['mouth pharynx intestine anus','mouth intestine anus','complete gut','pharynx intestine anus'],
+  153:['feces','stool','poop','fecal','fecal-oral','ingested','eaten with contaminated food'],
+
+  // ARTHROPODA
+  76: ['chelicerae','fangs','chelicera','venom fangs','fang-like mouthparts'],
+  77: ['pedipalps','pedipalp','palps','sensory appendages','sensory palps'],
+  78: ['chelipeds','cheliped','claws','large claws','pincers','pincer','chela'],
+  79: ['maxillipeds','maxilliped','mouth appendages','food manipulators','feeding appendages'],
+  80: ['spiracles','spiracle','breathing holes','breathing pores','respiratory openings'],
+  81: ['chelicerata crustacea hexapoda myriapoda','four subphyla','chelicerata hexapoda crustacea myriapoda'],
+  82: ['four pairs','eight legs','8 legs','4 pairs of legs','4 pairs','eight','8'],
+  83: ['head thorax abdomen'],
+  84: ['crustacea','malacostraca','malacostraca crustacea','decapoda'],
+  85: ['molting','molt','ecdysis','shed exoskeleton','shedding','moult'],
+  86: ['chilopoda','centipede class','centipedes'],
+  87: ['diplopoda','millipede class','millipedes'],
+  154:['cephalothorax abdomen','two body regions','two regions','cephalothorax and abdomen'],
+  155:['head thorax','fused head thorax','head and thorax fused','carapace covers'],
+  156:['six legs','6 legs','three pairs','3 pairs of legs','thorax legs'],
+  157:['isopod','isopoda','crustacea isopod','crustacean isopod'],
+  158:['lepidoptera'],
+  159:['diptera'],
+  160:['arachnida','arachnid class'],
+  161:['ommatidia','ommatidium','facets','compound eye units'],
+  162:['coleoptera'],
+
+  // TISSUES
+  88: ['epithelial connective muscle nervous','four tissue types','epithelial connective nervous muscle'],
+  89: ['chondrocyte','cartilage cell','cartilage cells'],
+  90: ['osteocyte','bone cell','bone cells'],
+  91: ['erythrocytes','red blood cells','rbcs','rbc','red blood cell'],
+  92: ['fibroblasts','fibroblast'],
+  93: ['simple squamous epithelium','squamous epithelium','simple squamous','flat epithelium','squamous'],
+  94: ['simple columnar epithelium','columnar epithelium','simple columnar','columnar'],
+  95: ['stratified squamous epithelium','stratified squamous'],
+  96: ['simple cuboidal epithelium','cuboidal epithelium','simple cuboidal','cuboidal'],
+  97: ['goblet cells','goblet','mucus cells','mucus-secreting','mucus secreting cells'],
+  98: ['basal lamina','basement membrane','basal membrane','basement lamina'],
+  99: ['more collagen','densely packed collagen','packed fibers','dense collagen','fewer cells more fibers','densely packed'],
+  100:['cardiac muscle','heart muscle'],
+  101:['voluntary','conscious control','consciously controlled','voluntary control','voluntary movement'],
+  163:['blood vessel walls','intestine wall','gut wall','involuntary muscle','smooth muscle location'],
+  164:['neurons glial','nerve cells and glial','glial cells neurons','neuron and glia','neurons and support cells'],
+  165:['collagen and elastin','collagen fibers elastin fibers','collagen elastin fibers'],
+  166:['plasma','blood plasma'],
+  167:['single layer','one layer','one cell layer','monolayer','single cell layer'],
+  168:['esophagus','skin epidermis','outer epidermis','esophagus and skin'],
+
+  // TAXONOMY
+  173:['porifera','phylum porifera'],
+  174:['cnidaria','phylum cnidaria'],
+  175:['platyhelminthes','phylum platyhelminthes','flat worms','flatworms'],
+  176:['nematoda','phylum nematoda','roundworms','round worms'],
+  177:['annelida','phylum annelida','segmented worms'],
+  178:['mollusca','phylum mollusca','mollusks'],
+  179:['arthropoda','phylum arthropoda','arthropods'],
+  180:['turbellaria','class turbellaria','planarian class'],
+  181:['cestoda','class cestoda','tapeworm class'],
+  182:['trematoda','class trematoda','fluke class'],
+  183:['scyphozoa','class scyphozoa','true jellyfish class'],
+  184:['hydrozoa','class hydrozoa','hydra class'],
+  185:['anthozoa','class anthozoa','anemone class','coral class'],
+  186:['arachnida','class arachnida','spider class','arachnid'],
+  187:['malacostraca','class malacostraca','crustacean class'],
+  188:['chilopoda','class chilopoda','centipede class'],
+  189:['diplopoda','class diplopoda','millipede class'],
+  190:['gastropoda','class gastropoda','snail class'],
+  191:['bivalvia','class bivalvia','clam class','bivalve'],
+  192:['cephalopoda','class cephalopoda','squid class','cephalopod'],
+  193:['polyplacophora','class polyplacophora','chiton class'],
+  194:['clitellata','clade clitellata','clitellate'],
+  195:['polychaeta','class polychaeta','polychaete class','polychaetes'],
+  196:['lumbricus','lumbricus terrestris'],
+  197:['dugesia','dugesia tigrina'],
+
+  // MOLLUSCA — slug anatomy
+  198:['mantle','dorsal lobe','mantle lobe','dorsal hump'],
+  199:['pneumostome','breathing pore','respiratory pore','pore','breathing hole'],
+  200:['mantle cavity','lung','mantle lung','air-filled mantle cavity','pulmonary cavity'],
+  201:['mantle cavity','lung','mantle cavity lung','pulmonary mantle cavity'],
+
+  // EMBRYOLOGY
+  102:['fertilized egg blastula gastrula neurula','egg blastula gastrula neurula','blastula gastrula neurula'],
+  103:['blastocoel','blastula cavity','fluid filled cavity','cavity in blastula','hollow center'],
+  104:['gastrulation','gastrula stage','gastrula','during gastrulation'],
+  105:['gastrocoel','archenteron','gastrocoel archenteron','future gut','primitive gut','developing gut'],
+  106:['early neurula','neurula','early neurula stage'],
+  107:['late neurula','late neurula stage'],
+  108:['mesoderm','mesodermal'],
+  109:['somites','mesodermal blocks','paraxial mesoderm','paired blocks','paired mesodermal blocks'],
+  110:['ectoderm','ectodermal'],
+  111:['vertebral column','spine','backbone','spinal column','vertebrae','vertebral'],
+  169:['skin and nervous system','epidermis and nervous','epidermis nervous system','skin nervous','ectoderm forms skin and nervous'],
+  170:['muscles bones circulatory','muscle bone blood','skeleton circulatory','muscles bones and blood','mesoderm forms muscle bone'],
+  171:['gut lining','intestine lining','digestive organs','gut and digestive','endoderm forms gut'],
+  172:['gastrocoel forms','archenteron','displaced by gastrocoel','replaced by gastrocoel','blastocoel disappears','blastocoel shrinks','reduced during gastrulation'],
+};
+
+function checkFreeText() {
+  const inp = document.getElementById('fib-inp');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  const q = pool[qi];
+  const correctText = q.a[q.c];
+
+  // Build all accepted forms from official answer + per-question extra list
+  const baseAccepted = buildAcceptedForms(correctText);
+  const extra = (LO_ACCEPTED[q.id] || []).flatMap(s => buildAcceptedForms(s));
+  const allForms = [...new Set([...baseAccepted, ...extra])];
+
+  // Fuzzy match against any accepted form
+  let ok = allForms.some(f => fuzzyMatch(val, f));
+
+  // Keyword-all-required check (for unordered multi-item answers)
+  if (!ok && LO_KEYWORDS[q.id]) {
+    ok = LO_KEYWORDS[q.id].every(k => val.includes(k));
+  }
+
+  answers[qi] = ok;
+  answered = true;
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  recordAnswer(q, ok);
+  showFeedback(ok, correctText, LO_EXP[q.id]);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function showFeedback(ok, correctText, exp) {
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  const verdict = ok
+    ? '<strong>✓ Correct!</strong>'
+    : `<strong>✗ Incorrect. Correct answer: ${escHtml(correctText || '')}</strong>`;
+  const expHtml = exp ? `<div class="exp">${escHtml(exp)}</div>` : '';
+  fb.innerHTML = verdict + expHtml;
+}
+
+function buildAcceptedForms(text) {
+  text = (text || '').toLowerCase().trim();
+  const forms = new Set();
+  function add(s) {
+    s = s.trim();
+    if (s.length < 1) return;
+    forms.add(s);
+    if (s.length < 2) return;
+    // space-collapsed version
+    forms.add(s.replace(/\s+/g, ''));
+    // punctuation-stripped version (for sequence answers with arrows/commas)
+    const dep = s.replace(/[→←↔\-–—,\.;:!?\/\\()]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (dep && dep !== s) { forms.add(dep); forms.add(dep.replace(/\s+/g,'')); }
+    if (s.endsWith('es')) forms.add(s.slice(0, -2));
+    else if (s.endsWith('s')) forms.add(s.slice(0, -1));
+    else { forms.add(s + 's'); forms.add(s + 'es'); }
+  }
+  add(text);
+  const aka = text.match(/\(aka\s*([^)]+)\)/i);
+  if (aka) add(aka[1]);
+  const stripped = text.replace(/\s*\([^)]+\)/g, '').trim();
+  if (stripped && stripped !== text) add(stripped);
+  const keywords = text
+    .replace(/[:\-–—,\.;→←↔]/g, ' ')
+    .replace(/\b(is|are|on|the|a|an|of|and|in|at|to|was|be|its|it|this|that|also|by|for|as|with|from|or|both|used)\b/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  if (keywords && keywords !== text) add(keywords);
+  return [...forms].filter(f => f.length >= 1);
+}
+
+function fuzzyMatch(val, form) {
+  // Strip punctuation (arrows, commas, parens, etc.) before comparing
+  const clean = s => s.toLowerCase()
+    .replace(/[→←↔\-–—,\.;:!?\/\\()]/g, '')
+    .replace(/\s+/g, '');
+  const nv = clean(val);
+  const nf = clean(form);
+  if (!nf || !nv) return false;
+  if (nf.length <= 2 || nv.length <= 2) return nv === nf;
+  return nv === nf || nv.includes(nf) || nf.includes(nv);
+}
+
+// ── QUIZ NAVIGATION ───────────────────────────────────────────────────────────
+function isCorrect(q, ans) {
+  if (ans === null) return false;
+  return ans === true;
+}
+
+function goBack() {
+  if (qi === 0) return;
+  qi--;
+  answers[qi] = null;
+  answered = false;
+  renderQ();
+}
+
+function resetQ() {
+  answers[qi] = null;
+  answered = false;
+  renderQ();
+}
+
+function skipQ() {
+  if (!answered) answers[qi] = null;
+  nextQ();
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= pool.length) { showResults(); return; }
+  renderQ();
+}
+
+function exitToSetup() { backToSetup(); }
+
+function backToSetup() {
+  document.getElementById('pane-setup').style.display   = 'block';
+  document.getElementById('pane-quiz').style.display    = 'none';
+  document.getElementById('pane-results').style.display = 'none';
+  document.getElementById('review-out').innerHTML = '';
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('pane-quiz').style.display    = 'none';
+  document.getElementById('pane-results').style.display = 'block';
+  const cor = answers.filter((a, i) => isCorrect(pool[i], a)).length;
+  const skp = answers.filter(a => a === null).length;
+  const wrg = pool.length - cor - skp;
+  const pct = Math.round(cor / pool.length * 100);
+
+  document.getElementById('r-pct').textContent = pct + '%';
+  document.getElementById('r-cor').textContent = cor;
+  document.getElementById('r-wrg').textContent = wrg;
+  document.getElementById('r-skp').textContent = skp;
+  document.getElementById('r-msg').textContent  = `${cor} of ${pool.length} correct · ${skp} skipped`;
+
+  const arc = document.getElementById('ring-arc');
+  const C = 339.3;
+  arc.style.strokeDashoffset = C - (pct / 100) * C;
+  arc.style.stroke = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  const grades = ['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];
+  document.getElementById('r-grade').textContent = grades[Math.min(Math.floor(pct / 20), 4)];
+
+  const retryBtn = document.getElementById('btn-retry-wrong');
+  retryBtn.style.display = (wrg + skp > 0) ? 'inline-flex' : 'none';
+  retryBtn.textContent = `↩ Retry ${wrg + skp} Wrong${skp ? ' + Skipped' : ''}`;
+
+  document.getElementById('review-out').innerHTML = '';
+}
+
+function reviewAnswers() {
+  const letters = ['A','B','C','D','E'];
+  let html = '<h2 style="margin-bottom:14px">Answer Review</h2>';
+  pool.forEach((q, i) => {
+    const ua = answers[i];
+    const ok = isCorrect(q, ua);
+    const sk = ua === null;
+    const status = sk ? '⊖ Skipped' : ok ? '✓ Correct' : '✗ Incorrect';
+    const col = sk ? 'var(--muted)' : ok ? 'var(--green)' : 'var(--red)';
+    const catObj = CATS.find(c => c.id === q.cat) || {label:q.cat, color:'#4f8ef7', icon:'📋'};
+    html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;
+        padding:14px 16px;margin-bottom:10px">
+      <div style="font-size:.72rem;font-weight:700;color:${col};margin-bottom:4px">${status}</div>
+      <div style="font-size:.78rem;color:${catObj.color};margin-bottom:8px">${catObj.label}</div>
+      <div style="font-size:.88rem;line-height:1.6;margin-bottom:8px">${escHtml(q.q)}</div>
+      <div class="browse-answers">`;
+    if (freeTextMode) {
+      html += `<div class="ba ok">
+        <div class="bk">✓</div>
+        <span style="font-size:.82rem">${escHtml(q.a[q.c])}</span>
+      </div>`;
+    } else {
+      q.a.forEach((ans, j) => {
+        const isC = j === q.c;
+        html += `<div class="ba${isC ? ' ok' : ''}">
+          <div class="bk">${isC ? '✓' : letters[j]}</div>
+          <span style="font-size:.82rem">${escHtml(ans)}</span>
+        </div>`;
+      });
+    }
+    html += '</div>';
+    const exp = LO_EXP[q.id];
+    if (exp) html += `<div style="padding:4px 16px 12px;font-size:.78rem;color:var(--muted);font-style:italic;line-height:1.55">${escHtml(exp)}</div>`;
+    html += '</div>';
+  });
+  document.getElementById('review-out').innerHTML = html;
+  document.getElementById('review-out').scrollIntoView({behavior:'smooth'});
+}
+
+function retryWrong() {
+  const retryPool = pool.filter((q, i) => !isCorrect(q, answers[i]));
+  if (!retryPool.length) return;
+  pool    = shuffleArr([...retryPool]);
+  qi      = 0;
+  answers = new Array(pool.length).fill(null);
+  document.getElementById('pane-results').style.display = 'none';
+  document.getElementById('review-out').innerHTML = '';
+  document.getElementById('pane-quiz').style.display = 'block';
+  renderQ();
+}
+
+function startStrugglingQuiz() {
+  activeCats = new Set(['__struggling__']);
+  renderCategoryPills();
+  updatePoolPreview();
+  showTab('quiz', document.getElementById('nav-btn-quiz'));
+}
+
+// ── BROWSE ────────────────────────────────────────────────────────────────────
+function renderBrowse() {
+  const search = (document.getElementById('browse-search').value || '').toLowerCase();
+  const catFilter = document.getElementById('browse-cat-filter').value;
+  const letters = ['A','B','C','D','E'];
+  let shown = 0;
+  let html = '';
+
+  LO_DATA.forEach(q => {
+    if (catFilter !== 'all' && q.cat !== catFilter) return;
+    if (search && !q.q.toLowerCase().includes(search) && !q.a.some(a => a.toLowerCase().includes(search))) return;
+    shown++;
+    const catObj = CATS.find(c => c.id === q.cat) || {label:q.cat, color:'#4f8ef7', icon:'📋'};
+    html += `<div class="browse-q">
+      <div class="browse-header">
+        <span>Q${q.id}</span>
+        <span style="color:${catObj.color}">${catObj.label}</span>
+        <span style="margin-left:auto">1 pt</span>
+      </div>
+      <div class="browse-body">${escHtml(q.q)}</div>
+      <div class="browse-answers">`;
+    q.a.forEach((ans, i) => {
+      const ok = i === q.c;
+      html += `<div class="ba${ok ? ' ok' : ''}">
+        <div class="bk">${ok ? '✓' : letters[i]}</div>
+        <span style="font-size:.82rem">${escHtml(ans)}</span>
+      </div>`;
+    });
+    html += '</div>';
+    const exp = LO_EXP[q.id];
+    if (exp) html += `<div style="padding:6px 16px 12px;font-size:.78rem;color:var(--muted);font-style:italic;line-height:1.55">${escHtml(exp)}</div>`;
+    html += '</div>';
+  });
+
+  if (!shown) html = '<div class="empty"><h2>No matches</h2><p>Try a different search or category.</p></div>';
+  document.getElementById('browse-out').innerHTML = html;
+}
+
+// ── PROGRESS PAGE ─────────────────────────────────────────────────────────────
+function renderProgress() {
+  const d = loadProgress();
+  const keys = Object.keys(d);
+  if (!keys.length) {
+    document.getElementById('progress-content').innerHTML =
+      '<div class="empty"><h2>No data yet</h2><p>Answer some quiz questions to start tracking your progress.</p></div>';
+    return;
+  }
+
+  const totalA = keys.reduce((s,k) => s + d[k].a, 0);
+  const totalC = keys.reduce((s,k) => s + d[k].c, 0);
+  const totalW = keys.reduce((s,k) => s + d[k].w, 0);
+  const totalQ = keys.length;
+  const acc = totalA > 0 ? Math.round(totalC / totalA * 100) : 0;
+  const accColor = acc >= 80 ? 'var(--green)' : acc >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  const struggling = getStrugglingIds();
+
+  let html = `<div class="pg-title">Overall</div>
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-v">${totalQ}</div><div class="ov-l">Questions<br>Attempted</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--green)">${totalC}</div><div class="ov-l">Correct<br>Answers</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--red)">${totalW}</div><div class="ov-l">Wrong<br>Answers</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:${accColor}">${acc}%</div><div class="ov-l">Overall<br>Accuracy</div></div>
+  </div>`;
+
+  if (struggling.length > 0) {
+    html += `<div class="struggle-banner">
+      <div>
+        <h3>⚠ ${struggling.length} Struggling Question${struggling.length !== 1 ? 's' : ''}</h3>
+        <p>Correct less than 60% of the time after 2+ attempts</p>
+      </div>
+      <button class="btn" style="background:var(--amber);color:#000;font-size:.82rem;white-space:nowrap"
+        onclick="startStrugglingQuiz()">Practice These →</button>
+    </div>`;
+  }
+
+  html += `<div class="pg-title">By Category</div><div>`;
+  for (const cat of CATS) {
+    const qs = LO_DATA.filter(q => q.cat === cat.id);
+    if (!qs.length) continue;
+    const tried = qs.filter(q => d[String(q.id)]);
+    const catA = tried.reduce((s,q) => s + (d[String(q.id)]?.a || 0), 0);
+    const catC = tried.reduce((s,q) => s + (d[String(q.id)]?.c || 0), 0);
+    const catAcc = catA > 0 ? Math.round(catC / catA * 100) : null;
+    const catStruggling = qs.filter(q => isStruggling(d[String(q.id)])).length;
+
+    const barColor = catAcc === null ? 'var(--border)'
+      : catAcc >= 80 ? 'var(--green)' : catAcc >= 60 ? 'var(--amber)' : 'var(--red)';
+    const accText = catAcc !== null ? `${catAcc}%` : '—';
+
+    let badge = `<span style="color:var(--muted)">${tried.length}/${qs.length} tried</span>`;
+    if (catAcc !== null) {
+      if (catAcc >= 80)      badge = `<span style="color:var(--green)">✓ Doing well</span>`;
+      else if (catAcc >= 60) badge = `<span style="color:var(--amber)">~ Getting there</span>`;
+      else                   badge = `<span style="color:var(--red)">⚠ Needs work</span>`;
+    }
+    if (catStruggling > 0) badge += `<br><span style="color:var(--amber)">${catStruggling} struggling</span>`;
+
+    html += `<div class="cat-row">
+      <div class="cr-name">${cat.icon} ${cat.label}</div>
+      <div class="cr-bar"><div class="cr-fill" style="width:${catAcc||0}%;background:${barColor}"></div></div>
+      <div class="cr-acc" style="color:${barColor}">${accText}</div>
+      <div class="cr-badge">${badge}</div>
+    </div>`;
+  }
+  html += '</div>';
+  document.getElementById('progress-content').innerHTML = html;
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────────
+function shuffleArr(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── KEYBOARD ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  const inInput = document.activeElement && document.activeElement.tagName === 'INPUT';
+  const quizActive = document.getElementById('pane-quiz').style.display !== 'none';
+  if (!quizActive) return;
+  if (e.key === ' ' && !inInput && freeTextMode) {
+    e.preventDefault();
+    const fibInp = document.getElementById('fib-inp');
+    if (fibInp && !answered) fibInp.focus();
+    return;
+  }
+  if (e.key === 'ArrowRight') { e.preventDefault(); skipQ(); }
+  if (e.key === 'ArrowLeft'  && !inInput) goBack();
+  if (e.key === 'Enter'      && !inInput) {
+    const btn = document.getElementById('btn-next');
+    if (btn && btn.style.display !== 'none') nextQ();
+  }
+  if (e.key === 'Escape') exitToSetup();
+});
+
+// ── PARENT FRAME TAB COMMANDS ─────────────────────────────────────────────────
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'gotoTab') showTab(e.data.tab, null);
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(function init() {
+  document.getElementById('setup-q-count').textContent = LO_DATA.length;
+  renderCategoryPills();
+  updatePoolPreview();
+
+  const sel = document.getElementById('browse-cat-filter');
+  CATS.forEach(cat => {
+    const count = LO_DATA.filter(q => q.cat === cat.id).length;
+    if (!count) return;
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = `${cat.icon} ${cat.label} (${count})`;
+    sel.appendChild(opt);
+  });
+
+  renderBrowse();
+})();
+
+// ── BARE MODE (hide nav when embedded in iframe) ───────────────────────────────
+if (new URLSearchParams(location.search).get('bare') === '1') {
+  document.querySelector('nav').style.display = 'none';
+  document.querySelectorAll('.page').forEach(p => p.style.paddingTop = '28px');
+}
+</script>
+</body>
+</html>

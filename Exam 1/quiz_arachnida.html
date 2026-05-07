@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 – Arachnida Anatomy Quiz</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#a855f7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+  --sp:#a855f7;--sc:#f97316;--tk:#f59e0b;--gen:#4f8ef7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:12px}
+.logo{font-weight:700;font-size:.9rem;color:var(--muted);text-decoration:none;white-space:nowrap}
+.logo:hover{color:var(--text)}
+.nav-title{font-weight:700;font-size:.95rem;color:var(--text)}
+.nav-latin{font-size:.78rem;color:var(--muted);font-style:italic}
+.page{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.4rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.setup-title{font-size:1.1rem;font-weight:800;
+  background:linear-gradient(135deg,#a855f7,#f97316,#f59e0b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cat-label-row label{font-size:.78rem;color:var(--muted)}
+.cat-label-row button{font-size:.68rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0}
+.cat-label-row button:hover{text-decoration:underline}
+.cat-pills{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.cat-pill{display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--card);color:var(--muted);cursor:pointer;user-select:none;
+  transition:border-color .15s,background .15s,color .15s}
+.cat-pill:hover{color:var(--text)}
+.cat-pill.on{color:var(--text)}
+.cat-pill .cp-icon{font-size:1.3rem;line-height:1;margin-bottom:2px}
+.cat-pill .cp-label{font-size:.74rem;font-weight:600;line-height:1.3}
+.cat-pill .cp-count{font-size:.62rem;opacity:.55}
+.setup-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.count-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.count-seg button{background:var(--card);border:none;border-right:1px solid var(--border);
+  color:var(--muted);font-size:.82rem;font-weight:500;padding:10px 14px;cursor:pointer;
+  transition:background .15s,color .15s;white-space:nowrap}
+.count-seg button:last-child{border-right:none}
+.count-seg button.active{background:var(--card2);color:var(--text);font-weight:700}
+.pool-preview{font-size:.74rem;color:var(--muted);margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;
+  border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;
+  transition:opacity .15s,transform .12s}
+.btn:hover{opacity:.88}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted)}
+.btn.ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,#a855f7,#7c3aed);
+  box-shadow:0 4px 20px rgba(168,85,247,.35);font-size:.95rem;padding:12px 28px}
+.btn.primary:hover{opacity:1;transform:translateY(-2px)}
+.prog-wrap{margin-bottom:16px}
+.prog-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#a855f7,#f97316);border-radius:99px;transition:width .4s ease}
+.prog-label{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:5px}
+@keyframes pulse-dot{
+  0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 0 rgba(249,115,22,.6)}
+  50%{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 8px rgba(249,115,22,0)}
+}
+.img-wrap{position:relative;border-radius:12px;overflow:hidden;
+  background:#0a0c14;border:1px solid var(--border);margin-bottom:14px}
+.q-img{width:100%;height:auto;display:block;max-height:420px;object-fit:contain;object-position:center}
+.overlay-dot{position:absolute;width:28px;height:28px;border-radius:50%;
+  border:3px solid #f97316;background:rgba(249,115,22,.25);
+  transform:translate(-50%,-50%);pointer-events:none;
+  animation:pulse-dot 1.6s ease-in-out infinite;z-index:10}
+.img-credit{font-size:.65rem;color:var(--muted);padding:4px 10px;text-align:right;
+  background:rgba(0,0,0,.3);border-top:1px solid var(--border)}
+.img-error{display:none;padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.q-header{padding:12px 18px 0;display:flex;align-items:center;gap:8px}
+.q-num{font-size:.77rem;color:var(--muted)}
+.q-tag{font-size:.7rem;border-radius:99px;padding:2px 9px}
+.q-body{padding:14px 18px 16px;font-size:.95rem;line-height:1.65;font-weight:500}
+@keyframes optIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.opts{padding:0 18px 4px;display:flex;flex-direction:column;gap:9px}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:11px;
+  padding:11px 14px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:11px;
+  transition:border-color .12s,background .12s,transform .1s;line-height:1.5;
+  animation:optIn .2s ease both}
+.opt:hover:not(.locked){border-color:var(--accent);background:rgba(168,85,247,.07);transform:translateX(3px)}
+.ltr{min-width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  flex-shrink:0;margin-top:1px;transition:all .15s}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08)}
+.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08)}
+.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff}
+.opt.locked{cursor:default}
+@keyframes fbIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.feedback{margin:10px 18px 0;padding:12px 16px;border-radius:11px;
+  font-size:.84rem;line-height:1.65;display:none;font-weight:500}
+.feedback.show{display:block;animation:fbIn .2s ease both}
+.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac}
+.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
+.feedback .exp{font-size:.79rem;margin-top:7px;opacity:.85;font-weight:400;font-style:italic;
+  padding-top:7px;border-top:1px solid rgba(255,255,255,.1)}
+.q-nav{padding:12px 18px 16px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px}
+.q-nav .go{margin-left:auto}
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:36px 20px 20px}
+.ring-wrap{width:130px;height:130px;margin:0 auto 16px;position:relative}
+.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#a855f7,#f97316);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ring-sub{font-size:.66rem;color:var(--muted)}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:80px}
+.stat .val{font-size:1.35rem;font-weight:700;color:var(--accent)}
+.stat .lbl{font-size:.66rem;color:var(--muted);margin-top:2px}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.review-out{margin-top:28px;text-align:left}
+.rv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.rv-img{width:100%;max-height:200px;object-fit:contain;background:#0a0c14;display:block}
+.rv-body{padding:12px 14px}
+.rv-status{font-size:.7rem;font-weight:700;margin-bottom:3px}
+.rv-cat{font-size:.72rem;margin-bottom:7px}
+.rv-q{font-size:.86rem;line-height:1.6;margin-bottom:8px}
+.rv-answer{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:6px;margin-top:4px;font-size:.81rem}
+.rv-answer.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}
+.rv-answer .dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.55rem;margin-top:1px}
+.rv-answer.ok .dot{background:var(--green);color:#fff}
+.rv-exp{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:6px;
+  padding-top:6px;border-top:1px solid var(--border);line-height:1.55}
+@media(max-width:600px){.cat-pills{grid-template-columns:repeat(2,1fr)}.q-img{max-height:260px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">← BIO 212</a>
+  <span class="nav-title">Chelicerata — Arachnida</span>
+  <span class="nav-latin">Spider · Scorpion · Tick</span>
+</nav>
+
+<div id="pane-setup">
+<div class="page">
+  <h1>Arachnida Anatomy Quiz</h1>
+  <p class="sub">Subphylum Chelicerata · Class Arachnida · External structures of spiders, scorpions, and ticks</p>
+  <div class="setup-header"><span class="setup-title">Select Groups</span></div>
+  <div class="cat-label-row">
+    <label>Choose which arachnid groups to study</label>
+    <button onclick="selectAll()">Select All</button>
+  </div>
+  <div class="cat-pills" id="cat-pills"></div>
+  <div class="pool-preview" id="pool-preview"></div>
+  <div class="setup-controls">
+    <div class="count-seg" id="count-seg">
+      <button onclick="setCount(10,this)">10</button>
+      <button onclick="setCount(20,this)" class="active">20</button>
+      <button onclick="setCount(999,this)">All</button>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div>
+</div>
+
+<div id="pane-quiz" style="display:none">
+<div class="page">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label"><span id="prog-text">Question 1</span><span id="prog-score">0 correct</span></div>
+  </div>
+  <div class="img-wrap" id="img-wrap">
+    <img class="q-img" id="q-img" src="" alt="Anatomy diagram" onerror="imgError()">
+    <div class="overlay-dot" id="overlay-dot" style="left:50%;top:50%"></div>
+    <div class="img-error" id="img-error">⚠ Image failed to load — use the question text to identify the structure.</div>
+  </div>
+  <div class="img-credit" id="img-credit"></div>
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num" id="q-num"></span>
+      <span class="q-tag" id="q-tag"></span>
+    </div>
+    <div class="q-body" id="q-body"></div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb"></div>
+    <div class="q-nav">
+      <button class="btn ghost" onclick="goBack()">← Back</button>
+      <button class="btn sec" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" style="display:none" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="pane-results" style="display:none">
+<div class="page">
+  <div class="results">
+    <div class="ring-wrap">
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle id="ring-arc" cx="65" cy="65" r="54" fill="none" stroke="var(--accent)"
+          stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="339.3" stroke-dashoffset="339.3" style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="ring-txt">
+        <div class="ring-pct" id="r-pct">0%</div>
+        <div class="ring-sub">score</div>
+      </div>
+    </div>
+    <div id="r-grade" style="font-size:1.1rem;font-weight:700;margin-bottom:6px"></div>
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:16px" id="r-msg"></div>
+    <div class="stat-row">
+      <div class="stat"><div class="val" id="r-cor" style="color:var(--green)">0</div><div class="lbl">Correct</div></div>
+      <div class="stat"><div class="val" id="r-wrg" style="color:var(--red)">0</div><div class="lbl">Wrong</div></div>
+      <div class="stat"><div class="val" id="r-skp">0</div><div class="lbl">Skipped</div></div>
+    </div>
+    <div class="act-row">
+      <button class="btn primary" onclick="startQuiz()">Try Again</button>
+      <button class="btn sec" id="btn-retry-wrong" onclick="retryWrong()" style="display:none">↩ Retry Wrong</button>
+      <button class="btn sec" onclick="showSetup()">Change Settings</button>
+      <button class="btn sec" onclick="reviewAnswers()">Review Answers ↓</button>
+    </div>
+  </div>
+  <div class="review-out" id="review-out"></div>
+</div>
+</div>
+
+<script>
+const IMGS = {
+  SP: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Spider_internal_anatomy-en.svg',
+  SPX:'https://upload.wikimedia.org/wikipedia/commons/3/38/SpiderAnatomy.svg',
+  SC: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Scorpion_Anatomy.jpg',
+  SCX:'https://upload.wikimedia.org/wikipedia/commons/2/28/Scorpion_anatomy.svg',
+  TK: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Deer_tick_anatomy.jpg',
+  TKX:'https://upload.wikimedia.org/wikipedia/commons/8/83/Tick_anatomy_diagram.jpg',
+};
+const IMG_CREDIT = {
+  SP: 'Wikimedia Commons · Spider internal/external anatomy (labeled)',
+  SPX:'Wikimedia Commons · Spider external anatomy diagram',
+  SC: 'Wikimedia Commons · Scorpion external anatomy',
+  SCX:'Wikimedia Commons · Scorpion anatomy diagram',
+  TK: 'Wikimedia Commons · Deer tick anatomy',
+  TKX:'Wikimedia Commons · Tick external anatomy',
+};
+
+const CATS = [
+  {id:'sp',  label:'Spider (Araneae)',    icon:'🕷️', color:'#a855f7'},
+  {id:'sc',  label:'Scorpion',            icon:'🦂', color:'#f97316'},
+  {id:'tk',  label:'Tick (Acari)',        icon:'🔴', color:'#f59e0b'},
+  {id:'gen', label:'Chelicerata ID',      icon:'🔬', color:'#4f8ef7'},
+];
+
+const ALL_Q = [
+
+// ── SPIDER ────────────────────────────────────────────────────────────────────
+{id:1,cat:'sp',img:'SP',ox:30,oy:50,
+ q:'The orange dot marks the ANTERIOR fused region of the spider body — where all four pairs of legs and the head structures are attached. What is this tagma called?',
+ a:['Cephalothorax (prosoma)','Abdomen (opisthosoma)','Mesosoma','Thorax'],c:0,
+ exp:'The cephalothorax (= prosoma) is the fused head + thorax region in chelicerates. All appendages — chelicerae, pedipalps, and 4 pairs of walking legs — are attached here. It is covered dorsally by the carapace.'},
+
+{id:2,cat:'sp',img:'SP',ox:70,oy:50,
+ q:'The orange dot marks the soft, rounded POSTERIOR body region of the spider. It contains the heart, digestive gland, silk glands, and reproductive organs. What is it?',
+ a:['Abdomen (opisthosoma)','Cephalothorax','Mesosoma','Metasoma'],c:0,
+ exp:'The abdomen (= opisthosoma) is the posterior tagma of chelicerates. It is joined to the cephalothorax by a narrow pedicel (waist). Silk glands and spinnerets are located on the posterior ventral surface.'},
+
+{id:3,cat:'sp',img:'SP',ox:45,oy:70,
+ q:'The orange dot marks one of FOUR PAIRS of jointed appendages attached to the cephalothorax, used for walking and prey capture. What are these appendages?',
+ a:['Walking legs (pereiopods)','Pedipalps','Chelicerae','Spinnerets'],c:0,
+ exp:'Spiders have 4 pairs (8 total) of walking legs, each attached to the cephalothorax. The legs have 7 segments (coxa, trochanter, femur, patella, tibia, metatarsus, tarsus) with claws at the tip for gripping surfaces.'},
+
+{id:4,cat:'sp',img:'SP',ox:20,oy:40,
+ q:'The orange dot marks a pair of short, leg-like appendages flanking the mouth — the FIRST pair of appendages on the cephalothorax. In females they are simple; in males they are enlarged for sperm transfer. What are they?',
+ a:['Pedipalps','Chelicerae','Spinnerets','Maxillipeds'],c:0,
+ exp:'Pedipalps are the second pair of appendages in chelicerates (after chelicerae). They are sensory and in males are modified into complex copulatory organs used to transfer sperm packages (spermatophores) to the female.'},
+
+{id:5,cat:'sp',img:'SP',ox:8,oy:45,
+ q:'The orange dot marks the FIRST pair of appendages, located at the very front of the cephalothorax, bearing fangs (in spiders) through which venom is injected. What are they?',
+ a:['Chelicerae','Pedipalps','Mandibles','Maxillipeds'],c:0,
+ exp:'Chelicerae are the defining appendage of Subphylum Chelicerata. In spiders they end in hollow, curved fangs connected to venom glands. They are used to inject venom and manipulate prey. They are NOT mandibles (found in insects/crustaceans).'},
+
+{id:6,cat:'sp',img:'SP',ox:78,oy:82,
+ q:'At the posterior tip of the spider\'s abdomen, small cone-shaped organs produce silk threads used for webs, egg cases, and prey wrapping. What are these organs?',
+ a:['Spinnerets','Pedipalps','Book lungs','Anal cerci'],c:0,
+ exp:'Spinnerets are modified abdominal appendages (usually 3 pairs) containing thousands of tiny spigots through which silk protein is extruded. Different silk glands produce different silk types for different uses (frame, capture, dragline, egg sac).'},
+
+{id:7,cat:'sp',img:'SP',ox:20,oy:20,
+ q:'Spiders typically have multiple SIMPLE EYES (ocelli) arranged on the anterior dorsal surface of the cephalothorax — most have 8, arranged in species-specific patterns. How do spider eyes differ from insect compound eyes?',
+ a:['Spiders have simple eyes (ocelli); insects have compound eyes','Spiders have compound eyes; insects have simple eyes','Both have compound eyes','Neither group has eyes'],c:0,
+ exp:'Arachnids have simple eyes (ocelli) — each with a single lens. Insects and crustaceans have compound eyes made of many ommatidia. Spiders may have 8 simple eyes; some have secondarily reduced numbers. The arrangement pattern is taxonomically useful.'},
+
+// ── SCORPION ──────────────────────────────────────────────────────────────────
+{id:8,cat:'sc',img:'SC',ox:25,oy:50,
+ q:'The orange dot marks the broad, anterior body region of the scorpion where all legs and head appendages are attached. (Same tagma as in the spider.) What is it?',
+ a:['Cephalothorax (prosoma)','Mesosoma','Metasoma','Abdomen'],c:0,
+ exp:'Like all chelicerates, scorpions have a cephalothorax (prosoma) bearing chelicerae, pedipalps, and 4 pairs of walking legs. Unlike spiders, the scorpion abdomen is subdivided into a broad mesosoma and narrow, tail-like metasoma.'},
+
+{id:9,cat:'sc',img:'SC',ox:55,oy:50,
+ q:'The broad posterior region attached to the cephalothorax, containing digestive organs and in females the genital pore, is the ___.',
+ a:['Mesosoma (pre-abdomen)','Metasoma (tail)','Cephalothorax','Telson'],c:0,
+ exp:'The mesosoma (= pre-abdomen) is the broad part of the scorpion abdomen, containing most of the digestive and reproductive organs. On its ventral surface are book lungs (4 pairs) and the pectines — comb-like sensory organs.'},
+
+{id:10,cat:'sc',img:'SC',ox:78,oy:50,
+ q:'The narrow, segmented TAIL posterior to the mesosoma — which curves upward and ends in the stinging structure — is the ___.',
+ a:['Metasoma (post-abdomen / tail)','Mesosoma','Telson','Pedicel'],c:0,
+ exp:'The metasoma (= post-abdomen) is the narrow, flexible "tail" of 5 segments that terminates in the telson. Despite being called a tail, it is actually part of the abdomen. Scorpions arch it over their body when threatened.'},
+
+{id:11,cat:'sc',img:'SC',ox:92,oy:35,
+ q:'The terminal bulb at the very TIP of the scorpion\'s tail, containing a venom gland and a curved stinger (aculeus), is the ___.',
+ a:['Telson','Metasoma','Pedipalp','Chelicera'],c:0,
+ exp:'The telson is the terminal segment bearing the venom gland and curved stinger (aculeus). It is the scorpion\'s primary defensive and prey-capture weapon. Venom composition varies widely between species.'},
+
+{id:12,cat:'sc',img:'SC',ox:15,oy:40,
+ q:'The orange dot marks the ENLARGED, claw-bearing appendages flanking the scorpion\'s mouth — used for gripping and tearing prey. (Homologous to the spider\'s pedipalps, but greatly enlarged.) What are they?',
+ a:['Pedipalps (chelae)','Chelicerae','Walking legs','Maxillipeds'],c:0,
+ exp:'Scorpion pedipalps are massively enlarged into pincers (chelae) used for gripping prey. They are the same appendage type as the tiny pedipalps of spiders — both are the second pair of chelicerate appendages — but greatly enlarged in scorpions.'},
+
+{id:13,cat:'sc',img:'SC',ox:10,oy:52,
+ q:'The small, pincer-like appendages at the very front of the scorpion\'s cephalothorax — used to tear and manipulate food — are the ___.',
+ a:['Chelicerae','Pedipalps','Antennae','Mandibles'],c:0,
+ exp:'Scorpion chelicerae are small, 3-segmented chelate (pincer-like) appendages used to shred food pre-ingestion. They are much smaller than the pedipalps and not used for defense. Chelicerae define Subphylum Chelicerata.'},
+
+{id:14,cat:'sc',img:'SC',ox:50,oy:80,
+ q:'On the ventral surface of the scorpion mesosoma, a pair of comb-like sensory structures unique to scorpions detects ground vibrations and surface chemistry. What are they called?',
+ a:['Pectines','Book lungs','Spinnerets','Gonopods'],c:0,
+ exp:'Pectines are specialized mechanosensory and chemosensory organs unique to scorpions. They are modified appendages on the second abdominal segment bearing rows of "teeth" that scan the substrate. They help detect prey and suitable mates.'},
+
+// ── TICK ──────────────────────────────────────────────────────────────────────
+{id:15,cat:'tk',img:'TK',ox:15,oy:50,
+ q:'The distinct, sclerotized "head" of a tick — bearing the mouthparts and capitulum — is the ___.',
+ a:['Capitulum (gnathosoma)','Scutum','Idiosoma','Chelicera'],c:0,
+ exp:'The capitulum (= gnathosoma) is the "false head" of ticks. It is not a true head but bears the mouthparts: chelicerae (for cutting skin), hypostome (barbed anchor), and pedipalps. It is inserted into the host during feeding.'},
+
+{id:16,cat:'tk',img:'TK',ox:50,oy:50,
+ q:'The main body of the tick — containing all organs, legs, and in hard ticks a dorsal sclerotized shield — is the ___.',
+ a:['Idiosoma','Capitulum','Telson','Mesosoma'],c:0,
+ exp:'The idiosoma is the main body trunk of ticks (and mites). In hard ticks (Ixodidae) the anterior dorsal surface bears a rigid sclerotized plate called the scutum. The idiosoma expands massively during blood feeding.'},
+
+{id:17,cat:'tk',img:'TK',ox:20,oy:30,
+ q:'In HARD ticks (family Ixodidae), the dorsal anterior sclerotized plate that covers part of the body (entire dorsum in males, only a small anterior patch in females to allow expansion) is the ___.',
+ a:['Scutum','Capitulum','Idiosoma','Coxa'],c:0,
+ exp:'The scutum is a chitin-reinforced dorsal shield. In female hard ticks it covers only the anterior dorsum so the cuticle can expand during blood engorgement (up to 200× body weight). In males it covers the entire dorsum — which is why males are limited in blood meal size.'},
+
+{id:18,cat:'tk',img:'TK',ox:60,oy:70,
+ q:'Adult ticks have how many pairs of legs — and which larval stage has fewer?',
+ a:['4 pairs (8 legs) as adults; 3 pairs (6 legs) as larvae','3 pairs as adults; 4 pairs as larvae','Always 4 pairs at all stages','Always 3 pairs at all stages'],c:0,
+ exp:'Adult and nymphal ticks have 4 pairs (8) of legs like all arachnids. Tick LARVAE (first instar) hatch with only 3 pairs (6 legs), like insects. This is a key feature distinguishing larvae from later stages in the field.'},
+
+// ── CHELICERATA GENERAL ID ────────────────────────────────────────────────────
+{id:19,cat:'gen',img:'SP',ox:50,oy:50,
+ q:'Chelicerates (spiders, scorpions, ticks, horseshoe crabs) differ from all other arthropods in lacking which pair of appendages found in insects and crustaceans?',
+ a:['Antennae','Wings','Mandibles','Walking legs'],c:0,
+ exp:'Chelicerates have NO antennae — this is the single most important diagnostic feature. Instead, their first appendages are chelicerae. Insects and crustaceans both have antennae (and mandibles). The absence of antennae immediately places an arthropod in Chelicerata.'},
+
+{id:20,cat:'gen',img:'SP',ox:50,oy:50,
+ q:'All chelicerates share two main body regions (tagmata). What are they?',
+ a:['Cephalothorax + Abdomen','Head + Thorax + Abdomen','Prosoma + Mesosoma + Metasoma','Cephalon + Trunk'],c:0,
+ exp:'Chelicerates have TWO tagmata: the cephalothorax (= prosoma, fused head+thorax) and abdomen (= opisthosoma). This contrasts with insects (3 tagmata: head, thorax, abdomen) and crustaceans (cephalothorax + abdomen, but with antennae).'},
+
+{id:21,cat:'gen',img:'SP',ox:50,oy:50,
+ q:'Which mouthpart is the DEFINING feature of Subphylum Chelicerata — NOT present in insects or crustaceans?',
+ a:['Chelicerae (pincer- or fang-like first appendages)','Mandibles','Labrum','Maxillipeds'],c:0,
+ exp:'Chelicerae are the first pair of appendages in chelicerates, positioned in front of the mouth. They may be chelate (pincer-like, as in scorpions) or modified into fangs (spiders) or cutting blades (ticks). They are homologous to the antenna of insects, not to mandibles.'},
+
+{id:22,cat:'gen',img:'TK',ox:50,oy:50,
+ q:'Which of the following is NOT a member of Class Arachnida?',
+ a:['Horseshoe crab (Limulus)','Spider','Scorpion','Tick'],c:0,
+ exp:'Horseshoe crabs (Limulus, Class Merostomata) are chelicerates but NOT arachnids. Arachnida includes spiders, scorpions, ticks, mites, harvestmen, and whip scorpions. Merostomata is a separate class of aquatic chelicerates.'},
+
+];
+
+let pool=[],qi=0,answers=[],answered=false;
+let activeCats=new Set(CATS.map(c=>c.id));
+let countLimit=20;
+
+function init(){renderCatPills();updatePreview();}
+function renderCatPills(){
+  const el=document.getElementById('cat-pills');
+  el.innerHTML=CATS.map(cat=>{
+    const cnt=ALL_Q.filter(q=>q.cat===cat.id).length;
+    const on=activeCats.has(cat.id);
+    return `<div class="cat-pill${on?' on':''}" id="pill-${cat.id}"
+      style="${on?`border-color:${cat.color};background:${cat.color}22`:''}"
+      onclick="toggleCat('${cat.id}')">
+      <span class="cp-icon">${cat.icon}</span>
+      <span class="cp-label">${cat.label}</span>
+      <span class="cp-count">${cnt} questions</span>
+    </div>`;
+  }).join('');
+}
+function toggleCat(id){
+  if(activeCats.has(id)){if(activeCats.size<=1)return;activeCats.delete(id);}
+  else activeCats.add(id);
+  renderCatPills();updatePreview();
+}
+function selectAll(){CATS.forEach(c=>activeCats.add(c.id));renderCatPills();updatePreview();}
+function setCount(n,btn){
+  countLimit=n;
+  document.querySelectorAll('#count-seg button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  updatePreview();
+}
+function updatePreview(){
+  const total=ALL_Q.filter(q=>activeCats.has(q.cat)).length;
+  const n=Math.min(total,countLimit);
+  document.getElementById('pool-preview').textContent=
+    total===0?'No questions selected.':`${n} question${n!==1?'s':''} will be drawn from ${total} available`;
+}
+function startQuiz(){
+  let cands=ALL_Q.filter(q=>activeCats.has(q.cat));
+  shuffleArr(cands);
+  pool=cands.slice(0,countLimit===999?cands.length:countLimit);
+  qi=0;answers=new Array(pool.length).fill(null);answered=false;
+  document.getElementById('pane-setup').style.display='none';
+  document.getElementById('pane-results').style.display='none';
+  document.getElementById('pane-quiz').style.display='block';
+  document.getElementById('review-out').innerHTML='';
+  renderQ();
+}
+function showSetup(){
+  document.getElementById('pane-setup').style.display='block';
+  document.getElementById('pane-quiz').style.display='none';
+  document.getElementById('pane-results').style.display='none';
+}
+function renderQ(){
+  if(qi>=pool.length){showResults();return;}
+  const q=pool[qi];answered=answers[qi]!==null;
+  const letters=['A','B','C','D'];
+  const catObj=CATS.find(c=>c.id===q.cat);
+  const pct=Math.round(qi/pool.length*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-text').textContent=`Question ${qi+1} of ${pool.length}`;
+  const cor=answers.slice(0,qi).filter((a,i)=>a===pool[i].c).length;
+  document.getElementById('prog-score').textContent=`${cor} correct`;
+  const img=document.getElementById('q-img');
+  img.style.display='block';document.getElementById('img-error').style.display='none';
+  img.src=IMGS[q.img];
+  document.getElementById('img-credit').textContent=IMG_CREDIT[q.img]||'';
+  const dot=document.getElementById('overlay-dot');
+  dot.style.left=q.ox+'%';dot.style.top=q.oy+'%';
+  document.getElementById('q-num').textContent=`Q${qi+1}`;
+  document.getElementById('q-tag').textContent=catObj?catObj.label:q.cat;
+  document.getElementById('q-tag').style.color=catObj?catObj.color:'var(--accent)';
+  document.getElementById('q-tag').style.background=catObj?catObj.color+'22':'';
+  document.getElementById('q-body').textContent=q.q;
+  const optsEl=document.getElementById('opts');
+  optsEl.innerHTML=q.a.map((ans,i)=>{
+    let cls='opt';
+    if(answered){cls+=' locked';if(i===q.c)cls+=' correct';else if(answers[qi]===i)cls+=' wrong';}
+    return `<div class="${cls}" onclick="pickAnswer(${i})" style="animation-delay:${i*.06}s">
+      <div class="ltr">${letters[i]}</div><span>${escHtml(ans)}</span></div>`;
+  }).join('');
+  const fb=document.getElementById('fb');
+  if(answered){
+    const ok=answers[qi]===q.c;
+    fb.className='feedback show '+(ok?'ok':'no');
+    fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`
+      :`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;
+    document.getElementById('btn-next').style.display='inline-flex';
+  }else{fb.className='feedback';fb.innerHTML='';document.getElementById('btn-next').style.display='none';}
+  document.getElementById('pane-quiz').scrollTo({top:0,behavior:'smooth'});
+}
+function imgError(){
+  document.getElementById('q-img').style.display='none';
+  document.getElementById('img-error').style.display='block';
+}
+function pickAnswer(i){
+  if(answered)return;
+  const q=pool[qi];answered=true;answers[qi]=i;
+  document.querySelectorAll('.opt').forEach((el,j)=>{
+    el.classList.add('locked');
+    if(j===q.c)el.classList.add('correct');
+    if(j===i&&i!==q.c)el.classList.add('wrong');
+  });
+  const ok=(i===q.c);
+  const fb=document.getElementById('fb');
+  fb.className='feedback show '+(ok?'ok':'no');
+  fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`
+    :`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;
+  document.getElementById('btn-next').style.display='inline-flex';
+}
+function skipQ(){if(!answered)answers[qi]=null;nextQ();}
+function nextQ(){qi++;if(qi>=pool.length){showResults();return;}answered=false;renderQ();}
+function goBack(){if(qi===0)return;qi--;answered=answers[qi]!==null;renderQ();}
+function showResults(){
+  document.getElementById('pane-quiz').style.display='none';
+  document.getElementById('pane-results').style.display='block';
+  const cor=answers.filter((a,i)=>a===pool[i].c).length;
+  const skp=answers.filter(a=>a===null).length;
+  const wrg=pool.length-cor-skp;
+  const pct=Math.round(cor/pool.length*100);
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-cor').textContent=cor;
+  document.getElementById('r-wrg').textContent=wrg;
+  document.getElementById('r-skp').textContent=skp;
+  document.getElementById('r-msg').textContent=`${cor} of ${pool.length} correct · ${skp} skipped`;
+  const arc=document.getElementById('ring-arc');const C=339.3;
+  arc.style.strokeDashoffset=C-(pct/100)*C;
+  arc.style.stroke=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
+  const grades=['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];
+  document.getElementById('r-grade').textContent=grades[Math.min(Math.floor(pct/20),4)];
+  document.getElementById('btn-retry-wrong').style.display=(wrg+skp>0)?'inline-flex':'none';
+}
+function retryWrong(){
+  const wp=pool.filter((q,i)=>answers[i]!==q.c);if(!wp.length)return;
+  pool=shuffleArr([...wp]);qi=0;answers=new Array(pool.length).fill(null);answered=false;
+  document.getElementById('pane-results').style.display='none';
+  document.getElementById('review-out').innerHTML='';
+  document.getElementById('pane-quiz').style.display='block';renderQ();
+}
+function reviewAnswers(){
+  const letters=['A','B','C','D'];
+  let html='<h2 style="margin-bottom:14px;font-size:1rem">Answer Review</h2>';
+  pool.forEach((q,i)=>{
+    const ua=answers[i];const ok=ua===q.c;const sk=ua===null;
+    const col=sk?'var(--muted)':ok?'var(--green)':'var(--red)';
+    const status=sk?'⊖ Skipped':ok?'✓ Correct':'✗ Incorrect';
+    const catObj=CATS.find(c=>c.id===q.cat);
+    html+=`<div class="rv-card">
+      <img class="rv-img" src="${IMGS[q.img]}" alt="diagram" onerror="this.style.display='none'">
+      <div class="rv-body">
+        <div class="rv-status" style="color:${col}">${status}</div>
+        <div class="rv-cat" style="color:${catObj?.color||'var(--accent)'}">${catObj?.label||q.cat}</div>
+        <div class="rv-q">${escHtml(q.q)}</div>
+        ${q.a.map((ans,j)=>`<div class="rv-answer${j===q.c?' ok':''}">
+          <div class="dot">${j===q.c?'✓':letters[j]}</div><span>${escHtml(ans)}</span></div>`).join('')}
+        <div class="rv-exp">${escHtml(q.exp)}</div>
+      </div></div>`;
+  });
+  const el=document.getElementById('review-out');el.innerHTML=html;el.scrollIntoView({behavior:'smooth'});
+}
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('pane-quiz').style.display==='none')return;
+  if(e.key==='ArrowRight'){e.preventDefault();skipQ();}
+  if(e.key==='ArrowLeft'){e.preventDefault();goBack();}
+  if(e.key==='Enter'){const b=document.getElementById('btn-next');if(b&&b.style.display!=='none')nextQ();}
+  if(e.key==='Escape')showSetup();
+  const L={'a':0,'b':1,'c':2,'d':3};
+  if(!answered&&L[e.key.toLowerCase()]!==undefined)pickAnswer(L[e.key.toLowerCase()]);
+});
+init();
+</script>
+</body>
+</html>

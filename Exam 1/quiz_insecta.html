@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 – Insecta Anatomy Quiz</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#22c55e;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:12px}
+.logo{font-weight:700;font-size:.9rem;color:var(--muted);text-decoration:none;white-space:nowrap}.logo:hover{color:var(--text)}
+.nav-title{font-weight:700;font-size:.95rem;color:var(--text)}
+.nav-latin{font-size:.78rem;color:var(--muted);font-style:italic}
+.page{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.4rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.setup-title{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#22c55e,#4f8ef7,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cat-label-row label{font-size:.78rem;color:var(--muted)}
+.cat-label-row button{font-size:.68rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0}.cat-label-row button:hover{text-decoration:underline}
+.cat-pills{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.cat-pill{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;user-select:none;transition:border-color .15s,background .15s,color .15s}
+.cat-pill:hover{color:var(--text)}.cat-pill.on{color:var(--text)}
+.cat-pill .cp-icon{font-size:1.3rem;line-height:1;margin-bottom:2px}.cat-pill .cp-label{font-size:.74rem;font-weight:600;line-height:1.3}.cat-pill .cp-count{font-size:.62rem;opacity:.55}
+.setup-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.count-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.count-seg button{background:var(--card);border:none;border-right:1px solid var(--border);color:var(--muted);font-size:.82rem;font-weight:500;padding:10px 14px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
+.count-seg button:last-child{border-right:none}.count-seg button.active{background:var(--card2);color:var(--text);font-weight:700}
+.pool-preview{font-size:.74rem;color:var(--muted);margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;transition:opacity .15s,transform .12s}.btn:hover{opacity:.88}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted)}.btn.ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 20px rgba(34,197,94,.35);font-size:.95rem;padding:12px 28px}.btn.primary:hover{opacity:1;transform:translateY(-2px)}
+.prog-wrap{margin-bottom:16px}.prog-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#22c55e,#4f8ef7);border-radius:99px;transition:width .4s ease}
+.prog-label{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:5px}
+@keyframes pulse-dot{0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 0 rgba(249,115,22,.6)}50%{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 8px rgba(249,115,22,0)}}
+.img-wrap{position:relative;border-radius:12px;overflow:hidden;background:#0a0c14;border:1px solid var(--border);margin-bottom:14px}
+.q-img{width:100%;height:auto;display:block;max-height:420px;object-fit:contain;object-position:center}
+.overlay-dot{position:absolute;width:28px;height:28px;border-radius:50%;border:3px solid #f97316;background:rgba(249,115,22,.25);transform:translate(-50%,-50%);pointer-events:none;animation:pulse-dot 1.6s ease-in-out infinite;z-index:10}
+.img-credit{font-size:.65rem;color:var(--muted);padding:4px 10px;text-align:right;background:rgba(0,0,0,.3);border-top:1px solid var(--border)}
+.img-error{display:none;padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.q-header{padding:12px 18px 0;display:flex;align-items:center;gap:8px}.q-num{font-size:.77rem;color:var(--muted)}.q-tag{font-size:.7rem;border-radius:99px;padding:2px 9px}
+.q-body{padding:14px 18px 16px;font-size:.95rem;line-height:1.65;font-weight:500}
+@keyframes optIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.opts{padding:0 18px 4px;display:flex;flex-direction:column;gap:9px}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:11px;padding:11px 14px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:11px;transition:border-color .12s,background .12s,transform .1s;line-height:1.5;animation:optIn .2s ease both}
+.opt:hover:not(.locked){border-color:var(--accent);background:rgba(34,197,94,.07);transform:translateX(3px)}
+.ltr{min-width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .15s}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08)}.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08)}.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff}
+.opt.locked{cursor:default}
+@keyframes fbIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.feedback{margin:10px 18px 0;padding:12px 16px;border-radius:11px;font-size:.84rem;line-height:1.65;display:none;font-weight:500}
+.feedback.show{display:block;animation:fbIn .2s ease both}
+.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac}
+.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
+.feedback .exp{font-size:.79rem;margin-top:7px;opacity:.85;font-weight:400;font-style:italic;padding-top:7px;border-top:1px solid rgba(255,255,255,.1)}
+.q-nav{padding:12px 18px 16px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px}.q-nav .go{margin-left:auto}
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:36px 20px 20px}
+.ring-wrap{width:130px;height:130px;margin:0 auto 16px;position:relative}.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#22c55e,#4f8ef7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ring-sub{font-size:.66rem;color:var(--muted)}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:80px}
+.stat .val{font-size:1.35rem;font-weight:700;color:var(--accent)}.stat .lbl{font-size:.66rem;color:var(--muted);margin-top:2px}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.review-out{margin-top:28px;text-align:left}
+.rv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.rv-img{width:100%;max-height:200px;object-fit:contain;background:#0a0c14;display:block}
+.rv-body{padding:12px 14px}.rv-status{font-size:.7rem;font-weight:700;margin-bottom:3px}.rv-cat{font-size:.72rem;margin-bottom:7px}.rv-q{font-size:.86rem;line-height:1.6;margin-bottom:8px}
+.rv-answer{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:6px;margin-top:4px;font-size:.81rem}
+.rv-answer.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}
+.rv-answer .dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.55rem;margin-top:1px}
+.rv-answer.ok .dot{background:var(--green);color:#fff}
+.rv-exp{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.55}
+@media(max-width:600px){.cat-pills{grid-template-columns:repeat(2,1fr)}.q-img{max-height:260px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">← BIO 212</a>
+  <span class="nav-title">Hexapoda — Insecta</span>
+  <span class="nav-latin">Anatomy + Order Recognition</span>
+</nav>
+<div id="pane-setup"><div class="page">
+  <h1>Insecta Anatomy &amp; Orders Quiz</h1>
+  <p class="sub">Subphylum Hexapoda · Class Insecta · External anatomy, structures &amp; order recognition</p>
+  <div class="setup-header"><span class="setup-title">Select Topics</span></div>
+  <div class="cat-label-row"><label>Choose topics to study</label><button onclick="selectAll()">Select All</button></div>
+  <div class="cat-pills" id="cat-pills"></div>
+  <div class="pool-preview" id="pool-preview"></div>
+  <div class="setup-controls">
+    <div class="count-seg" id="count-seg">
+      <button onclick="setCount(10,this)">10</button>
+      <button onclick="setCount(20,this)" class="active">20</button>
+      <button onclick="setCount(999,this)">All</button>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div></div>
+<div id="pane-quiz" style="display:none"><div class="page">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label"><span id="prog-text">Question 1</span><span id="prog-score">0 correct</span></div>
+  </div>
+  <div class="img-wrap">
+    <img class="q-img" id="q-img" src="" alt="Anatomy diagram" onerror="imgError()">
+    <div class="overlay-dot" id="overlay-dot" style="left:50%;top:50%"></div>
+    <div class="img-error" id="img-error">⚠ Image failed to load — use the question text to identify the structure.</div>
+  </div>
+  <div class="img-credit" id="img-credit"></div>
+  <div class="q-card">
+    <div class="q-header"><span class="q-num" id="q-num"></span><span class="q-tag" id="q-tag"></span></div>
+    <div class="q-body" id="q-body"></div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb"></div>
+    <div class="q-nav">
+      <button class="btn ghost" onclick="goBack()">← Back</button>
+      <button class="btn sec" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" style="display:none" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div></div>
+<div id="pane-results" style="display:none"><div class="page">
+  <div class="results">
+    <div class="ring-wrap">
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle id="ring-arc" cx="65" cy="65" r="54" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3" style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="ring-txt"><div class="ring-pct" id="r-pct">0%</div><div class="ring-sub">score</div></div>
+    </div>
+    <div id="r-grade" style="font-size:1.1rem;font-weight:700;margin-bottom:6px"></div>
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:16px" id="r-msg"></div>
+    <div class="stat-row">
+      <div class="stat"><div class="val" id="r-cor" style="color:var(--green)">0</div><div class="lbl">Correct</div></div>
+      <div class="stat"><div class="val" id="r-wrg" style="color:var(--red)">0</div><div class="lbl">Wrong</div></div>
+      <div class="stat"><div class="val" id="r-skp">0</div><div class="lbl">Skipped</div></div>
+    </div>
+    <div class="act-row">
+      <button class="btn primary" onclick="startQuiz()">Try Again</button>
+      <button class="btn sec" id="btn-retry-wrong" onclick="retryWrong()" style="display:none">↩ Retry Wrong</button>
+      <button class="btn sec" onclick="showSetup()">Change Settings</button>
+      <button class="btn sec" onclick="reviewAnswers()">Review Answers ↓</button>
+    </div>
+  </div>
+  <div class="review-out" id="review-out"></div>
+</div></div>
+<script>
+const IMGS={
+  GH: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Anatomy_of_a_Grasshopper.jpg/640px-Anatomy_of_a_Grasshopper.jpg',
+  GH2:'https://upload.wikimedia.org/wikipedia/commons/4/47/Anatomy_of_a_Grasshopper.jpg',
+  BEE:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Apis_mellifera_flying.jpg/640px-Apis_mellifera_flying.jpg',
+  BUT:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Butterfly_anatomy.jpg/640px-Butterfly_anatomy.jpg',
+  FLY:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Drosophila_melanogaster_-_side_%28aka%29.jpg/640px-Drosophila_melanogaster_-_side_%28aka%29.jpg',
+  BUG:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Halyomorpha_halys_3rd.jpg/640px-Halyomorpha_halys_3rd.jpg',
+  BET:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Coleoptera_collage.jpg/640px-Coleoptera_collage.jpg',
+  BET2:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Chrysomela_populi1.jpg/640px-Chrysomela_populi1.jpg',
+  ORT:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Chorthippus_biguttulus_fg01.jpg/640px-Chorthippus_biguttulus_fg01.jpg',
+  EYE:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Fly_eye.jpg/640px-Fly_eye.jpg',
+};
+const IMG_CREDIT={
+  GH: 'Wikimedia Commons · Grasshopper external anatomy',
+  GH2:'Wikimedia Commons · Grasshopper external anatomy',
+  BEE:'Wikimedia Commons · Apis mellifera (honey bee) — Hymenoptera',
+  BUT:'Wikimedia Commons · Butterfly anatomy — Lepidoptera',
+  FLY:'Wikimedia Commons · Drosophila melanogaster — Diptera',
+  BUG:'Wikimedia Commons · Halyomorpha halys (stink bug) — Hemiptera',
+  BET:'Wikimedia Commons · Coleoptera representative beetles',
+  BET2:'Wikimedia Commons · Chrysomela populi — Coleoptera',
+  ORT:'Wikimedia Commons · Chorthippus grasshopper — Orthoptera',
+  EYE:'Wikimedia Commons · Compound eye (Diptera)',
+};
+const CATS=[
+  {id:'anat', label:'External Anatomy',    icon:'🦗', color:'#22c55e'},
+  {id:'head', label:'Head Structures',     icon:'👁', color:'#4f8ef7'},
+  {id:'ord',  label:'Order Recognition',   icon:'🔍', color:'#f59e0b'},
+  {id:'feat', label:'Key Features',        icon:'🔬', color:'#a855f7'},
+];
+const ALL_Q=[
+// ── EXTERNAL ANATOMY ──────────────────────────────────────────────────────────
+{id:1,cat:'anat',img:'GH2',ox:15,oy:40,
+ q:'The orange dot marks the ANTERIOR-MOST tagma of the insect body, bearing the mouthparts, compound eyes, antennae, and brain. What is it?',
+ a:['Head','Thorax','Abdomen','Cephalothorax'],c:0,
+ exp:'The insect head bears all major sensory structures: one pair of compound eyes, 0–3 ocelli, one pair of antennae, and the mouthparts (labrum, mandibles, maxillae, labium, hypopharynx). It is the first of the three insect tagmata.'},
+
+{id:2,cat:'anat',img:'GH2',ox:40,oy:45,
+ q:'The orange dot marks the middle tagma of the insect body, consisting of three segments (pro-, meso-, metathorax), each bearing a pair of legs, and the meso- and metathorax each bearing a pair of wings. What is it?',
+ a:['Thorax','Head','Abdomen','Cephalothorax'],c:0,
+ exp:'The thorax is the locomotory tagma. All three leg pairs are attached here, plus the wings (in winged insects). The large dorsal flight muscles span the thorax — their contractions power wing movement either directly or by deforming the thorax walls.'},
+
+{id:3,cat:'anat',img:'GH2',ox:75,oy:50,
+ q:'The posterior tagma — typically 10–11 segments bearing the reproductive, digestive, and excretory organs — is the ___.',
+ a:['Abdomen','Thorax','Head','Opisthosoma'],c:0,
+ exp:'The insect abdomen lacks wings and legs (except for cerci and terminal appendages). It contains the digestive tract, fat body, reproductive organs, and Malpighian tubules. Spiracles for gas exchange dot the lateral surfaces of most abdominal segments.'},
+
+{id:4,cat:'anat',img:'GH2',ox:68,oy:62,
+ q:'The orange dot marks small oval pores on the lateral surface of the grasshopper\'s abdomen and thorax. Gas exchange (O2 in, CO2 out) occurs through these openings into the tracheal system. What are they?',
+ a:['Spiracles','Nephridiopores','Gonopores','Sensilla'],c:0,
+ exp:'Spiracles are the external openings of the insect tracheal system. Air enters through spiracles and moves into tracheae, then tracheoles, delivering O2 directly to tissues without a blood intermediate. Valves control opening/closing to regulate water loss.'},
+
+{id:5,cat:'anat',img:'GH2',ox:50,oy:80,
+ q:'Three pairs of jointed appendages — attached one pair per thoracic segment — are used for walking, jumping, gripping, or swimming depending on the species. In insects these are the ___.',
+ a:['Legs (thoracic appendages)','Pleopods','Pereiopods','Chelipeds'],c:0,
+ exp:'Insects have 3 pairs of legs (= 6 legs total), the defining feature of Class Insecta (Hexapoda = "six legs"). Each leg has 5 segments: coxa, trochanter, femur, tibia, tarsus. In grasshoppers the hind legs are enlarged for jumping.'},
+
+{id:6,cat:'anat',img:'GH2',ox:40,oy:30,
+ q:'Flat, membranous extensions of the thorax used for flight — typically 2 pairs (4 wings total) in adults — are the ___.',
+ a:['Wings','Elytra','Halteres','Spiracles'],c:0,
+ exp:'Wings are a uniquely insect structure (evolved once, in Pterygota). They are flat, membranous evaginations of the thoracic body wall reinforced by veins. Wing shape, venation pattern, and presence/absence are critical for order-level identification.'},
+
+{id:7,cat:'anat',img:'GH2',ox:12,oy:30,
+ q:'Segmented, sensory appendages projecting from the anterior surface of the insect head — used for touch, smell, and sound detection — are the ___.',
+ a:['Antennae','Pedipalps','Palps','Cerci'],c:0,
+ exp:'Insect antennae are a single pair of segmented appendages used for olfaction, mechanoreception, and in some species humidity/temperature detection. Antenna shape (filiform, clubbed, pectinate, geniculate, etc.) is taxonomically important.'},
+
+// ── HEAD STRUCTURES ───────────────────────────────────────────────────────────
+{id:8,cat:'head',img:'EYE',ox:50,oy:50,
+ q:'The large, faceted eye on the side of the insect\'s head — composed of hundreds to thousands of individual visual units (ommatidia) — is a ___.',
+ a:['Compound eye','Simple eye (ocellus)','Lens eye','Camera eye'],c:0,
+ exp:'Compound eyes consist of many ommatidia, each with its own cornea, crystalline cone, and rhabdom (photoreceptor). They produce a mosaic image and are excellent at detecting motion. Insects also have up to three simple eyes (ocelli) for light/dark detection.'},
+
+{id:9,cat:'head',img:'GH2',ox:15,oy:55,
+ q:'Hard, paired jaw-like mouthparts that bite across the midline and are used for chewing plant material or prey. These are the PRIMARY CHEWING mouthparts of insects. What are they?',
+ a:['Mandibles','Maxillae','Labium','Chelicerae'],c:0,
+ exp:'Mandibles are the primary mouthparts of "chewing" insects (grasshoppers, beetles, wasps). They move laterally (transversely) and are used for cutting and grinding food. Modified mandibles characterize other feeding types (e.g., needle-like in true bugs).'},
+
+{id:10,cat:'head',img:'GH2',ox:15,oy:65,
+ q:'The second pair of mouthparts, posterior to the mandibles, bearing sensory palps and a lobe (lacinia) for manipulating food. These are the ___.',
+ a:['Maxillae','Mandibles','Labium','Hypopharynx'],c:0,
+ exp:'Maxillae are the second pair of mouthparts. They assist in manipulating food and bear a segmented maxillary palp used for taste/touch sensing. In insects with piercing-sucking mouthparts (mosquitoes, bugs), the maxillae are modified into stylets.'},
+
+{id:11,cat:'head',img:'GH2',ox:15,oy:72,
+ q:'The fused lower lip — formed from the second maxillae fused at the midline — that forms the floor of the mouth and bears the labial palps is the ___.',
+ a:['Labium','Labrum','Mandible','Hypopharynx'],c:0,
+ exp:'The labium is the fused "lower lip" of insects, formed by fusion of the second pair of mouthparts (second maxillae). It bears labial palps for sensory functions and helps manipulate food. It forms the posterior boundary of the mouth opening.'},
+
+// ── ORDER RECOGNITION ─────────────────────────────────────────────────────────
+{id:12,cat:'ord',img:'ORT',ox:50,oy:50,
+ q:'This insect has enlarged hind legs for jumping, two pairs of wings (leathery forewings = tegmina + membranous hindwings), and produces sounds by stridulation. It belongs to Order ___.',
+ a:['Orthoptera','Coleoptera','Diptera','Lepidoptera'],c:0,
+ exp:'Orthoptera includes grasshoppers, crickets, and katydids. Key features: jumping hind legs, tegmina (leathery forewings), fan-like hindwings, incomplete metamorphosis, sound production by stridulation. Examples in lab: grasshoppers, crickets.'},
+
+{id:13,cat:'ord',img:'BUT',ox:50,oy:50,
+ q:'This insect has TWO pairs of wings covered in tiny scales, a coiled proboscis for nectar feeding, and undergoes complete metamorphosis (larva = caterpillar). It belongs to Order ___.',
+ a:['Lepidoptera','Hymenoptera','Diptera','Coleoptera'],c:0,
+ exp:'Lepidoptera (butterflies and moths) have scale-covered wings — the scales produce color patterns and are taxonomically diagnostic. They feed as adults via a coiled proboscis. Caterpillar larvae undergo complete metamorphosis (holometabolous).'},
+
+{id:14,cat:'ord',img:'BEE',ox:50,oy:50,
+ q:'This insect has a narrow waist (petiole) between thorax and abdomen, membranous wings with few veins, a stinger (in females) evolved from the ovipositor, and many species show eusocial behavior. Order ___.',
+ a:['Hymenoptera','Diptera','Orthoptera','Hemiptera'],c:0,
+ exp:'Hymenoptera includes bees, wasps, ants, and sawflies. Key features: two pairs of membranous wings hooked together by hamuli, narrow petiole in many groups, ovipositor modified into stinger in Aculeata. Many species are eusocial.'},
+
+{id:15,cat:'ord',img:'FLY',ox:50,oy:50,
+ q:'This insect has only ONE pair of wings (forewings); the hindwings are reduced to small knob-like balancing organs (halteres). It belongs to Order ___.',
+ a:['Diptera','Lepidoptera','Coleoptera','Orthoptera'],c:0,
+ exp:'Diptera (true flies) are the only insects with functional halteres — modified hindwings that act as gyroscopes for in-flight stability. Examples: housefly, mosquito, fruit fly (Drosophila). Larvae are legless maggots. Complete metamorphosis.'},
+
+{id:16,cat:'ord',img:'BUG',ox:50,oy:50,
+ q:'This insect has a distinctive beak (proboscis) for piercing and sucking, forewings that are partially thickened (hemelytra), and often a triangular scutellum. Order ___.',
+ a:['Hemiptera','Homoptera','Coleoptera','Diptera'],c:0,
+ exp:'Hemiptera (true bugs) have sucking mouthparts arising from the front of the head, and hemelytra (forewings with a tough basal portion and membranous tip). Examples: stink bugs, water striders, aphids, cicadas. "Hem" = half, referring to the half-leathery wing.'},
+
+{id:17,cat:'ord',img:'BET2',ox:50,oy:50,
+ q:'This insect has forewings modified into hard, protective sheaths (elytra) that meet in a straight line down the back, protecting the membranous hindwings underneath. Order ___.',
+ a:['Coleoptera','Hemiptera','Orthoptera','Hymenoptera'],c:0,
+ exp:'Coleoptera (beetles) are the most species-rich order of animals. Elytra are hardened, non-flying forewings that protect the body and hindwings. Hindwings fold beneath elytra when not in use. Examples: ladybugs, fireflies, weevils, ground beetles.'},
+
+// ── KEY FEATURES ─────────────────────────────────────────────────────────────
+{id:18,cat:'feat',img:'GH2',ox:50,oy:50,
+ q:'Which feature DEFINITIVELY places an arthropod in Subphylum Hexapoda / Class Insecta?',
+ a:['3 pairs of legs (6 legs total)','4 pairs of legs','2 pairs of antennae','Wings'],c:0,
+ exp:'Three pairs of legs (6 legs) is the defining feature of Hexapoda. Note: not all insects have wings (wingless insects exist), but all have 3 leg pairs. Arachnids have 4 pairs; centipedes/millipedes have many pairs; crustaceans have variable numbers.'},
+
+{id:19,cat:'feat',img:'GH2',ox:50,oy:50,
+ q:'Insects exchange gases via an internal network of air tubes extending from the spiracles to individual cells. This system is the ___.',
+ a:['Tracheal system','Lung','Book lung','Gill'],c:0,
+ exp:'The insect tracheal system is a network of chitinous tubes (tracheae → tracheoles) that deliver O2 directly to tissues. There is no O2-carrying pigment in insect hemolymph. The tracheal system is unique to terrestrial arthropods (insects and some myriapods).'},
+
+{id:20,cat:'feat',img:'GH2',ox:50,oy:50,
+ q:'The excretory organs of insects — long blind tubes arising from the junction of the midgut and hindgut that extract waste from the hemolymph — are the ___.',
+ a:['Malpighian tubules','Nephridia','Green glands','Antennal glands'],c:0,
+ exp:'Malpighian tubules are the insect excretory organs. They absorb ions and waste (uric acid) from hemolymph, pass them into the gut for reabsorption and concentration, and excrete nearly dry uric acid with feces — a key adaptation for water conservation on land.'},
+
+{id:21,cat:'feat',img:'GH2',ox:50,oy:50,
+ q:'Grasshoppers (and other Orthoptera) undergo incomplete metamorphosis where the immature stage (called a ___) resembles the adult but lacks fully developed wings.',
+ a:['Nymph','Larva','Pupa','Naiad'],c:0,
+ exp:'Insects with incomplete metamorphosis (Hemimetabola) pass through: egg → nymph(s) → adult. Nymphs look like small adults and molt repeatedly, growing wings progressively. Complete metamorphosis insects (Holometabola) have egg → larva → pupa → adult.'},
+
+{id:22,cat:'feat',img:'GH2',ox:50,oy:50,
+ q:'Insects have ONE pair of antennae. Which subphylum of arthropods has NO antennae?',
+ a:['Chelicerata (spiders, scorpions)','Crustacea (crabs)','Myriapoda (centipedes)','All arthropods have antennae'],c:0,
+ exp:'Chelicerata (arachnids, horseshoe crabs, sea spiders) have NO antennae. Insects = 1 pair; Myriapoda = 1 pair; Crustacea = 2 pairs. The presence/absence and number of antennae is the quickest way to assign an arthropod to its subphylum.'},
+
+{id:23,cat:'ord',img:'BEE',ox:50,oy:50,
+ q:'Bees and ants are members of Order Hymenoptera. What is the characteristic modification of the female ovipositor in stinging Hymenoptera (bees, wasps, hornets)?',
+ a:['Modified into a venom-injecting stinger','Modified into mandibles','Lost entirely','Modified into silk spinnerets'],c:0,
+ exp:'In Aculeata (stinging Hymenoptera), the ovipositor is no longer used for egg-laying but has been repurposed as a venom-injecting stinger. Worker bees cannot lay eggs (they lay unfertilized eggs only) but retain the stinger. Queen bees use their ovipositor for both egg-laying and stinging.'},
+
+{id:24,cat:'head',img:'EYE',ox:50,oy:50,
+ q:'In addition to compound eyes, many adult insects have up to three small dorsal eyes arranged in a triangle on top of the head. These detect light intensity and help with orientation. What are they?',
+ a:['Ocelli (simple eyes)','Compound eyes','Ommatidia','Stemmata'],c:0,
+ exp:'Ocelli are simple eyes with a single lens and a single photoreceptor layer. They do NOT form images but detect light intensity and horizon position, helping insects maintain flight orientation. Most adult insects have 0–3 ocelli; larvae often have stemmata instead.'},
+
+];
+
+let pool=[],qi=0,answers=[],answered=false;
+let activeCats=new Set(CATS.map(c=>c.id));
+let countLimit=20;
+function init(){renderCatPills();updatePreview();}
+function renderCatPills(){const el=document.getElementById('cat-pills');el.innerHTML=CATS.map(cat=>{const cnt=ALL_Q.filter(q=>q.cat===cat.id).length;const on=activeCats.has(cat.id);return `<div class="cat-pill${on?' on':''}" id="pill-${cat.id}" style="${on?`border-color:${cat.color};background:${cat.color}22`:''}" onclick="toggleCat('${cat.id}')"><span class="cp-icon">${cat.icon}</span><span class="cp-label">${cat.label}</span><span class="cp-count">${cnt} questions</span></div>`;}).join('');}
+function toggleCat(id){if(activeCats.has(id)){if(activeCats.size<=1)return;activeCats.delete(id);}else activeCats.add(id);renderCatPills();updatePreview();}
+function selectAll(){CATS.forEach(c=>activeCats.add(c.id));renderCatPills();updatePreview();}
+function setCount(n,btn){countLimit=n;document.querySelectorAll('#count-seg button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');updatePreview();}
+function updatePreview(){const total=ALL_Q.filter(q=>activeCats.has(q.cat)).length;const n=Math.min(total,countLimit);document.getElementById('pool-preview').textContent=total===0?'No questions selected.':`${n} question${n!==1?'s':''} will be drawn from ${total} available`;}
+function startQuiz(){let cands=ALL_Q.filter(q=>activeCats.has(q.cat));shuffleArr(cands);pool=cands.slice(0,countLimit===999?cands.length:countLimit);qi=0;answers=new Array(pool.length).fill(null);answered=false;document.getElementById('pane-setup').style.display='none';document.getElementById('pane-results').style.display='none';document.getElementById('pane-quiz').style.display='block';document.getElementById('review-out').innerHTML='';renderQ();}
+function showSetup(){document.getElementById('pane-setup').style.display='block';document.getElementById('pane-quiz').style.display='none';document.getElementById('pane-results').style.display='none';}
+function renderQ(){if(qi>=pool.length){showResults();return;}const q=pool[qi];answered=answers[qi]!==null;const letters=['A','B','C','D'];const catObj=CATS.find(c=>c.id===q.cat);const pct=Math.round(qi/pool.length*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-text').textContent=`Question ${qi+1} of ${pool.length}`;const cor=answers.slice(0,qi).filter((a,i)=>a===pool[i].c).length;document.getElementById('prog-score').textContent=`${cor} correct`;const img=document.getElementById('q-img');img.style.display='block';document.getElementById('img-error').style.display='none';img.src=IMGS[q.img];document.getElementById('img-credit').textContent=IMG_CREDIT[q.img]||'';const dot=document.getElementById('overlay-dot');dot.style.left=q.ox+'%';dot.style.top=q.oy+'%';document.getElementById('q-num').textContent=`Q${qi+1}`;document.getElementById('q-tag').textContent=catObj?catObj.label:q.cat;document.getElementById('q-tag').style.color=catObj?catObj.color:'var(--accent)';document.getElementById('q-tag').style.background=catObj?catObj.color+'22':'';document.getElementById('q-body').textContent=q.q;const optsEl=document.getElementById('opts');optsEl.innerHTML=q.a.map((ans,i)=>{let cls='opt';if(answered){cls+=' locked';if(i===q.c)cls+=' correct';else if(answers[qi]===i)cls+=' wrong';}return `<div class="${cls}" onclick="pickAnswer(${i})" style="animation-delay:${i*.06}s"><div class="ltr">${letters[i]}</div><span>${escHtml(ans)}</span></div>`;}).join('');const fb=document.getElementById('fb');if(answered){const ok=answers[qi]===q.c;fb.className='feedback show '+(ok?'ok':'no');fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`:`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;document.getElementById('btn-next').style.display='inline-flex';}else{fb.className='feedback';fb.innerHTML='';document.getElementById('btn-next').style.display='none';}document.getElementById('pane-quiz').scrollTo({top:0,behavior:'smooth'});}
+function imgError(){document.getElementById('q-img').style.display='none';document.getElementById('img-error').style.display='block';}
+function pickAnswer(i){if(answered)return;const q=pool[qi];answered=true;answers[qi]=i;document.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');if(j===q.c)el.classList.add('correct');if(j===i&&i!==q.c)el.classList.add('wrong');});const ok=(i===q.c);const fb=document.getElementById('fb');fb.className='feedback show '+(ok?'ok':'no');fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`:`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;document.getElementById('btn-next').style.display='inline-flex';}
+function skipQ(){if(!answered)answers[qi]=null;nextQ();}
+function nextQ(){qi++;if(qi>=pool.length){showResults();return;}answered=false;renderQ();}
+function goBack(){if(qi===0)return;qi--;answered=answers[qi]!==null;renderQ();}
+function showResults(){document.getElementById('pane-quiz').style.display='none';document.getElementById('pane-results').style.display='block';const cor=answers.filter((a,i)=>a===pool[i].c).length;const skp=answers.filter(a=>a===null).length;const wrg=pool.length-cor-skp;const pct=Math.round(cor/pool.length*100);document.getElementById('r-pct').textContent=pct+'%';document.getElementById('r-cor').textContent=cor;document.getElementById('r-wrg').textContent=wrg;document.getElementById('r-skp').textContent=skp;document.getElementById('r-msg').textContent=`${cor} of ${pool.length} correct · ${skp} skipped`;const arc=document.getElementById('ring-arc');const C=339.3;arc.style.strokeDashoffset=C-(pct/100)*C;arc.style.stroke=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';const grades=['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];document.getElementById('r-grade').textContent=grades[Math.min(Math.floor(pct/20),4)];document.getElementById('btn-retry-wrong').style.display=(wrg+skp>0)?'inline-flex':'none';}
+function retryWrong(){const wp=pool.filter((q,i)=>answers[i]!==q.c);if(!wp.length)return;pool=shuffleArr([...wp]);qi=0;answers=new Array(pool.length).fill(null);answered=false;document.getElementById('pane-results').style.display='none';document.getElementById('review-out').innerHTML='';document.getElementById('pane-quiz').style.display='block';renderQ();}
+function reviewAnswers(){const letters=['A','B','C','D'];let html='<h2 style="margin-bottom:14px;font-size:1rem">Answer Review</h2>';pool.forEach((q,i)=>{const ua=answers[i];const ok=ua===q.c;const sk=ua===null;const col=sk?'var(--muted)':ok?'var(--green)':'var(--red)';const status=sk?'⊖ Skipped':ok?'✓ Correct':'✗ Incorrect';const catObj=CATS.find(c=>c.id===q.cat);html+=`<div class="rv-card"><img class="rv-img" src="${IMGS[q.img]}" alt="diagram" onerror="this.style.display='none'"><div class="rv-body"><div class="rv-status" style="color:${col}">${status}</div><div class="rv-cat" style="color:${catObj?.color||'var(--accent)'}">${catObj?.label||q.cat}</div><div class="rv-q">${escHtml(q.q)}</div>${q.a.map((ans,j)=>`<div class="rv-answer${j===q.c?' ok':''}"><div class="dot">${j===q.c?'✓':letters[j]}</div><span>${escHtml(ans)}</span></div>`).join('')}<div class="rv-exp">${escHtml(q.exp)}</div></div></div>`;});const el=document.getElementById('review-out');el.innerHTML=html;el.scrollIntoView({behavior:'smooth'});}
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+document.addEventListener('keydown',e=>{if(document.getElementById('pane-quiz').style.display==='none')return;if(e.key==='ArrowRight'){e.preventDefault();skipQ();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}if(e.key==='Enter'){const b=document.getElementById('btn-next');if(b&&b.style.display!=='none')nextQ();}if(e.key==='Escape')showSetup();const L={'a':0,'b':1,'c':2,'d':3};if(!answered&&L[e.key.toLowerCase()]!==undefined)pickAnswer(L[e.key.toLowerCase()]);});
+init();
+</script>
+</body>
+</html>

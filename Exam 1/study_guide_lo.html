@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO 212 – LO Study Guide</title>
+<style>
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#21263a;--border:#2a2d3a;
+  --text:#e2e8f0;--muted:#8892a4;--accent:#4f8ef7;
+  --phylo:#22c55e;--porifera:#f97316;--cnidaria:#4f8ef7;
+  --platy:#a855f7;--nema:#f59e0b;--annel:#ef4444;
+  --mollu:#ec4899;--arthr:#14b8a6;--embryo:#8b5cf6;--histo:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;font-size:15px}
+
+.topnav{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.navlink{font-size:11.5px;font-weight:600;text-decoration:none;padding:3px 8px;border-radius:6px;border:1px solid transparent;white-space:nowrap;opacity:.8}
+.navlink:hover{opacity:1;border-color:currentColor}
+
+.container{max-width:1060px;margin:0 auto;padding:36px 20px 80px;display:flex;flex-direction:column;gap:52px}
+
+.section{scroll-margin-top:54px}
+.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid}
+.section-head .icon{font-size:24px;line-height:1}
+.section-head h2{font-size:21px;font-weight:700}
+.section-head .latin{font-size:13px;color:var(--muted);font-style:italic;margin-left:4px}
+.section-head .badge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid}
+
+.facts{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.facts h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
+.facts ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.facts li{font-size:13px;padding-left:16px;position:relative}
+.facts li::before{content:"▸";position:absolute;left:0;color:var(--muted)}
+.facts li strong{color:inherit}
+.facts li em{color:var(--muted);font-style:normal}
+
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--surface);padding:9px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+td:first-child{font-weight:600;white-space:nowrap}
+.ok{color:var(--accent)}
+.dim{color:var(--muted)}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+.sub{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin:18px 0 8px}
+.callout{background:var(--surface2);border-left:3px solid;border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:16px;font-size:13px;line-height:1.65}
+.callout strong{display:block;margin-bottom:3px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;opacity:.7}
+
+/* ── TAXONOMY TABLE ── */
+.tax-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:24px}
+.tax-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tax-tbl th{background:var(--surface2);padding:8px 12px;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.tax-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tax-tbl tr:last-child td{border-bottom:none}
+.tax-tbl tr:hover td{background:rgba(255,255,255,.025)}
+.tax-tbl .group-hd td{background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:6px 12px}
+.tax-tbl td.phylum{font-weight:700}
+.tax-tbl td.sci{font-style:italic;color:var(--accent)}
+.tax-tbl td.common{color:var(--text)}
+.tax-tbl td.note{font-size:11.5px;color:var(--muted)}
+.rank-pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;border:1px solid;margin-right:3px;vertical-align:middle;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <a class="navlink" style="color:var(--phylo)"   href="#phylo">🌳 Phylo</a>
+  <a class="navlink" style="color:var(--porifera)" href="#porifera">🧽 Porifera</a>
+  <a class="navlink" style="color:var(--cnidaria)"  href="#cnidaria">🪼 Cnidaria</a>
+  <a class="navlink" style="color:var(--platy)"    href="#platy">🪱 Platy</a>
+  <a class="navlink" style="color:var(--mollu)"    href="#mollu">🐚 Mollusca</a>
+  <a class="navlink" style="color:var(--annel)"    href="#annel">🐛 Annelida</a>
+  <a class="navlink" style="color:var(--nema)"     href="#nema">🔬 Nematoda</a>
+  <a class="navlink" style="color:var(--arthr)"    href="#arthr">🦞 Arthropoda</a>
+  <a class="navlink" style="color:var(--histo)"    href="#histo">🔬 Tissues</a>
+  <a class="navlink" style="color:var(--embryo)"   href="#embryo">🐸 Embryology</a>
+  <a class="navlink" style="color:#facc15"         href="#taxonomy">🏷️ Taxonomy</a>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════ PHYLOGENETICS ═══════════════ -->
+<section class="section" id="phylo">
+  <div class="section-head" style="border-color:var(--phylo);color:var(--phylo)">
+    <span class="icon">🌳</span>
+    <h2>Phylogenetics</h2>
+    <span class="latin">Taxonomy &amp; Evolutionary Trees</span>
+    <span class="badge" style="color:var(--phylo);border-color:var(--phylo)33">19 LO Qs</span>
+  </div>
+
+  <div class="sub">Group Types (Clade Membership)</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Term</th><th>Definition</th><th>Valid clade?</th></tr>
+      <tr><td>Monophyletic (clade)</td><td>Ancestor + ALL descendants</td><td class="ok">Yes ✓</td></tr>
+      <tr><td>Paraphyletic</td><td>Ancestor + SOME descendants (excludes some)</td><td class="dim">No</td></tr>
+      <tr><td>Polyphyletic</td><td>Multiple separate lineages; convergent traits only</td><td class="dim">No</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Character Types</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Term</th><th>Definition</th><th>Use in trees</th></tr>
+      <tr><td>Synapomorphy</td><td>Shared DERIVED character; defines a clade</td><td>Used to define clades ✓</td></tr>
+      <tr><td>Plesiomorphy</td><td>Shared ANCESTRAL character; present in all of a large group</td><td>Not useful for subclades</td></tr>
+      <tr><td>Autapomorphy</td><td>Unique derived character in only one lineage</td><td>Defines single taxon</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Tree Terminology</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Node</strong> — branching point; represents a common ancestor</li>
+      <li><strong>Tip (terminal branch)</strong> — represents an extant (living) taxon</li>
+      <li><strong>Basal lineage</strong> — diverged earliest from all others in the group</li>
+      <li><strong>Ranked clade</strong> — clade WITH a Linnean rank (e.g., Class Insecta)</li>
+    </ul>
+  </div>
+
+  <div class="sub">Linnean Ranks (broadest → specific)</div>
+  <div class="callout" style="border-color:var(--phylo)">
+    <strong>Mnemonic: King Philip Came Over For Good Spaghetti</strong>
+    Kingdom → Phylum → Class → Order → Family → Genus → Species
+  </div>
+
+  <div class="sub">Major Animal Clades</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Clade</th><th>Key Features</th><th>Blastopore fate</th></tr>
+      <tr><td>Bilateria</td><td>Bilateral symmetry, 3 germ layers, anterior-posterior axis</td><td>—</td></tr>
+      <tr><td>Protostomia</td><td>Lophotrochozoa + Ecdysozoa</td><td>Blastopore → <strong>mouth</strong></td></tr>
+      <tr><td>Deuterostomia</td><td>Echinoderms, chordates</td><td>Blastopore → <strong>anus</strong></td></tr>
+      <tr><td>Ecdysozoa</td><td>Nematoda + Arthropoda; grow by <strong>molting</strong> cuticle/exoskeleton</td><td>—</td></tr>
+      <tr><td>Lophotrochozoa</td><td>Platyhelminthes, Mollusca, Annelida</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Key Phylogenetic Origins (Lophotrochozoa Tree)</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Acoelomate condition</strong> (loss of coelom) first appears in: <strong>Platyhelminthes</strong></li>
+      <li><strong>Segmentation</strong> as a derived trait first appears in: <strong>Annelida</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ PORIFERA ═══════════════ -->
+<section class="section" id="porifera">
+  <div class="section-head" style="border-color:var(--porifera);color:var(--porifera)">
+    <span class="icon">🧽</span>
+    <h2>Porifera</h2>
+    <span class="latin">Sponges</span>
+    <span class="badge" style="color:var(--porifera);border-color:var(--porifera)33">10 LO Qs</span>
+  </div>
+
+  <div class="sub">Cell Types</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Cell</th><th>Function</th></tr>
+      <tr><td>Choanocytes (collar cells)</td><td>Flagellated; generate water current; capture food particles</td></tr>
+      <tr><td>Amoebocytes (archaeocytes)</td><td>Transport digested nutrients; <strong>totipotent</strong> (differentiate into any cell type); secrete spicules</td></tr>
+      <tr><td>Pinacocytes</td><td>Flat cells forming outer layer</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Water Flow Pathway</div>
+  <div class="callout" style="border-color:var(--porifera)">
+    <strong>In → Central cavity → Out</strong>
+    <strong>Ostia</strong> (incurrent pores) → <strong>Spongocoel</strong> (central cavity) → <strong>Osculum</strong> (excurrent opening)
+  </div>
+
+  <div class="facts">
+    <h3>Key Facts</h3>
+    <ul>
+      <li><strong>Spicules</strong> — needle-like structural support; made of calcium carbonate or silica</li>
+      <li><strong>Feeding strategy</strong> — filter feeders (suspension feeders)</li>
+      <li><strong>Habitat</strong> — mostly marine (saltwater)</li>
+      <li>No true tissues, no body symmetry (except some)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ CNIDARIA ═══════════════ -->
+<section class="section" id="cnidaria">
+  <div class="section-head" style="border-color:var(--cnidaria);color:var(--cnidaria)">
+    <span class="icon">🪼</span>
+    <h2>Cnidaria</h2>
+    <span class="latin">Jellyfish, Corals, Hydra</span>
+    <span class="badge" style="color:var(--cnidaria);border-color:var(--cnidaria)33">15 LO Qs</span>
+  </div>
+
+  <div class="sub">Body Plan (Diploblastic = 2 True Tissue Layers)</div>
+  <div class="callout" style="border-color:var(--cnidaria)">
+    <strong>Outside → Inside</strong>
+    <strong>Epidermis</strong> (outer, faces away from GVC) → <strong>Mesoglea</strong> (jelly-like, non-cellular middle) → <strong>Gastrodermis</strong> (inner, lines the GVC)
+  </div>
+
+  <div class="sub">Unique Structures</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Cnidocytes</strong> — stinging cells unique to cnidarians</li>
+      <li><strong>Nematocyst</strong> — organelle INSIDE a cnidocyte; coils and fires like a harpoon</li>
+      <li><strong>Gastrovascular cavity (GVC / coelenteron)</strong> — single internal cavity used for both digestion and distribution</li>
+    </ul>
+  </div>
+
+  <div class="sub">Class Comparison</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Class</th><th>Common Name</th><th>Body Form</th><th>Notable Feature</th></tr>
+      <tr><td>Hydrozoa</td><td>Hydra</td><td>Both polyp AND medusa</td><td>Alternates between forms</td></tr>
+      <tr><td>Scyphozoa</td><td>Jellyfish</td><td>Medusa dominant</td><td>Oral arms around mouth; gonads in <strong>gastrodermis of subumbrella</strong></td></tr>
+      <tr><td>Anthozoa</td><td>Sea anemones, corals</td><td><strong>Polyp ONLY</strong></td><td>No medusa stage; colonial (corals)</td></tr>
+      <tr><td>Cubozoa</td><td>Box jellyfish</td><td>Medusa dominant</td><td>Highly toxic</td></tr>
+    </table>
+  </div>
+
+  <div class="facts">
+    <h3>Polyp vs Medusa</h3>
+    <ul>
+      <li><strong>Polyp</strong> — sessile (attached); mouth faces up; cylindrical body</li>
+      <li><strong>Medusa</strong> — free-swimming; bell-shaped; mouth faces down</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ PLATYHELMINTHES ═══════════════ -->
+<section class="section" id="platy">
+  <div class="section-head" style="border-color:var(--platy);color:var(--platy)">
+    <span class="icon">🪱</span>
+    <h2>Platyhelminthes</h2>
+    <span class="latin">"Flat worms" (platy = flat, helminthes = worms)</span>
+    <span class="badge" style="color:var(--platy);border-color:var(--platy)33">17 LO Qs</span>
+  </div>
+
+  <div class="facts">
+    <h3>Phylum-level Features</h3>
+    <ul>
+      <li><strong>Acoelomate</strong> — lack a body cavity entirely; body filled with <strong>mesenchyme (parenchyma)</strong></li>
+      <li>3 germ layers (triploblastic) but NO coelom</li>
+      <li>Bilateral symmetry</li>
+      <li><strong>Incomplete digestive system</strong> (except Cestoda which have none) — one opening serves as both mouth AND anus</li>
+    </ul>
+  </div>
+
+  <div class="sub">Class Comparison</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Class</th><th>Common Name</th><th>Lifestyle</th><th>Attachment</th><th>Gut</th><th>Locomotion</th></tr>
+      <tr><td>Turbellaria</td><td>Planarians</td><td>Free-living carnivore; freshwater (also marine/damp terrestrial)</td><td>—</td><td>Incomplete (1 opening); <strong>pharynx</strong> extends to catch prey</td><td>Cilia on epidermis</td></tr>
+      <tr><td>Trematoda</td><td>Flukes</td><td><strong>Endoparasite</strong> (lives inside host)</td><td>Oral + ventral <strong>suckers</strong></td><td>Incomplete</td><td>Muscular</td></tr>
+      <tr><td>Cestoda</td><td>Tapeworms</td><td>Endoparasite (intestine)</td><td><strong>Scolex</strong> (holdfast) + <strong>rostellum</strong> (hooks)</td><td><strong>NONE</strong> — absorb nutrients through <strong>tegument</strong> (body wall)</td><td>Muscular</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Tapeworm (Cestoda) Anatomy</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Scolex</strong> — anterior holdfast organ; anchors to host intestine</li>
+      <li><strong>Rostellum</strong> — ring of hooks on the scolex</li>
+      <li><strong>Proglottid</strong> — each repeated body unit; contains a complete set of reproductive organs</li>
+      <li><strong>Ductus deferens</strong> — duct carrying sperm from testis to genital pore</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ MOLLUSCA ═══════════════ -->
+<section class="section" id="mollu">
+  <div class="section-head" style="border-color:var(--mollu);color:var(--mollu)">
+    <span class="icon">🐚</span>
+    <h2>Mollusca</h2>
+    <span class="latin">Squid, Clam, Snail, Chiton</span>
+    <span class="badge" style="color:var(--mollu);border-color:var(--mollu)33">25 LO Qs</span>
+  </div>
+
+  <div class="callout" style="border-color:var(--mollu)">
+    <strong>Universal Molluscan Body Plan (all 3 present in every class)</strong>
+    <strong>Foot</strong> (muscular, locomotion) + <strong>Mantle</strong> (secretes shell; encloses mantle cavity) + <strong>Visceral mass</strong> (organ systems)
+  </div>
+
+  <div class="facts">
+    <h3>Phylum-level Features</h3>
+    <ul>
+      <li>Main body cavity: <strong>hemocoel</strong> (blood-filled; open circulatory system)</li>
+      <li>True coelom is greatly reduced</li>
+    </ul>
+  </div>
+
+  <div class="sub">Class Comparison</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Class</th><th>Example</th><th>Shell</th><th>Feeding</th><th>Key Structure</th></tr>
+      <tr><td>Bivalvia</td><td>Clam, mussel</td><td>2 valves</td><td>Filter feeding via gills; labial palps sort food</td><td>Adductor muscles close shell; incurrent/excurrent siphons; umbo points anterior</td></tr>
+      <tr><td>Gastropoda</td><td>Snail, slug</td><td>1 coiled (or absent)</td><td>Scrape algae with <strong>radula</strong></td><td>Foot for locomotion (muscular waves); pneumostome = breathing pore (terrestrial)</td></tr>
+      <tr><td>Cephalopoda</td><td>Squid (<em>Loligo</em>), octopus</td><td>Reduced/internal</td><td>Beak bites &amp; tears prey</td><td>Siphon for jet propulsion; 8 arms + 2 tentacles (squid)</td></tr>
+      <tr><td>Polyplacophora</td><td>Chiton</td><td>8 overlapping plates</td><td>Radula</td><td>8-plate shell diagnostic</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Squid (<em>Loligo</em>) Anatomy</div>
+  <div class="two-col">
+    <div class="facts">
+      <h3>External Structures</h3>
+      <ul>
+        <li><strong>8 arms</strong> + <strong>2 tentacles</strong> (longer; strike prey)</li>
+        <li><strong>Fins</strong> — stability and slow maneuvering</li>
+        <li><strong>Siphon (funnel)</strong> — jet propulsion by expelling water</li>
+        <li><strong>Beak</strong> — bites and tears prey</li>
+        <li><strong>Pen (gladius)</strong> — internal, reduced, chitinous shell</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Internal Structures</h3>
+      <ul>
+        <li><strong>Ink sac</strong> — releases dark ink to confuse predators/escape</li>
+        <li><strong>1 systemic heart</strong> + <strong>2 brachial hearts</strong> — brachial hearts pump blood to gills</li>
+        <li><strong>Nidamental gland</strong> — females only; secretes protective capsule around eggs</li>
+        <li><strong>Digestive gland (hepatopancreas)</strong> — secretes digestive enzymes; absorbs nutrients</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sub">Clam (Bivalvia) Anatomy</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Umbo</strong> — oldest, most dorsal part of shell; always points <strong>anterior</strong></li>
+      <li><strong>Adductor muscles</strong> (anterior + posterior) — close the shell valves</li>
+      <li><strong>Incurrent siphon</strong> — water + food enter here</li>
+      <li><strong>Excurrent siphon</strong> — water exits here</li>
+      <li><strong>Labial palps</strong> — near mouth; sort and direct food particles into mouth</li>
+      <li><strong>Foot</strong> — muscular; used for burrowing into sediment</li>
+      <li><strong>Gills</strong> — gas exchange AND filter feeding (trap food particles)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ ANNELIDA ═══════════════ -->
+<section class="section" id="annel">
+  <div class="section-head" style="border-color:var(--annel);color:var(--annel)">
+    <span class="icon">🐛</span>
+    <h2>Annelida</h2>
+    <span class="latin">Segmented Worms</span>
+    <span class="badge" style="color:var(--annel);border-color:var(--annel)33">20 LO Qs</span>
+  </div>
+
+  <div class="facts">
+    <h3>Phylum-level Features</h3>
+    <ul>
+      <li>Body cavity: <strong>true coelom</strong> (fully lined by mesoderm)</li>
+      <li><strong>Segmentation</strong> — body divided into repeated units separated by <strong>septa</strong></li>
+    </ul>
+  </div>
+
+  <div class="sub">Class Comparison</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Class</th><th>Example</th><th>Habitat</th><th>Feeding</th><th>Setae/Appendages</th></tr>
+      <tr><td>Oligochaeta</td><td>Earthworm</td><td>Moist terrestrial soil</td><td>Detritivore</td><td>Setae on each segment (no parapodia)</td></tr>
+      <tr><td>Polychaeta</td><td>Bristle worms</td><td><strong>Marine</strong></td><td>Carnivore/filter feeder</td><td><strong>Parapodia</strong> (paddle-like lateral appendages; locomotion + gas exchange); setae on parapodia</td></tr>
+      <tr><td>Hirudinea</td><td>Leeches</td><td><strong>Freshwater</strong> + moist terrestrial</td><td>Ectoparasite or predator</td><td>No setae; <strong>oral</strong> (anterior) + <strong>caudal</strong> (posterior) <strong>suckers</strong></td></tr>
+    </table>
+  </div>
+  <div class="callout" style="border-color:var(--annel);font-size:12px">Oligochaeta + Hirudinea both belong to clade <strong>Clitellata</strong> (have a clitellum).</div>
+
+  <div class="sub">Earthworm Anatomy</div>
+  <div class="two-col">
+    <div class="facts">
+      <h3>Digestive Tract</h3>
+      <ul>
+        <li>Mouth → <strong>Crop</strong> (food storage) → <strong>Gizzard</strong> (muscular grinding) → Intestine → Anus</li>
+        <li><strong>Typhlosole</strong> — dorsal fold inside intestine; increases surface area for absorption</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Reproductive Organs</h3>
+      <ul>
+        <li><strong>Clitellum</strong> — swollen glandular band; forms cocoon around fertilized eggs</li>
+        <li><strong>Seminal vesicles</strong> — store and mature sperm before transfer</li>
+        <li><strong>Seminal receptacles</strong> — receive and store sperm from mating partner</li>
+        <li><strong>Nephridia</strong> — excretory organs (one pair per segment)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sub">Circulatory System</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Aortic arches</strong> — 5 pairs of muscular vessels; pump blood ("hearts")</li>
+      <li><strong>Dorsal blood vessel</strong> — carries blood <strong>anteriorly</strong> (toward head)</li>
+    </ul>
+  </div>
+
+  <div class="sub">Locomotion Mechanics</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Muscle</th><th>Effect on segment</th></tr>
+      <tr><td><strong>Longitudinal muscles contract</strong></td><td>Segment becomes <strong>shorter and fatter</strong> (wider)</td></tr>
+      <tr><td><strong>Circular muscles contract</strong></td><td>Segment becomes <strong>longer and thinner</strong></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ NEMATODA ═══════════════ -->
+<section class="section" id="nema">
+  <div class="section-head" style="border-color:var(--nema);color:var(--nema)">
+    <span class="icon">🔬</span>
+    <h2>Nematoda</h2>
+    <span class="latin">Roundworms — Ascaris lumbricoides</span>
+    <span class="badge" style="color:var(--nema);border-color:var(--nema)33">12 LO Qs</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Features</h3>
+    <ul>
+      <li><strong>Pseudocoel</strong> — body cavity NOT fully lined by mesoderm (unlike true coelom which IS)</li>
+      <li><strong>Cuticle</strong> — tough outer layer; resists host digestion</li>
+      <li><strong>Ecdysis (molting)</strong> — how nematodes grow despite rigid cuticle; this is why they belong to <strong>Ecdysozoa</strong></li>
+      <li><strong>Complete digestive system</strong> — two separate openings: <strong>mouth → pharynx → intestine → anus</strong></li>
+    </ul>
+  </div>
+
+  <div class="sub">Ascaris lumbricoides (Lab Specimen)</div>
+  <div class="two-col">
+    <div class="facts">
+      <h3>General</h3>
+      <ul>
+        <li><strong>Parasite of</strong> — small intestine of mammals</li>
+        <li><strong>Transmission</strong> — fecal-oral route (eggs in stool ingested by another host)</li>
+        <li><strong>Sexual dimorphism</strong> — <strong>female is larger</strong> than male</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Reproductive Anatomy</h3>
+      <ul>
+        <li><strong>Female</strong> — <em>oviduct</em> carries eggs from ovary</li>
+        <li><strong>Male</strong> — <em>ductus deferens</em> carries sperm from testis</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ARTHROPODA ═══════════════ -->
+<section class="section" id="arthr">
+  <div class="section-head" style="border-color:var(--arthr);color:var(--arthr)">
+    <span class="icon">🦞</span>
+    <h2>Arthropoda</h2>
+    <span class="latin">Crayfish, Insects, Spiders, Centipedes</span>
+    <span class="badge" style="color:var(--arthr);border-color:var(--arthr)33">21 LO Qs</span>
+  </div>
+
+  <div class="callout" style="border-color:var(--arthr)">
+    <strong>Ecdysozoa — Growth by molting</strong>
+    Arthropods have a rigid exoskeleton. Growth occurs by <strong>molting (ecdysis)</strong> — shedding the old exoskeleton and expanding before the new one hardens.
+  </div>
+
+  <div class="sub">Four Subphyla</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Subphylum</th><th>Examples</th><th>Body Regions</th><th>Legs</th><th>Key Mouthparts</th></tr>
+      <tr><td><strong>Chelicerata</strong></td><td>Spiders, scorpions, <strong>ticks</strong>, mites</td><td>2: <strong>cephalothorax + abdomen</strong></td><td>4 pairs (8 legs)</td><td><strong>Chelicerae</strong> (fang-like, venom); <strong>pedipalps</strong> (sensory/mating)</td></tr>
+      <tr><td><strong>Crustacea</strong></td><td>Crayfish, crabs, <strong>isopods</strong> (pillbugs), barnacles</td><td>Cephalothorax (head+thorax fused) + abdomen</td><td>5 pairs (decapods)</td><td><strong>Chelipeds</strong> (claws/defense); <strong>maxillipeds</strong> (food manipulation)</td></tr>
+      <tr><td><strong>Hexapoda</strong></td><td>Insects</td><td>3: <strong>head, thorax, abdomen</strong></td><td>3 pairs (6 legs) on <strong>thorax</strong></td><td>Mandibles; <strong>spiracles</strong> (breathing pores)</td></tr>
+      <tr><td><strong>Myriapoda</strong></td><td>Centipedes, millipedes</td><td>Head + many trunk segments</td><td>Many pairs</td><td>Mandibles</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Myriapoda — Centipedes vs Millipedes</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Class</th><th>Common name</th><th>Legs per segment</th></tr>
+      <tr><td>Chilopoda</td><td>Centipedes</td><td><strong>1 pair</strong></td></tr>
+      <tr><td>Diplopoda</td><td>Millipedes</td><td><strong>2 pairs</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Insect Orders</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Order</th><th>Common name</th></tr>
+      <tr><td>Lepidoptera</td><td>Butterflies &amp; moths</td></tr>
+      <tr><td>Diptera</td><td>Flies (housefly, mosquito)</td></tr>
+      <tr><td>Coleoptera</td><td>Beetles</td></tr>
+      <tr><td>Hymenoptera</td><td>Bees, wasps, ants</td></tr>
+      <tr><td>Orthoptera</td><td>Grasshoppers, crickets</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Other Key Facts</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Ticks</strong> — belong to <strong>Arachnida</strong> (Chelicerata), NOT insects</li>
+      <li><strong>Isopods (pillbugs/sowbugs)</strong> — belong to <strong>Crustacea</strong>, Order Isopoda</li>
+      <li><strong>Crayfish</strong> — Crustacea, Class Malacostraca</li>
+      <li><strong>Ommatidia</strong> — individual visual units making up the compound eye</li>
+      <li><strong>Cephalothorax</strong> — formed by fusion of head + thorax; covered dorsally by <strong>carapace</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ HISTOLOGY (TISSUES) ═══════════════ -->
+<section class="section" id="histo">
+  <div class="section-head" style="border-color:var(--histo);color:var(--histo)">
+    <span class="icon">🔬</span>
+    <h2>Animal Tissues</h2>
+    <span class="latin">Histology</span>
+    <span class="badge" style="color:var(--histo);border-color:var(--histo)33">20 LO Qs</span>
+  </div>
+
+  <div class="callout" style="border-color:var(--histo)">
+    <strong>The 4 major tissue types in animals</strong>
+    Epithelial · Connective · Muscle · Nervous
+  </div>
+
+  <div class="sub">Epithelial Tissue</div>
+  <div class="facts">
+    <ul>
+      <li>All epithelium sits on a <strong>basal lamina (basement membrane)</strong> — thin acellular ECM layer that anchors epithelium to underlying connective tissue</li>
+      <li><strong>Simple</strong> = single layer of cells (all touch basal lamina)</li>
+      <li><strong>Stratified</strong> = multiple layers (only bottom layer touches basal lamina)</li>
+    </ul>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Cell Shape</th><th>Location</th><th>Special Feature</th></tr>
+      <tr><td>Simple squamous</td><td>Flat</td><td>Blood vessel walls (endothelium)</td><td>—</td></tr>
+      <tr><td>Simple cuboidal</td><td>Cube-shaped</td><td>Kidney tubule lumen</td><td>—</td></tr>
+      <tr><td>Simple columnar</td><td>Column-shaped</td><td>Jejunum (gut) + trachea</td><td>Contains <strong>goblet cells</strong> (mucus-secreting)</td></tr>
+      <tr><td>Stratified squamous</td><td>Flat (surface)</td><td>Skin epidermis + esophagus</td><td>Abrasion-resistant</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Connective Tissue</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Cell / Type</th><th>Function / Feature</th></tr>
+      <tr><td><strong>Fibroblasts</strong></td><td>Produce <strong>collagen</strong> and <strong>elastin</strong> fibers in loose connective tissue</td></tr>
+      <tr><td><strong>Chondrocytes</strong></td><td>Cartilage cells</td></tr>
+      <tr><td><strong>Osteocytes</strong></td><td>Bone cells</td></tr>
+      <tr><td><strong>Erythrocytes (RBCs)</strong></td><td>Red blood cells; lack nucleus in mature form</td></tr>
+      <tr><td><strong>Loose areolar CT</strong></td><td>Collagen fibers + elastin fibers; many cell types; packing tissue</td></tr>
+      <tr><td><strong>Dense CT</strong></td><td>More densely packed collagen, fewer cells; forms tendons &amp; ligaments</td></tr>
+      <tr><td><strong>Blood (fluid CT)</strong></td><td>Liquid matrix = <strong>plasma</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Muscle Tissue</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Striated?</th><th>Voluntary?</th><th>Location</th></tr>
+      <tr><td>Skeletal muscle</td><td>Yes</td><td>Yes</td><td>Attached to bones</td></tr>
+      <tr><td>Cardiac muscle</td><td>Yes</td><td><strong>No</strong></td><td><strong>Heart only</strong>; intercalated discs</td></tr>
+      <tr><td>Smooth muscle</td><td>No</td><td>No</td><td>Blood vessel walls + digestive tract (gut)</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Nervous Tissue</div>
+  <div class="facts">
+    <ul>
+      <li><strong>Neurons</strong> — signal transmission (action potentials)</li>
+      <li><strong>Glial cells</strong> — structural support and insulation (e.g., Schwann cells, astrocytes)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ EMBRYOLOGY ═══════════════ -->
+<section class="section" id="embryo">
+  <div class="section-head" style="border-color:var(--embryo);color:var(--embryo)">
+    <span class="icon">🐸</span>
+    <h2>Embryology</h2>
+    <span class="latin">Developmental Stages — Frog, Sea Star, Chick</span>
+    <span class="badge" style="color:var(--embryo);border-color:var(--embryo)33">14 LO Qs</span>
+  </div>
+
+  <div class="sub">Developmental Sequence</div>
+  <div class="callout" style="border-color:var(--embryo)">
+    <strong>In order:</strong>
+    Unfertilized egg (haploid, n) → <strong>Fertilized egg</strong> (diploid, 2n) → Cleavage → <strong>Blastula</strong> → <strong>Gastrula</strong> → <strong>Early neurula</strong> → <strong>Late neurula</strong>
+  </div>
+
+  <div class="sub">Stage-by-Stage Summary</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Stage</th><th>Defining Structure</th><th>Key Event</th></tr>
+      <tr><td>Unfertilized egg</td><td>Single cell (haploid)</td><td>Product of meiosis</td></tr>
+      <tr><td>Blastula</td><td><strong>Blastocoel</strong> (fluid-filled central cavity)</td><td>Cleavage complete; hollow ball of cells</td></tr>
+      <tr><td>Gastrula</td><td><strong>Gastrocoel / archenteron</strong> (future gut)</td><td>3 germ layers form by invagination; blastocoel displaced/reduced</td></tr>
+      <tr><td>Early neurula</td><td><strong>Neural plate</strong> (flat, thickened dorsal ectoderm)</td><td>Neural induction by notochord</td></tr>
+      <tr><td>Late neurula</td><td><strong>Neural tube</strong> (closed hollow tube; edges of neural plate fuse)</td><td>Neural tube → brain + spinal cord</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Germ Layer Derivatives</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Germ Layer</th><th>Adult Structures</th></tr>
+      <tr><td><strong>Ectoderm</strong></td><td>Skin (epidermis) + nervous system; forms neural plate → neural tube</td></tr>
+      <tr><td><strong>Mesoderm</strong></td><td>Muscles, bones, circulatory system; forms <strong>notochord</strong> and <strong>somites</strong></td></tr>
+      <tr><td><strong>Endoderm</strong></td><td>Gut lining + digestive organs</td></tr>
+    </table>
+  </div>
+
+  <div class="sub">Key Embryonic Structures</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Origin</th><th>Function / Fate</th></tr>
+      <tr><td>Notochord</td><td>Mesoderm</td><td>Rod of support beneath neural tube; induces neural plate; replaced by vertebral column in adults</td></tr>
+      <tr><td>Neural plate</td><td>Ectoderm</td><td>Flat dorsal sheet → folds up to form neural tube (early neurula)</td></tr>
+      <tr><td>Neural tube</td><td>Ectoderm</td><td>Hollow tube → brain + spinal cord (late neurula)</td></tr>
+      <tr><td>Somites</td><td>Mesoderm (paraxial)</td><td>Paired blocks flanking neural tube; → vertebrae, skeletal muscles of trunk, dermis; best seen in <strong>chick embryo</strong> cross-sections</td></tr>
+      <tr><td>Gastrocoel (archenteron)</td><td>All 3 layers</td><td>Future gut; opens to outside via blastopore</td></tr>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══════════════ TAXONOMY MASTER TABLE ═══════════════ -->
+<section class="section" id="taxonomy">
+  <div class="section-head" style="border-color:#facc15;color:#facc15">
+    <span class="icon">🏷️</span>
+    <h2>Taxonomy Reference</h2>
+    <span class="latin">Classification of Lab Organisms</span>
+    <span class="badge" style="color:#facc15;border-color:#facc1533">25 LO Qs</span>
+  </div>
+
+  <div class="callout" style="border-color:#facc15">
+    <strong>How to read this table</strong>
+    Every row is one lab organism (or group). Columns go from broadest → most specific rank. <em>Italicized</em> entries are scientific names. The <strong>Lab specimen</strong> column names the exact genus/species used in BIO 212.
+  </div>
+
+  <!-- ── PHYLUM-LEVEL OVERVIEW ── -->
+  <div class="sub" style="color:#facc15">Phylum Overview — what goes where</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr>
+          <th>Common Group</th>
+          <th>Phylum</th>
+          <th>Key Traits</th>
+          <th>Lab Specimen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="common">Sponges</td><td class="sci">Porifera</td><td class="note">No true tissues; porous; sessile filter feeders</td><td class="note">Sponge (demonstration)</td></tr>
+        <tr><td class="common">Jellyfish, anemones, hydra, corals</td><td class="sci">Cnidaria</td><td class="note">Cnidocytes; radial symmetry; diploblastic; GVC</td><td class="note"><em>Aurelia</em> (jellyfish), Hydra</td></tr>
+        <tr><td class="common">Flatworms (planarians, tapeworms, flukes)</td><td class="sci">Platyhelminthes</td><td class="note">Acoelomate; dorsoventrally flattened; incomplete gut (except Cestoda: no gut)</td><td class="note"><em>Dugesia</em>, tapeworm slides</td></tr>
+        <tr><td class="common">Roundworms</td><td class="sci">Nematoda</td><td class="note">Pseudocoelomate; cuticle; complete gut; Ecdysozoa</td><td class="note"><em>Ascaris lumbricoides</em></td></tr>
+        <tr><td class="common">Segmented worms (earthworms, leeches, polychaetes)</td><td class="sci">Annelida</td><td class="note">True coelom; segmented; closed circulatory system</td><td class="note"><em>Lumbricus terrestris</em></td></tr>
+        <tr><td class="common">Snails, clams, squid, chitons</td><td class="sci">Mollusca</td><td class="note">Foot + mantle + visceral mass; hemocoel; open circ. (except Cephalopoda)</td><td class="note"><em>Loligo</em> (squid), clam</td></tr>
+        <tr><td class="common">Insects, crustaceans, spiders, centipedes, millipedes</td><td class="sci">Arthropoda</td><td class="note">Jointed appendages; chitin exoskeleton; segmented; open circ.</td><td class="note">Crayfish, grasshopper, spider</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── CNIDARIA ── -->
+  <div class="sub" style="color:var(--cnidaria)">Phylum Cnidaria — Classes</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Class</th><th>Common Name</th><th>Body Form</th><th>Lab Example / Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Hydrozoa</td>
+          <td class="common">Hydrozoans</td>
+          <td class="note">Both polyp AND medusa</td>
+          <td class="note"><em>Hydra</em> (polyp only); Portuguese man-of-war (colonial)</td>
+        </tr>
+        <tr>
+          <td class="sci">Scyphozoa</td>
+          <td class="common">True jellyfish</td>
+          <td class="note">Medusa dominant; polyp small/reduced</td>
+          <td class="note"><em>Aurelia aurita</em> (moon jelly) — lab specimen</td>
+        </tr>
+        <tr>
+          <td class="sci">Anthozoa</td>
+          <td class="common">Sea anemones &amp; corals</td>
+          <td class="note">Polyp ONLY — no medusa ever</td>
+          <td class="note">Sea anemones, reef corals, sea pens</td>
+        </tr>
+        <tr>
+          <td class="sci">Cubozoa</td>
+          <td class="common">Box jellyfish</td>
+          <td class="note">Cube-shaped medusa; most venomous</td>
+          <td class="note">Not a lab specimen — know it exists</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── PLATYHELMINTHES ── -->
+  <div class="sub" style="color:var(--platy)">Phylum Platyhelminthes — Classes</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Class</th><th>Common Name</th><th>Lifestyle</th><th>Gut</th><th>Lab Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Turbellaria</td>
+          <td class="common">Planarians / free-living flatworms</td>
+          <td class="note">Free-living; freshwater (mostly)</td>
+          <td class="note">Incomplete (1 opening)</td>
+          <td class="note"><em>Dugesia tigrina</em></td>
+        </tr>
+        <tr>
+          <td class="sci">Trematoda</td>
+          <td class="common">Flukes</td>
+          <td class="note">Endoparasite; oral + ventral suckers</td>
+          <td class="note">Incomplete (1 opening)</td>
+          <td class="note"><em>Fasciola hepatica</em> (liver fluke), <em>Schistosoma</em></td>
+        </tr>
+        <tr>
+          <td class="sci">Cestoda</td>
+          <td class="common">Tapeworms</td>
+          <td class="note">Endoparasite; scolex + proglottids</td>
+          <td class="note"><strong>None</strong> — absorb through tegument</td>
+          <td class="note"><em>Taenia</em> spp.; tapeworm slides</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── ANNELIDA ── -->
+  <div class="sub" style="color:var(--annel)">Phylum Annelida — Classes / Clades</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Class / Clade</th><th>Common Name</th><th>Setae</th><th>Habitat</th><th>Lab Specimen</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Polychaeta</td>
+          <td class="common">Bristle worms (marine)</td>
+          <td class="note">Many setae on parapodia</td>
+          <td class="note">Marine</td>
+          <td class="note"><em>Nereis</em> (clamworm)</td>
+        </tr>
+        <tr>
+          <td colspan="5" class="note" style="padding:4px 12px;font-size:11px;color:var(--muted);font-style:italic">↳ Clade <strong>Clitellata</strong> unites Oligochaeta + Hirudinea (shared character: the clitellum)</td>
+        </tr>
+        <tr>
+          <td class="sci">Oligochaeta</td>
+          <td class="common">Earthworms</td>
+          <td class="note">Few setae per segment; no parapodia</td>
+          <td class="note">Terrestrial / freshwater</td>
+          <td class="note"><em>Lumbricus terrestris</em></td>
+        </tr>
+        <tr>
+          <td class="sci">Hirudinea</td>
+          <td class="common">Leeches</td>
+          <td class="note">No setae; anterior + posterior suckers</td>
+          <td class="note">Freshwater / moist terrestrial</td>
+          <td class="note"><em>Hirudo medicinalis</em> (medicinal leech)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── MOLLUSCA ── -->
+  <div class="sub" style="color:var(--mollu)">Phylum Mollusca — Classes</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Class</th><th>Common Name</th><th>Shell</th><th>Radula?</th><th>Lab Specimen</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Gastropoda</td>
+          <td class="common">Snails &amp; slugs</td>
+          <td class="note">Single spiral (absent in slugs)</td>
+          <td class="note">✓ Yes</td>
+          <td class="note">Snail / slug (Class demo)</td>
+        </tr>
+        <tr>
+          <td class="sci">Bivalvia</td>
+          <td class="common">Clams, oysters, mussels, scallops</td>
+          <td class="note">Two hinged valves</td>
+          <td class="note">✗ No radula</td>
+          <td class="note">Clam dissection</td>
+        </tr>
+        <tr>
+          <td class="sci">Cephalopoda</td>
+          <td class="common">Squid, octopus, nautilus, cuttlefish</td>
+          <td class="note">Reduced / internal / absent</td>
+          <td class="note">✓ Yes + beak</td>
+          <td class="note"><em>Loligo</em> (squid dissection)</td>
+        </tr>
+        <tr>
+          <td class="sci">Polyplacophora</td>
+          <td class="common">Chitons</td>
+          <td class="note">8 overlapping dorsal plates</td>
+          <td class="note">✓ Yes</td>
+          <td class="note">Chiton (demonstration)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── ARTHROPODA ── -->
+  <div class="sub" style="color:var(--arthr)">Phylum Arthropoda — Subphyla &amp; Classes</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Subphylum</th><th>Class</th><th>Common Name</th><th>Legs</th><th>Body Regions</th><th>Lab / Notes</th></tr>
+      </thead>
+      <tbody>
+        <!-- Chelicerata -->
+        <tr class="group-hd"><td colspan="6">Subphylum Chelicerata — chelicerae (no antennae)</td></tr>
+        <tr>
+          <td class="sci" rowspan="2">Chelicerata</td>
+          <td class="sci">Arachnida</td>
+          <td class="common">Spiders, scorpions, ticks, mites</td>
+          <td class="note">8 (4 pairs)</td>
+          <td class="note">Cephalothorax + abdomen</td>
+          <td class="note">Spider dissection; ticks = arachnids, NOT insects</td>
+        </tr>
+        <tr>
+          <td class="sci">Merostomata</td>
+          <td class="common">Horseshoe crabs</td>
+          <td class="note">10 walking</td>
+          <td class="note">Cephalothorax + abdomen + telson</td>
+          <td class="note">Living fossil; not a true crab</td>
+        </tr>
+        <!-- Crustacea -->
+        <tr class="group-hd"><td colspan="6">Subphylum Crustacea — 2 pairs antennae; gills</td></tr>
+        <tr>
+          <td class="sci" rowspan="2">Crustacea</td>
+          <td class="sci">Malacostraca</td>
+          <td class="common">Lobsters, crabs, crayfish, shrimp, pill bugs</td>
+          <td class="note">10 (decapods) / varies</td>
+          <td class="note">Cephalothorax + abdomen</td>
+          <td class="note">Crayfish dissection (Order Decapoda); pill bugs = Order Isopoda</td>
+        </tr>
+        <tr>
+          <td class="sci">Maxillopoda</td>
+          <td class="common">Barnacles, copepods</td>
+          <td class="note">Reduced / varies</td>
+          <td class="note">Varies</td>
+          <td class="note">Barnacles are sessile crustaceans</td>
+        </tr>
+        <!-- Hexapoda -->
+        <tr class="group-hd"><td colspan="6">Subphylum Hexapoda — 6 legs; 1 pair antennae; tracheae</td></tr>
+        <tr>
+          <td class="sci">Hexapoda</td>
+          <td class="sci">Insecta</td>
+          <td class="common">Insects</td>
+          <td class="note">6 (3 pairs on thorax)</td>
+          <td class="note">Head + thorax + abdomen</td>
+          <td class="note">Grasshopper dissection; 4 major orders below ↓</td>
+        </tr>
+        <!-- Myriapoda -->
+        <tr class="group-hd"><td colspan="6">Subphylum Myriapoda — many legs; 1 pair antennae</td></tr>
+        <tr>
+          <td class="sci" rowspan="2">Myriapoda</td>
+          <td class="sci">Chilopoda</td>
+          <td class="common">Centipedes</td>
+          <td class="note">1 pair / segment</td>
+          <td class="note">Head + long trunk</td>
+          <td class="note">Predatory; venomous forcipules</td>
+        </tr>
+        <tr>
+          <td class="sci">Diplopoda</td>
+          <td class="common">Millipedes</td>
+          <td class="note">2 pairs / segment</td>
+          <td class="note">Head + long trunk</td>
+          <td class="note">Detritivores; cylindrical body</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── INSECT ORDERS ── -->
+  <div class="sub" style="color:var(--arthr)">Class Insecta — Orders you need to know</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Order</th><th>Meaning</th><th>Common Name</th><th>Examples</th><th>Wing Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Coleoptera</td>
+          <td class="note">Sheath-winged</td>
+          <td class="common">Beetles</td>
+          <td class="note">Ladybug, weevil, firefly</td>
+          <td class="note">Front wings = hardened elytra; largest insect order</td>
+        </tr>
+        <tr>
+          <td class="sci">Diptera</td>
+          <td class="note">Two-winged</td>
+          <td class="common">Flies</td>
+          <td class="note">Housefly, mosquito, fruit fly</td>
+          <td class="note">1 functional wing pair; hind wings = halteres (balance)</td>
+        </tr>
+        <tr>
+          <td class="sci">Lepidoptera</td>
+          <td class="note">Scale-winged</td>
+          <td class="common">Butterflies &amp; moths</td>
+          <td class="note">Monarch butterfly, silk moth</td>
+          <td class="note">Wings covered in tiny scales; coiled proboscis</td>
+        </tr>
+        <tr>
+          <td class="sci">Hymenoptera</td>
+          <td class="note">Membrane-winged</td>
+          <td class="common">Bees, wasps, ants</td>
+          <td class="note">Honeybee, yellow jacket, fire ant</td>
+          <td class="note">4 transparent wings; highly social; some wingless (ants)</td>
+        </tr>
+        <tr>
+          <td class="sci">Orthoptera</td>
+          <td class="note">Straight-winged</td>
+          <td class="common">Grasshoppers &amp; crickets</td>
+          <td class="note">Grasshopper, cricket, katydid</td>
+          <td class="note">Large hind legs for jumping; lab dissection organism</td>
+        </tr>
+        <tr>
+          <td class="sci">Hemiptera</td>
+          <td class="note">Half-winged</td>
+          <td class="common">True bugs</td>
+          <td class="note">Stink bug, bed bug, aphid</td>
+          <td class="note">Piercing-sucking mouthparts; half-membranous front wing</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── LAB GENUS NAMES ── -->
+  <div class="sub" style="color:#facc15">Lab Specimen Genus Names — memorize these</div>
+  <div class="tax-wrap">
+    <table class="tax-tbl">
+      <thead>
+        <tr><th>Genus &amp; Species</th><th>Common Name</th><th>Phylum</th><th>Class</th><th>Key ID Feature</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sci">Dugesia tigrina</td>
+          <td class="common">Planarian / flatworm</td>
+          <td class="sci">Platyhelminthes</td>
+          <td class="sci">Turbellaria</td>
+          <td class="note">Cross-eyed appearance; regenerates; freshwater</td>
+        </tr>
+        <tr>
+          <td class="sci">Taenia spp.</td>
+          <td class="common">Tapeworm</td>
+          <td class="sci">Platyhelminthes</td>
+          <td class="sci">Cestoda</td>
+          <td class="note">Scolex + rostellum + proglottids; no gut</td>
+        </tr>
+        <tr>
+          <td class="sci">Fasciola hepatica</td>
+          <td class="common">Liver fluke</td>
+          <td class="sci">Platyhelminthes</td>
+          <td class="sci">Trematoda</td>
+          <td class="note">Leaf-shaped; oral + ventral suckers</td>
+        </tr>
+        <tr>
+          <td class="sci">Ascaris lumbricoides</td>
+          <td class="common">Giant roundworm</td>
+          <td class="sci">Nematoda</td>
+          <td class="note">—</td>
+          <td class="note">Large; female straight tail; male curved tail + spicule</td>
+        </tr>
+        <tr>
+          <td class="sci">Lumbricus terrestris</td>
+          <td class="common">Common earthworm</td>
+          <td class="sci">Annelida</td>
+          <td class="sci">Oligochaeta</td>
+          <td class="note">Clitellum on segments 32–37; 5 pairs aortic arches</td>
+        </tr>
+        <tr>
+          <td class="sci">Nereis virens</td>
+          <td class="common">Clamworm / polychaete</td>
+          <td class="sci">Annelida</td>
+          <td class="sci">Polychaeta</td>
+          <td class="note">Parapodia with many setae; marine; predatory pharynx</td>
+        </tr>
+        <tr>
+          <td class="sci">Hirudo medicinalis</td>
+          <td class="common">Medicinal leech</td>
+          <td class="sci">Annelida</td>
+          <td class="sci">Hirudinea</td>
+          <td class="note">Anterior + posterior suckers; no setae; Clitellata</td>
+        </tr>
+        <tr>
+          <td class="sci">Loligo / Doryteuthis</td>
+          <td class="common">Market squid</td>
+          <td class="sci">Mollusca</td>
+          <td class="sci">Cephalopoda</td>
+          <td class="note">8 arms + 2 tentacles; internal pen; ink sac; siphon</td>
+        </tr>
+        <tr>
+          <td class="sci">Aurelia aurita</td>
+          <td class="common">Moon jelly</td>
+          <td class="sci">Cnidaria</td>
+          <td class="sci">Scyphozoa</td>
+          <td class="note">4-fold symmetry; 4 horseshoe-shaped gonads visible</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── QUICK MEMORY AIDS ── -->
+  <div class="sub" style="color:#facc15">Memory Hooks</div>
+  <div class="two-col">
+    <div class="facts">
+      <h3>Legs by group</h3>
+      <ul>
+        <li><strong>Insects</strong> — 6 legs, 3 body regions</li>
+        <li><strong>Arachnids</strong> — 8 legs, 2 body regions</li>
+        <li><strong>Decapod crustaceans</strong> — 10 legs</li>
+        <li><strong>Centipedes</strong> — 1 pair per segment (odd-total)</li>
+        <li><strong>Millipedes</strong> — 2 pairs per segment</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Shell / cavity trick</h3>
+      <ul>
+        <li><strong>Porifera</strong> — spongocoel (central cavity)</li>
+        <li><strong>Cnidaria</strong> — gastrovascular cavity (GVC)</li>
+        <li><strong>Platyhelminthes</strong> — no cavity (acoelomate)</li>
+        <li><strong>Nematoda</strong> — pseudocoel</li>
+        <li><strong>Annelida / Mollusca</strong> — true coelom</li>
+        <li><strong>Mollusca open circ.</strong> — hemocoel (blood-filled)</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Cnidaria body forms</h3>
+      <ul>
+        <li><strong>Hydrozoa</strong> — polyp AND medusa (hydra = polyp only)</li>
+        <li><strong>Scyphozoa</strong> — medusa dominant</li>
+        <li><strong>Anthozoa</strong> — polyp ONLY, never medusa</li>
+      </ul>
+    </div>
+    <div class="facts">
+      <h3>Platyhelminthes gut rule</h3>
+      <ul>
+        <li><strong>Turbellaria</strong> — incomplete gut (1 opening)</li>
+        <li><strong>Trematoda</strong> — incomplete gut (1 opening)</li>
+        <li><strong>Cestoda</strong> — NO gut at all (absorb through skin)</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+</div>
+
+<script>
+if (new URLSearchParams(location.search).get('bare') === '1') {
+  document.getElementById('topnav').style.display = 'none';
+  document.querySelector('.container').style.paddingTop = '20px';
+}
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'gotoSection') {
+    const el = document.getElementById(e.data.section);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 – Myriapoda Anatomy Quiz</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#f97316;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:12px}
+.logo{font-weight:700;font-size:.9rem;color:var(--muted);text-decoration:none;white-space:nowrap}.logo:hover{color:var(--text)}
+.nav-title{font-weight:700;font-size:.95rem;color:var(--text)}.nav-latin{font-size:.78rem;color:var(--muted);font-style:italic}
+.page{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.4rem;margin-bottom:4px}.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.setup-title{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#f97316,#ef4444,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cat-label-row label{font-size:.78rem;color:var(--muted)}.cat-label-row button{font-size:.68rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0}.cat-label-row button:hover{text-decoration:underline}
+.cat-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.cat-pill{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;user-select:none;transition:border-color .15s,background .15s,color .15s}.cat-pill:hover{color:var(--text)}.cat-pill.on{color:var(--text)}
+.cat-pill .cp-icon{font-size:1.3rem;line-height:1;margin-bottom:2px}.cat-pill .cp-label{font-size:.74rem;font-weight:600;line-height:1.3}.cat-pill .cp-count{font-size:.62rem;opacity:.55}
+.setup-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.count-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.count-seg button{background:var(--card);border:none;border-right:1px solid var(--border);color:var(--muted);font-size:.82rem;font-weight:500;padding:10px 14px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}.count-seg button:last-child{border-right:none}.count-seg button.active{background:var(--card2);color:var(--text);font-weight:700}
+.pool-preview{font-size:.74rem;color:var(--muted);margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;transition:opacity .15s,transform .12s}.btn:hover{opacity:.88}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted)}.btn.ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,#f97316,#dc2626);box-shadow:0 4px 20px rgba(249,115,22,.35);font-size:.95rem;padding:12px 28px}.btn.primary:hover{opacity:1;transform:translateY(-2px)}
+.prog-wrap{margin-bottom:16px}.prog-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}.prog-fill{height:100%;background:linear-gradient(90deg,#f97316,#ef4444);border-radius:99px;transition:width .4s ease}.prog-label{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:5px}
+@keyframes pulse-dot{0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 0 rgba(249,115,22,.6)}50%{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 8px rgba(249,115,22,0)}}
+.img-wrap{position:relative;border-radius:12px;overflow:hidden;background:#0a0c14;border:1px solid var(--border);margin-bottom:14px}
+.q-img{width:100%;height:auto;display:block;max-height:420px;object-fit:contain;object-position:center}
+.overlay-dot{position:absolute;width:28px;height:28px;border-radius:50%;border:3px solid #f97316;background:rgba(249,115,22,.25);transform:translate(-50%,-50%);pointer-events:none;animation:pulse-dot 1.6s ease-in-out infinite;z-index:10}
+.img-credit{font-size:.65rem;color:var(--muted);padding:4px 10px;text-align:right;background:rgba(0,0,0,.3);border-top:1px solid var(--border)}.img-error{display:none;padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}.q-header{padding:12px 18px 0;display:flex;align-items:center;gap:8px}.q-num{font-size:.77rem;color:var(--muted)}.q-tag{font-size:.7rem;border-radius:99px;padding:2px 9px}.q-body{padding:14px 18px 16px;font-size:.95rem;line-height:1.65;font-weight:500}
+@keyframes optIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.opts{padding:0 18px 4px;display:flex;flex-direction:column;gap:9px}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:11px;padding:11px 14px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:11px;transition:border-color .12s,background .12s,transform .1s;line-height:1.5;animation:optIn .2s ease both}.opt:hover:not(.locked){border-color:var(--accent);background:rgba(249,115,22,.07);transform:translateX(3px)}
+.ltr{min-width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .15s}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08)}.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff}.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08)}.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff}.opt.locked{cursor:default}
+@keyframes fbIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.feedback{margin:10px 18px 0;padding:12px 16px;border-radius:11px;font-size:.84rem;line-height:1.65;display:none;font-weight:500}.feedback.show{display:block;animation:fbIn .2s ease both}.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac}.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}.feedback .exp{font-size:.79rem;margin-top:7px;opacity:.85;font-weight:400;font-style:italic;padding-top:7px;border-top:1px solid rgba(255,255,255,.1)}
+.q-nav{padding:12px 18px 16px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px}.q-nav .go{margin-left:auto}
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:36px 20px 20px}.ring-wrap{width:130px;height:130px;margin:0 auto 16px;position:relative}.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both}.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.ring-pct{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.ring-sub{font-size:.66rem;color:var(--muted)}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap}.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:80px}.stat .val{font-size:1.35rem;font-weight:700;color:var(--accent)}.stat .lbl{font-size:.66rem;color:var(--muted);margin-top:2px}.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.review-out{margin-top:28px;text-align:left}.rv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}.rv-img{width:100%;max-height:200px;object-fit:contain;background:#0a0c14;display:block}.rv-body{padding:12px 14px}.rv-status{font-size:.7rem;font-weight:700;margin-bottom:3px}.rv-cat{font-size:.72rem;margin-bottom:7px}.rv-q{font-size:.86rem;line-height:1.6;margin-bottom:8px}.rv-answer{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:6px;margin-top:4px;font-size:.81rem}.rv-answer.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}.rv-answer .dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.55rem;margin-top:1px}.rv-answer.ok .dot{background:var(--green);color:#fff}.rv-exp{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.55}
+@media(max-width:600px){.cat-pills{grid-template-columns:repeat(2,1fr)}.q-img{max-height:260px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">← BIO 212</a>
+  <span class="nav-title">Myriapoda</span>
+  <span class="nav-latin">Centipedes &amp; Millipedes</span>
+</nav>
+<div id="pane-setup"><div class="page">
+  <h1>Myriapoda Anatomy Quiz</h1>
+  <p class="sub">Subphylum Myriapoda · Chilopoda (centipedes) &amp; Diplopoda (millipedes) · Structures &amp; comparison</p>
+  <div class="setup-header"><span class="setup-title">Select Groups</span></div>
+  <div class="cat-label-row"><label>Choose groups to study</label><button onclick="selectAll()">Select All</button></div>
+  <div class="cat-pills" id="cat-pills"></div>
+  <div class="pool-preview" id="pool-preview"></div>
+  <div class="setup-controls">
+    <div class="count-seg" id="count-seg">
+      <button onclick="setCount(10,this)">10</button>
+      <button onclick="setCount(999,this)" class="active">All</button>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div></div>
+<div id="pane-quiz" style="display:none"><div class="page">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label"><span id="prog-text">Question 1</span><span id="prog-score">0 correct</span></div>
+  </div>
+  <div class="img-wrap">
+    <img class="q-img" id="q-img" src="" alt="Anatomy diagram" onerror="imgError()">
+    <div class="overlay-dot" id="overlay-dot" style="left:50%;top:50%"></div>
+    <div class="img-error" id="img-error">⚠ Image failed to load — use the question text to identify the structure.</div>
+  </div>
+  <div class="img-credit" id="img-credit"></div>
+  <div class="q-card">
+    <div class="q-header"><span class="q-num" id="q-num"></span><span class="q-tag" id="q-tag"></span></div>
+    <div class="q-body" id="q-body"></div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb"></div>
+    <div class="q-nav">
+      <button class="btn ghost" onclick="goBack()">← Back</button>
+      <button class="btn sec" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" style="display:none" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div></div>
+<div id="pane-results" style="display:none"><div class="page">
+  <div class="results">
+    <div class="ring-wrap">
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle id="ring-arc" cx="65" cy="65" r="54" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3" style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="ring-txt"><div class="ring-pct" id="r-pct">0%</div><div class="ring-sub">score</div></div>
+    </div>
+    <div id="r-grade" style="font-size:1.1rem;font-weight:700;margin-bottom:6px"></div>
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:16px" id="r-msg"></div>
+    <div class="stat-row">
+      <div class="stat"><div class="val" id="r-cor" style="color:var(--green)">0</div><div class="lbl">Correct</div></div>
+      <div class="stat"><div class="val" id="r-wrg" style="color:var(--red)">0</div><div class="lbl">Wrong</div></div>
+      <div class="stat"><div class="val" id="r-skp">0</div><div class="lbl">Skipped</div></div>
+    </div>
+    <div class="act-row">
+      <button class="btn primary" onclick="startQuiz()">Try Again</button>
+      <button class="btn sec" id="btn-retry-wrong" onclick="retryWrong()" style="display:none">↩ Retry Wrong</button>
+      <button class="btn sec" onclick="showSetup()">Change Settings</button>
+      <button class="btn sec" onclick="reviewAnswers()">Review Answers ↓</button>
+    </div>
+  </div>
+  <div class="review-out" id="review-out"></div>
+</div></div>
+<script>
+const IMGS={
+  CI: 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Scolopendra_cingulata.jpg',
+  CI2:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Scolopendra_cingulata.jpg/640px-Scolopendra_cingulata.jpg',
+  SCO:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Scutigera_coleoptrata_MHNT.jpg/640px-Scutigera_coleoptrata_MHNT.jpg',
+  MI: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Narceus_gordanus.jpg/640px-Narceus_gordanus.jpg',
+  MI2:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Millipede_coil.jpg/640px-Millipede_coil.jpg',
+  CMP:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Myriapoda.jpg/640px-Myriapoda.jpg',
+};
+const IMG_CREDIT={
+  CI: 'Wikimedia Commons · Scolopendra cingulata — centipede (Chilopoda)',
+  CI2:'Wikimedia Commons · Scolopendra cingulata — centipede (Chilopoda)',
+  SCO:'Wikimedia Commons · Scutigera coleoptrata — house centipede (Chilopoda)',
+  MI: 'Wikimedia Commons · Narceus gordanus — millipede (Diplopoda)',
+  MI2:'Wikimedia Commons · Millipede coiled in defense posture (Diplopoda)',
+  CMP:'Wikimedia Commons · Myriapoda — centipede and millipede comparison',
+};
+const CATS=[
+  {id:'chi', label:'Chilopoda (Centipedes)',  icon:'🦴', color:'#f97316'},
+  {id:'dip', label:'Diplopoda (Millipedes)',  icon:'🪱', color:'#22c55e'},
+  {id:'cmp', label:'Comparison & ID',         icon:'🔍', color:'#a855f7'},
+];
+const ALL_Q=[
+// ── CHILOPODA (CENTIPEDES) ────────────────────────────────────────────────────
+{id:1,cat:'chi',img:'CI2',ox:50,oy:50,
+ q:'Centipedes belong to Class Chilopoda. The most important structural rule is: each body segment bears exactly ___ pair(s) of legs.',
+ a:['One pair of legs per segment','Two pairs of legs per segment','Three pairs of legs per segment','Four pairs per segment'],c:0,
+ exp:'ONE pair of walking legs per trunk segment is the defining feature of Chilopoda. This contrasts with Diplopoda (millipedes) which have TWO pairs per diplosegment. In a centipede, count segments and compare: leg pairs = segments (approximately).'},
+
+{id:2,cat:'chi',img:'CI2',ox:10,oy:50,
+ q:'On the first body segment just behind the head, centipedes bear a pair of large, fang-like poison claws used to inject venom into prey. These modified legs are called ___.',
+ a:['Forcipules (poison claws)','Chelicerae','Pedipalps','Maxillipeds'],c:0,
+ exp:'Forcipules (= prehensors, toxicognaths) are the modified first trunk appendages of centipedes. They curve around the head and inject venom through a terminal fang. They are unique to Chilopoda. Despite looking like mouthparts they are actually modified legs.'},
+
+{id:3,cat:'chi',img:'CI2',ox:5,oy:35,
+ q:'The HEAD of a centipede bears how many pairs of antennae?',
+ a:['One pair (antennae)','Two pairs (like crustacea)','No antennae (like chelicerates)','Three pairs'],c:0,
+ exp:'Myriapoda (centipedes and millipedes) have ONE pair of antennae, like insects. This distinguishes them from Crustacea (2 pairs) and Chelicerata (0 pairs). The single pair of antennae is located on the anterior dorsal surface of the head.'},
+
+{id:4,cat:'chi',img:'CI2',ox:95,oy:50,
+ q:'In many centipede species, the last pair of legs is longer than the others and projects posteriorly — often used for defense or tactile sensing. What is this last leg pair called?',
+ a:['Posterior legs (ultima legs / anal legs)','Telson','Uropods','Cerci'],c:0,
+ exp:'The last (posterior-most) leg pair in centipedes is often elongated, sensory, and defensive. In some species it mimics the antennae (escape behavior: run backward). Unlike insect cerci, these are true walking legs that have been modified.'},
+
+{id:5,cat:'chi',img:'CI2',ox:30,oy:50,
+ q:'Centipedes are PREDATORY. They use their venom to ___.',
+ a:['Immobilize prey (insects, worms, small vertebrates)','Digest plant material','Defend against dehydration','Build nests'],c:0,
+ exp:'Centipedes are predatory carnivores. The forcipule venom contains enzymes, proteins, and toxins that immobilize or kill prey. Large tropical centipedes (Scolopendra) can prey on small vertebrates like mice, frogs, and lizards.'},
+
+{id:6,cat:'chi',img:'SCO',ox:50,oy:50,
+ q:'The house centipede (Scutigera coleoptrata) has very LONG legs and runs rapidly. The extremely long legs compared to body size are an adaptation for ___.',
+ a:['High-speed running and prey capture','Burrowing through soil','Swimming','Defense against predators'],c:0,
+ exp:'Scutigera coleoptrata is an adapted sprinter: its very long legs allow high speed. Unlike most centipedes that are soil-dwelling, house centipedes hunt on surfaces in houses. Their long legs also prevent body contact with the ground — useful on uneven terrain.'},
+
+// ── DIPLOPODA (MILLIPEDES) ────────────────────────────────────────────────────
+{id:7,cat:'dip',img:'MI',ox:50,oy:50,
+ q:'Millipedes belong to Class Diplopoda. The most important structural rule: most apparent segments bear ___ pairs of legs.',
+ a:['Two pairs of legs per diplosegment','One pair per segment','Three pairs per segment','No legs in some segments'],c:0,
+ exp:'TWO pairs of legs per apparent segment is the defining feature of Diplopoda. "Diplo" = double, "poda" = foot. What appears to be one segment is actually a DIPLOSEGMENT — two fused segments bearing two leg pairs. So millipedes have 2× as many legs per visual unit as centipedes.'},
+
+{id:8,cat:'dip',img:'MI',ox:50,oy:40,
+ q:'The apparent double-segments of millipedes are formed by the FUSION of two adjacent segments. Each fused unit is called a ___.',
+ a:['Diplosegment','Metasoma','Somite','Tergite'],c:0,
+ exp:'A diplosegment is two ancestrally separate segments that have fused into one apparent ring during evolution. Each diplosegment has two sternites, two tergites (fused dorsally), and two pairs of legs. This fusion is the source of the "double-legs" feature.'},
+
+{id:9,cat:'dip',img:'MI2',ox:50,oy:50,
+ q:'Many millipede species roll into a tight spiral when threatened. What defense mechanism does this expose — besides the hard exoskeleton?',
+ a:['Repugnatorial glands secreting toxic/repellent chemicals','Venom injection','Stinging hairs','Electric discharge'],c:0,
+ exp:'Millipedes have repugnatorial glands (ozadenes) along the lateral margins of the body. When threatened, they secrete chemical repellents including quinones, hydrogen cyanide, phenols, and alkaloids. Rolling coils up the body to protect the legs and expose the hard dorsum.'},
+
+{id:10,cat:'dip',img:'MI',ox:50,oy:50,
+ q:'Unlike centipedes, millipedes are generally ___ in their diet.',
+ a:['Detritivores/herbivores (eat decaying plant matter)','Predatory carnivores','Omnivores feeding on insects','Filter feeders'],c:0,
+ exp:'Most millipedes are detritivores — they eat decaying leaves, wood, fungi, and organic debris. A few species eat living plant roots. Their ecological role is decomposition and nutrient cycling. They do NOT have venom claws.'},
+
+{id:11,cat:'dip',img:'MI',ox:70,oy:55,
+ q:'In male millipedes, one or two pairs of legs on a specific segment are modified for sperm transfer and are called ___.',
+ a:['Gonopods','Forcipules','Chelipeds','Pleopods'],c:0,
+ exp:'Gonopods are modified legs in male millipedes used to transfer spermatophores to the female. Their structure is taxonomically important — gonopod morphology is the primary character used to identify millipede species. They are located on the 7th body ring in most groups.'},
+
+{id:12,cat:'dip',img:'MI',ox:5,oy:50,
+ q:'Millipede antennae are short (compared to centipedes) and consist of 7 segments. How many pairs of antennae do millipedes have?',
+ a:['One pair','Two pairs','No antennae','Three pairs'],c:0,
+ exp:'Millipedes have ONE pair of short, 7-segmented antennae — the same as centipedes and insects. The single antenna pair is a myriapod/insect character (Mandibulata). Crustacea have two pairs; Chelicerata have none.'},
+
+// ── COMPARISON & ID ───────────────────────────────────────────────────────────
+{id:13,cat:'cmp',img:'CMP',ox:30,oy:50,
+ q:'Which feature MOST RELIABLY distinguishes a centipede (Chilopoda) from a millipede (Diplopoda) when looking at the body segments?',
+ a:['1 leg pair per segment (centipede) vs 2 leg pairs per segment (millipede)','Body color','Head shape','Number of eyes'],c:0,
+ exp:'Leg count per segment is the definitive distinction: centipedes have 1 pair per segment, millipedes have 2 pairs per diplosegment (= double segment). On an exam slide or specimen, count legs per ring: 2 legs = centipede segment; 4 legs = millipede diplosegment.'},
+
+{id:14,cat:'cmp',img:'CMP',ox:70,oy:50,
+ q:'Centipedes have forcipules (poison claws). Which arthropod group is the centipede most likely to be CONFUSED with due to similar elongated, many-legged body form?',
+ a:['Millipedes (Diplopoda)','Insects (Hexapoda)','Worms (Annelida)','Scorpions (Arachnida)'],c:0,
+ exp:'Millipedes are the most frequent source of confusion with centipedes. Both are elongated, multi-legged myriapods. Key differences: centipedes = 1 leg pair/segment, predatory, fast; millipedes = 2 leg pairs/segment, detritivore, slow, rolls into ball.'},
+
+{id:15,cat:'cmp',img:'CI2',ox:50,oy:50,
+ q:'Both centipedes and millipedes belong to Subphylum Myriapoda. How many pairs of antennae do myriapods have?',
+ a:['One pair','Two pairs (like crustacea)','No antennae (like chelicerates)','Four pairs'],c:0,
+ exp:'Myriapoda (centipedes + millipedes + pauropods + symphylans) have ONE pair of antennae. This places them with insects (Hexapoda) in the group Mandibulata (mandibles + one antenna pair), distinct from Crustacea (two pairs) and Chelicerata (none).'},
+
+{id:16,cat:'cmp',img:'MI2',ox:50,oy:50,
+ q:'Which arthropod subphylum has MYRIAD LEGS (literally "ten thousand legs")? What are the four classes within it?',
+ a:['Myriapoda: Chilopoda, Diplopoda, Pauropoda, Symphyla','Hexapoda: Insecta, Collembola, Diplura, Protura','Crustacea: Malacostraca, Maxillopoda, Branchiopoda, Ostracoda','Chelicerata: Arachnida, Merostomata, Pycnogonida, Eurypterida'],c:0,
+ exp:'Subphylum Myriapoda contains 4 classes: Chilopoda (centipedes), Diplopoda (millipedes), Pauropoda (tiny soft-bodied), and Symphyla (pseudo-centipedes). For BIO 212, the key classes are Chilopoda and Diplopoda.'},
+
+];
+
+let pool=[],qi=0,answers=[],answered=false;
+let activeCats=new Set(CATS.map(c=>c.id));
+let countLimit=999;
+function init(){renderCatPills();updatePreview();}
+function renderCatPills(){const el=document.getElementById('cat-pills');el.innerHTML=CATS.map(cat=>{const cnt=ALL_Q.filter(q=>q.cat===cat.id).length;const on=activeCats.has(cat.id);return `<div class="cat-pill${on?' on':''}" id="pill-${cat.id}" style="${on?`border-color:${cat.color};background:${cat.color}22`:''}" onclick="toggleCat('${cat.id}')"><span class="cp-icon">${cat.icon}</span><span class="cp-label">${cat.label}</span><span class="cp-count">${cnt} questions</span></div>`;}).join('');}
+function toggleCat(id){if(activeCats.has(id)){if(activeCats.size<=1)return;activeCats.delete(id);}else activeCats.add(id);renderCatPills();updatePreview();}
+function selectAll(){CATS.forEach(c=>activeCats.add(c.id));renderCatPills();updatePreview();}
+function setCount(n,btn){countLimit=n;document.querySelectorAll('#count-seg button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');updatePreview();}
+function updatePreview(){const total=ALL_Q.filter(q=>activeCats.has(q.cat)).length;const n=Math.min(total,countLimit);document.getElementById('pool-preview').textContent=total===0?'No questions selected.':`${n} question${n!==1?'s':''} will be drawn from ${total} available`;}
+function startQuiz(){let cands=ALL_Q.filter(q=>activeCats.has(q.cat));shuffleArr(cands);pool=cands.slice(0,countLimit===999?cands.length:countLimit);qi=0;answers=new Array(pool.length).fill(null);answered=false;document.getElementById('pane-setup').style.display='none';document.getElementById('pane-results').style.display='none';document.getElementById('pane-quiz').style.display='block';document.getElementById('review-out').innerHTML='';renderQ();}
+function showSetup(){document.getElementById('pane-setup').style.display='block';document.getElementById('pane-quiz').style.display='none';document.getElementById('pane-results').style.display='none';}
+function renderQ(){if(qi>=pool.length){showResults();return;}const q=pool[qi];answered=answers[qi]!==null;const letters=['A','B','C','D'];const catObj=CATS.find(c=>c.id===q.cat);const pct=Math.round(qi/pool.length*100);document.getElementById('prog-fill').style.width=pct+'%';document.getElementById('prog-text').textContent=`Question ${qi+1} of ${pool.length}`;const cor=answers.slice(0,qi).filter((a,i)=>a===pool[i].c).length;document.getElementById('prog-score').textContent=`${cor} correct`;const img=document.getElementById('q-img');img.style.display='block';document.getElementById('img-error').style.display='none';img.src=IMGS[q.img];document.getElementById('img-credit').textContent=IMG_CREDIT[q.img]||'';const dot=document.getElementById('overlay-dot');dot.style.left=q.ox+'%';dot.style.top=q.oy+'%';document.getElementById('q-num').textContent=`Q${qi+1}`;document.getElementById('q-tag').textContent=catObj?catObj.label:q.cat;document.getElementById('q-tag').style.color=catObj?catObj.color:'var(--accent)';document.getElementById('q-tag').style.background=catObj?catObj.color+'22':'';document.getElementById('q-body').textContent=q.q;const optsEl=document.getElementById('opts');optsEl.innerHTML=q.a.map((ans,i)=>{let cls='opt';if(answered){cls+=' locked';if(i===q.c)cls+=' correct';else if(answers[qi]===i)cls+=' wrong';}return `<div class="${cls}" onclick="pickAnswer(${i})" style="animation-delay:${i*.06}s"><div class="ltr">${letters[i]}</div><span>${escHtml(ans)}</span></div>`;}).join('');const fb=document.getElementById('fb');if(answered){const ok=answers[qi]===q.c;fb.className='feedback show '+(ok?'ok':'no');fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`:`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;document.getElementById('btn-next').style.display='inline-flex';}else{fb.className='feedback';fb.innerHTML='';document.getElementById('btn-next').style.display='none';}document.getElementById('pane-quiz').scrollTo({top:0,behavior:'smooth'});}
+function imgError(){document.getElementById('q-img').style.display='none';document.getElementById('img-error').style.display='block';}
+function pickAnswer(i){if(answered)return;const q=pool[qi];answered=true;answers[qi]=i;document.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');if(j===q.c)el.classList.add('correct');if(j===i&&i!==q.c)el.classList.add('wrong');});const ok=(i===q.c);const fb=document.getElementById('fb');fb.className='feedback show '+(ok?'ok':'no');fb.innerHTML=ok?`<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`:`<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;document.getElementById('btn-next').style.display='inline-flex';}
+function skipQ(){if(!answered)answers[qi]=null;nextQ();}
+function nextQ(){qi++;if(qi>=pool.length){showResults();return;}answered=false;renderQ();}
+function goBack(){if(qi===0)return;qi--;answered=answers[qi]!==null;renderQ();}
+function showResults(){document.getElementById('pane-quiz').style.display='none';document.getElementById('pane-results').style.display='block';const cor=answers.filter((a,i)=>a===pool[i].c).length;const skp=answers.filter(a=>a===null).length;const wrg=pool.length-cor-skp;const pct=Math.round(cor/pool.length*100);document.getElementById('r-pct').textContent=pct+'%';document.getElementById('r-cor').textContent=cor;document.getElementById('r-wrg').textContent=wrg;document.getElementById('r-skp').textContent=skp;document.getElementById('r-msg').textContent=`${cor} of ${pool.length} correct · ${skp} skipped`;const arc=document.getElementById('ring-arc');const C=339.3;arc.style.strokeDashoffset=C-(pct/100)*C;arc.style.stroke=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';const grades=['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];document.getElementById('r-grade').textContent=grades[Math.min(Math.floor(pct/20),4)];document.getElementById('btn-retry-wrong').style.display=(wrg+skp>0)?'inline-flex':'none';}
+function retryWrong(){const wp=pool.filter((q,i)=>answers[i]!==q.c);if(!wp.length)return;pool=shuffleArr([...wp]);qi=0;answers=new Array(pool.length).fill(null);answered=false;document.getElementById('pane-results').style.display='none';document.getElementById('review-out').innerHTML='';document.getElementById('pane-quiz').style.display='block';renderQ();}
+function reviewAnswers(){const letters=['A','B','C','D'];let html='<h2 style="margin-bottom:14px;font-size:1rem">Answer Review</h2>';pool.forEach((q,i)=>{const ua=answers[i];const ok=ua===q.c;const sk=ua===null;const col=sk?'var(--muted)':ok?'var(--green)':'var(--red)';const status=sk?'⊖ Skipped':ok?'✓ Correct':'✗ Incorrect';const catObj=CATS.find(c=>c.id===q.cat);html+=`<div class="rv-card"><img class="rv-img" src="${IMGS[q.img]}" alt="diagram" onerror="this.style.display='none'"><div class="rv-body"><div class="rv-status" style="color:${col}">${status}</div><div class="rv-cat" style="color:${catObj?.color||'var(--accent)'}">${catObj?.label||q.cat}</div><div class="rv-q">${escHtml(q.q)}</div>${q.a.map((ans,j)=>`<div class="rv-answer${j===q.c?' ok':''}"><div class="dot">${j===q.c?'✓':letters[j]}</div><span>${escHtml(ans)}</span></div>`).join('')}<div class="rv-exp">${escHtml(q.exp)}</div></div></div>`;});const el=document.getElementById('review-out');el.innerHTML=html;el.scrollIntoView({behavior:'smooth'});}
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+document.addEventListener('keydown',e=>{if(document.getElementById('pane-quiz').style.display==='none')return;if(e.key==='ArrowRight'){e.preventDefault();skipQ();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}if(e.key==='Enter'){const b=document.getElementById('btn-next');if(b&&b.style.display!=='none')nextQ();}if(e.key==='Escape')showSetup();const L={'a':0,'b':1,'c':2,'d':3};if(!answered&&L[e.key.toLowerCase()]!==undefined)pickAnswer(L[e.key.toLowerCase()]);});
+init();
+</script>
+</body>
+</html>

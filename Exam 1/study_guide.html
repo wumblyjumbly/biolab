@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO 212 – Exam 1 Study Guide</title>
+<style>
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#21263a;--border:#2a2d3a;
+  --text:#e2e8f0;--muted:#8892a4;--accent:#4f8ef7;
+  --phylo:#22c55e;--porifera:#f97316;--cnidaria:#4f8ef7;
+  --platy:#a855f7;--nema:#f59e0b;--annel:#ef4444;
+  --mollu:#ec4899;--arthr:#14b8a6;--embryo:#8b5cf6;--histo:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;font-size:15px}
+
+/* ── NAV ── */
+.topnav{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.topnav .home{color:var(--muted);font-size:13px;text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;white-space:nowrap}
+.topnav .home:hover{color:var(--text)}
+.topnav .divider{color:var(--border);user-select:none}
+.navlink{font-size:12px;font-weight:600;text-decoration:none;padding:4px 9px;border-radius:6px;border:1px solid transparent;white-space:nowrap;opacity:.85}
+.navlink:hover{opacity:1;border-color:currentColor}
+
+/* ── LAYOUT ── */
+.container{max-width:1080px;margin:0 auto;padding:36px 20px 80px;display:flex;flex-direction:column;gap:56px}
+
+/* ── SECTION ── */
+.section{scroll-margin-top:56px}
+.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid}
+.section-head .icon{font-size:26px;line-height:1}
+.section-head h2{font-size:22px;font-weight:700}
+.section-head .latin{font-size:13px;color:var(--muted);font-style:italic;margin-left:4px}
+.section-head .badge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid}
+
+/* ── KEY FACTS ── */
+.facts{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:18px}
+.facts h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
+.facts ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.facts li{font-size:13px;padding-left:16px;position:relative}
+.facts li::before{content:"▸";position:absolute;left:0;color:var(--muted)}
+.facts li strong{color:inherit}
+
+/* ── IMG GRID ── */
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:18px}
+.img-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.img-card img{width:100%;display:block;background:#fff;max-height:280px;object-fit:contain;padding:6px}
+.img-card .cap{padding:10px 14px;border-top:1px solid var(--border)}
+.img-card .cap .title{font-size:13px;font-weight:600;margin-bottom:4px}
+.img-card .cap .key{font-size:12px;color:var(--muted);line-height:1.6}
+.img-card .cap .key span{color:var(--text)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--surface);padding:9px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.025)}
+td:first-child{font-weight:600;white-space:nowrap;min-width:160px}
+td:nth-child(2){color:var(--muted);font-size:12px;min-width:120px}
+
+/* ── UTILITY ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+.sub{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 8px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="home" href="quiz.html">← Quiz</a>
+  <span class="divider">|</span>
+  <a class="navlink" style="color:var(--phylo)" href="#phylo">🌳 Phylogenetics</a>
+  <a class="navlink" style="color:var(--porifera)" href="#porifera">🧽 Porifera</a>
+  <a class="navlink" style="color:var(--cnidaria)" href="#cnidaria">🪼 Cnidaria</a>
+  <a class="navlink" style="color:var(--platy)" href="#platy">🪱 Platyhelminthes</a>
+  <a class="navlink" style="color:var(--nema)" href="#nema">🔴 Nematoda</a>
+  <a class="navlink" style="color:var(--annel)" href="#annel">🐛 Annelida</a>
+  <a class="navlink" style="color:var(--mollu)" href="#mollu">🐚 Mollusca</a>
+  <a class="navlink" style="color:var(--arthr)" href="#arthr">🦀 Arthropoda</a>
+  <a class="navlink" style="color:var(--embryo)" href="#embryo">🥚 Embryology</a>
+  <a class="navlink" style="color:var(--histo)" href="#histo">🔬 Histology</a>
+  <a class="navlink" style="color:#94a3b8" href="#lab-ref">📋 Lab Reference</a>
+</nav>
+
+<div class="container">
+
+<!-- ════════════════════════════════════════════════════════ PHYLOGENETICS -->
+<section class="section" id="phylo">
+  <div class="section-head" style="border-color:var(--phylo);color:var(--phylo)">
+    <span class="icon">🌳</span>
+    <h2>Phylogenetics &amp; Taxonomy</h2>
+    <span class="badge" style="color:var(--phylo);border-color:var(--phylo)">Classification</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Concepts</h3>
+    <ul>
+      <li><strong>Monophyletic (clade)</strong> — ancestral species + ALL descendants; the "gold standard" natural group</li>
+      <li><strong>Paraphyletic</strong> — ancestral species + SOME descendants (excludes one or more sub-lineages)</li>
+      <li><strong>Polyphyletic</strong> — group united by convergent evolution, NOT shared common ancestry</li>
+      <li><strong>Clade</strong> — synonym for monophyletic group; any branch on a tree including its root and all tips</li>
+      <li><strong>Taxonomic ranks (large → small)</strong> — Domain › Kingdom › Phylum › Class › Order › Family › Genus › Species</li>
+      <li><strong>Arthropoda</strong> is at the rank of <strong>Phylum</strong>; Cnidaria is also a <strong>Phylum</strong></li>
+      <li>Rank directly below Phylum = <strong>Class</strong>; directly above Family = <strong>Order</strong>; directly below Genus = <strong>Species</strong></li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0001.jpg" alt="phyletic groups diagram">
+      <div class="cap">
+        <div class="title">Phyletic Groups — Diagram 1</div>
+        <div class="key">
+          <span>Region A</span> = paraphyletic &nbsp;·&nbsp; <span>Region B</span> = paraphyletic (excludes sub-lineage)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0003.jpg" alt="phyletic groups diagram 2">
+      <div class="cap">
+        <div class="title">Phyletic Groups — Diagram 2</div>
+        <div class="key">
+          <span>Region A</span> = polyphyletic &nbsp;·&nbsp; <span>Region B</span> = monophyletic (clade)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Term</th><th>Definition</th><th>Key Feature</th></tr>
+      <tr><td>Monophyletic / Clade</td><td>All descendants of one common ancestor</td><td>Includes ancestor + every descendant</td></tr>
+      <tr><td>Paraphyletic</td><td>Ancestor + some but not all descendants</td><td>Missing one or more sub-lineages</td></tr>
+      <tr><td>Polyphyletic</td><td>Members share trait via convergent evolution</td><td>No single common ancestor for the group</td></tr>
+      <tr><td>Phylum</td><td>Major taxonomic rank below Kingdom</td><td>e.g. Arthropoda, Cnidaria, Mollusca</td></tr>
+      <tr><td>Class</td><td>Rank immediately below Phylum</td><td>e.g. Insecta, Anthozoa, Gastropoda</td></tr>
+      <tr><td>Order</td><td>Rank immediately above Family</td><td>Between Class and Family</td></tr>
+      <tr><td>Family</td><td>Rank between Order and Genus</td><td>Groups closely related genera</td></tr>
+      <tr><td>Genus</td><td>Rank above Species</td><td>First word of binomial name</td></tr>
+      <tr><td>Species</td><td>Rank immediately below Genus</td><td>Second word of binomial name</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ PORIFERA -->
+<section class="section" id="porifera">
+  <div class="section-head" style="border-color:var(--porifera);color:var(--porifera)">
+    <span class="icon">🧽</span>
+    <h2>Porifera</h2>
+    <span class="latin">Sponges</span>
+    <span class="badge" style="color:var(--porifera);border-color:var(--porifera)">Filter Feeders</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li>No true tissues or organs — most basal animal phylum</li>
+      <li>Sessile (attached) filter feeders — <strong>suspension feeding</strong></li>
+      <li>Water flow: <strong>Ostia → Spongocoel → Osculum</strong> (enter small, exit large)</li>
+      <li>Choanocytes drive water current with flagella and capture food particles</li>
+      <li>Amoebocytes transport nutrients and produce structural spicules</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0125.jpg" alt="sponge anatomy diagram">
+      <div class="cap">
+        <div class="title">Sponge Internal Anatomy</div>
+        <div class="key">
+          <span>A</span> = osculum &nbsp;·&nbsp;
+          <span>B</span> = spongocoel (central hollow cavity — collects filtered water before it exits) &nbsp;·&nbsp;
+          <span>C</span> = amoebocyte &nbsp;·&nbsp;
+          <span>D</span> = choanocyte collar &nbsp;·&nbsp;
+          <span>E</span> = ostia (pores) &nbsp;·&nbsp;
+          <span>F</span> = choanocyte (flagella)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0121.jpg" alt="sponge amoebocyte">
+      <div class="cap">
+        <div class="title">Sponge Cell Types</div>
+        <div class="key">
+          <span>C</span> = amoebocyte — mobile cell in mesohyl; distributes nutrients, secretes spicules
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Location</th><th>Function</th></tr>
+      <tr><td>Osculum</td><td>Large opening at apex</td><td>Water exits the sponge; creates low-pressure outflow</td></tr>
+      <tr><td>Ostia</td><td>Tiny pores in body wall</td><td>Water enters the sponge; inlet pores</td></tr>
+      <tr><td>Spongocoel</td><td>Central hollow cavity</td><td>Collects filtered water before it exits via osculum</td></tr>
+      <tr><td>Choanocyte</td><td>Lines spongocoel / chambers</td><td>Flagellum drives water current; collar traps food particles (bacteria, organic matter)</td></tr>
+      <tr><td>Amoebocyte</td><td>Mesohyl (middle jelly layer)</td><td>Transports nutrients from choanocytes to other cells; secretes spicules for structural support</td></tr>
+      <tr><td>Pinacocyte</td><td>Outer body surface</td><td>Flat epithelial-like cells; outer covering</td></tr>
+      <tr><td>Mesohyl</td><td>Between outer and inner layers</td><td>Gel-like extracellular matrix; houses amoebocytes and spicules</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ CNIDARIA -->
+<section class="section" id="cnidaria">
+  <div class="section-head" style="border-color:var(--cnidaria);color:var(--cnidaria)">
+    <span class="icon">🪼</span>
+    <h2>Cnidaria</h2>
+    <span class="latin">Jellyfish, Corals, Anemones, Hydra</span>
+    <span class="badge" style="color:var(--cnidaria);border-color:var(--cnidaria)">Diploblastic</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li>Two body forms: <strong>Polyp</strong> (sessile, upright, mouth up) and <strong>Medusa</strong> (free-swimming, bell-shaped, mouth down)</li>
+      <li>Three cell layers: <strong>Epidermis</strong> (outer) / <strong>Mesoglea</strong> (jelly middle) / <strong>Gastrodermis</strong> (inner)</li>
+      <li>Single opening = <strong>mouth AND anus</strong> (gastrovascular cavity = GVC)</li>
+      <li><strong>Cnidocytes</strong> — stinging cells containing nematocysts; used for prey capture and defense</li>
+      <li>Classes: <strong>Anthozoa</strong> (anemones/corals, polyp only) · <strong>Hydrozoa</strong> (Obelia, both forms) · <strong>Scyphozoa</strong> (true jellyfish, medusa dominant) · <strong>Cubozoa</strong> (box jellies)</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0120.png" alt="polyp and medusa">
+      <div class="cap">
+        <div class="title">Two Body Forms</div>
+        <div class="key">
+          <span>Left</span> = polyp (sessile, mouth/tentacles up) &nbsp;·&nbsp;
+          <span>Right</span> = medusa (free-swimming, bell up)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0112.jpg" alt="cnidaria anatomy labeled">
+      <div class="cap">
+        <div class="title">Cnidaria Internal Anatomy (Polyp &amp; Medusa)</div>
+        <div class="key">
+          <span>A</span> = mouth/anus (single opening — both ingestion and egestion) &nbsp;·&nbsp;
+          <span>B</span> = manubrium (oral tube below mouth) &nbsp;·&nbsp;
+          <span>C</span> = tentacles &nbsp;·&nbsp;
+          <span>D</span> = gastrovascular cavity &nbsp;·&nbsp;
+          <span>E</span> = gastrodermis &nbsp;·&nbsp;
+          <span>F</span> = mesoglea &nbsp;·&nbsp;
+          <span>G</span> = epidermis
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0007.jpg" alt="cnidocytes Obelia">
+      <div class="cap">
+        <div class="title">Obelia — Cnidocytes</div>
+        <div class="key">
+          <span>A</span> = cnidocytes — stinging cells that fire nematocysts into prey
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0006.jpg" alt="Obelia gastrovascular cavity">
+      <div class="cap">
+        <div class="title">Hydrozoan (Obelia) Cross-Section</div>
+        <div class="key">
+          <span>A</span> = gastrovascular cavity — hollow interior; digestion &amp; nutrient distribution; one opening = mouth/anus
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Location</th><th>Function</th></tr>
+      <tr><td>Gastrovascular Cavity</td><td>Central hollow of body</td><td>Digestion and nutrient distribution; single opening serves as both mouth and anus</td></tr>
+      <tr><td>Mouth / Anus</td><td>Oral end (polyp: top; medusa: bottom)</td><td>Single opening for ingestion and waste egestion</td></tr>
+      <tr><td>Tentacles</td><td>Around oral opening</td><td>Capture prey; armed with cnidocytes</td></tr>
+      <tr><td>Cnidocytes</td><td>Tentacles and body surface</td><td>Stinging cells; contain nematocysts that fire upon contact; paralyze or kill prey</td></tr>
+      <tr><td>Epidermis</td><td>Outer cell layer</td><td>Protection; derived from ectoderm</td></tr>
+      <tr><td>Gastrodermis</td><td>Inner cell layer (lines GVC)</td><td>Digestion and absorption; derived from endoderm</td></tr>
+      <tr><td>Mesoglea</td><td>Between epidermis and gastrodermis</td><td>Hydrostatic skeleton; gives jellyfish its bulk ("jelly")</td></tr>
+      <tr><td>Gonad</td><td>Along body wall or tentacles</td><td>Produces eggs or sperm for sexual reproduction</td></tr>
+      <tr><td>Polyp form</td><td>Attached to substrate</td><td>Sessile feeding stage; asexual reproduction by budding</td></tr>
+      <tr><td>Medusa form</td><td>Free-swimming</td><td>Sexual reproduction; dispersal</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ PLATYHELMINTHES -->
+<section class="section" id="platy">
+  <div class="section-head" style="border-color:var(--platy);color:var(--platy)">
+    <span class="icon">🪱</span>
+    <h2>Platyhelminthes</h2>
+    <span class="latin">Flatworms</span>
+    <span class="badge" style="color:var(--platy);border-color:var(--platy)">Acoelomate</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li><strong>Acoelomate</strong> — no body cavity; space between gut and body wall filled with <strong>mesenchyme (parenchyma)</strong></li>
+      <li>Three classes: <strong>Turbellaria</strong> (planarians, free-living carnivores) · <strong>Trematoda</strong> (flukes, digestive parasites) · <strong>Cestoda</strong> (tapeworms, digestive endoparasites)</li>
+      <li>Tapeworms have <strong>no digestive system</strong> — absorb nutrients directly through tegument</li>
+      <li>Planarians are <strong>free-living carnivores</strong> found in freshwater, marine, and damp terrestrial environments</li>
+      <li>Flukes and tapeworms are <strong>digestive system parasites</strong></li>
+    </ul>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="sub" style="color:var(--platy)">Tapeworm (Cestoda)</div>
+      <div class="img-grid" style="grid-template-columns:1fr">
+        <div class="img-card">
+          <img src="quiz_images/qi_0042.jpg" alt="Taenia scolex">
+          <div class="cap">
+            <div class="title">Taenia — Scolex Region</div>
+            <div class="key">
+              <span>A</span> = scolex (head — attachment organ) &nbsp;·&nbsp;
+              <span>B</span> = rostellum (ring of hooks on scolex)
+            </div>
+          </div>
+        </div>
+        <div class="img-card">
+          <img src="quiz_images/qi_0039.jpg" alt="Taenia proglottids">
+          <div class="cap">
+            <div class="title">Tapeworm Body (Proglottids)</div>
+            <div class="key">
+              <span>A</span> = genital pore (reproductive outlet on each segment) &nbsp;·&nbsp;
+              <span>B</span> = proglottid (body segment containing reproductive organs)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sub" style="color:var(--platy)">Planarian (Turbellaria)</div>
+      <div class="img-grid" style="grid-template-columns:1fr">
+        <div class="img-card">
+          <img src="quiz_images/qi_0040.jpg" alt="planarian flatworm">
+          <div class="cap">
+            <div class="title">Planarian Flatworm</div>
+            <div class="key">
+              Free-living carnivore. Soft, unsegmented. Cephalised with eyespots (photoreceptors) and auricles (chemoreceptors).
+            </div>
+          </div>
+        </div>
+        <div class="img-card">
+          <img src="quiz_images/qi_0136.jpg" alt="planarian internal anatomy">
+          <div class="cap">
+            <div class="title">Planarian Internal Anatomy</div>
+            <div class="key">
+              Purple arrow = <span>pharynx</span> (muscular feeding tube, extendable) &nbsp;·&nbsp;
+              Red arrow = <span>gastrovascular cavity</span> (branching intestine)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Found In</th><th>Function</th></tr>
+      <tr><td>Scolex</td><td>Tapeworm anterior end</td><td>Attachment "head" — anchors worm to host intestine wall</td></tr>
+      <tr><td>Rostellum</td><td>Top of scolex</td><td>Ring of hooks for additional grip</td></tr>
+      <tr><td>Suckers</td><td>Scolex surface</td><td>Muscular cups for adhesion to intestinal wall</td></tr>
+      <tr><td>Proglottid</td><td>Body (strobila)</td><td>Each segment contains complete male + female reproductive organs; mature proglottids shed with eggs</td></tr>
+      <tr><td>Genital Pore</td><td>Side of each proglottid</td><td>Shared reproductive opening; eggs and sperm exit here</td></tr>
+      <tr><td>Ovary</td><td>Within proglottid</td><td>Produces eggs (female gametes)</td></tr>
+      <tr><td>Testes</td><td>Within proglottid</td><td>Produce sperm (male gametes)</td></tr>
+      <tr><td>Uterus</td><td>Within proglottid</td><td>Stores fertilised eggs; fills gravid (final) proglottids</td></tr>
+      <tr><td>Pharynx</td><td>Planarian mid-body</td><td>Muscular feeding tube; extends to capture and ingest prey</td></tr>
+      <tr><td>Gastrovascular Cavity</td><td>Planarian body</td><td>Highly branched gut for digestion and nutrient distribution; one opening</td></tr>
+      <tr><td>Mesenchyme (Parenchyma)</td><td>Between gut and skin</td><td>Fills acoelomate body; no fluid-filled body cavity</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ NEMATODA -->
+<section class="section" id="nema">
+  <div class="section-head" style="border-color:var(--nema);color:var(--nema)">
+    <span class="icon">🔴</span>
+    <h2>Nematoda</h2>
+    <span class="latin">Roundworms — Ascaris</span>
+    <span class="badge" style="color:var(--nema);border-color:var(--nema)">Pseudocoelomate</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li><strong>Pseudocoelomate</strong> — false body cavity (not fully lined by mesoderm)</li>
+      <li>Non-segmented, cylindrical body enclosed in <strong>cuticle</strong> (shed during molting)</li>
+      <li>Strong <strong>sexual dimorphism</strong>: females are larger (coiled tail) — males are smaller (curved tail with spicules)</li>
+      <li><em>Ascaris lumbricoides</em> — large intestinal roundworm; common lab specimen</li>
+      <li>Complete digestive system: mouth → pharynx → intestine → anus</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0017.png" alt="male and female nematode">
+      <div class="cap">
+        <div class="title">Sexual Dimorphism</div>
+        <div class="key">
+          <span>Red arrow</span> = female (larger, straight posterior) &nbsp;·&nbsp;
+          <span>Yellow arrow</span> = male (smaller, curved/hooked posterior tail)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0019.jpg" alt="Ascaris female dissection">
+      <div class="cap">
+        <div class="title">Ascaris Female Dissection (EcdyDiss1)</div>
+        <div class="key">
+          <span>A</span> = uterus (coiled tubes — stores eggs) &nbsp;·&nbsp;
+          <span>B</span> = oviducts (connect ovaries to uterus)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0021.jpg" alt="Ascaris intestine">
+      <div class="cap">
+        <div class="title">Ascaris — Intestine</div>
+        <div class="key">
+          <span>A</span> = intestine (broad, flat tube running length of body — absorbs nutrients)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0026.png" alt="male nematode reproductive">
+      <div class="cap">
+        <div class="title">Male Nematode Reproductive System</div>
+        <div class="key">
+          <span>Purple arrow</span> = testes &nbsp;·&nbsp;
+          <span>Red arrow</span> = ductus deferens (vas deferens) — carries sperm to cloaca
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Sex</th><th>Function</th></tr>
+      <tr><td>Intestine</td><td>Both</td><td>Digestion and absorption of nutrients from host gut</td></tr>
+      <tr><td>Cuticle</td><td>Both</td><td>Tough outer protective layer; shed (molted) as worm grows</td></tr>
+      <tr><td>Uterus</td><td>Female</td><td>Stores fertilised eggs before they are laid</td></tr>
+      <tr><td>Ovary</td><td>Female</td><td>Produces eggs by meiosis</td></tr>
+      <tr><td>Oviduct</td><td>Female</td><td>Transports eggs from ovary to uterus; site of fertilisation</td></tr>
+      <tr><td>Testes</td><td>Male</td><td>Produce sperm by meiosis</td></tr>
+      <tr><td>Ductus deferens (Vas deferens)</td><td>Male</td><td>Transports sperm from testes toward cloaca for copulation</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ ANNELIDA -->
+<section class="section" id="annel">
+  <div class="section-head" style="border-color:var(--annel);color:var(--annel)">
+    <span class="icon">🐛</span>
+    <h2>Annelida</h2>
+    <span class="latin">Segmented Worms</span>
+    <span class="badge" style="color:var(--annel);border-color:var(--annel)">Coelomate · Segmented</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li>True <strong>coelom</strong> (body cavity fully lined by mesoderm)</li>
+      <li>Body divided into <strong>metameres</strong> (segments) — each with its own coelom, nerves, muscles</li>
+      <li>Classes: <strong>Oligochaeta</strong> (earthworms, few setae) · <strong>Polychaeta</strong> (marine worms, many setae, parapodia) · <strong>Hirudinea</strong> (leeches, no setae)</li>
+      <li><strong>Setae (chaetae)</strong> — chitinous bristles for locomotion in oligochaetes and polychaetes</li>
+      <li>Closed circulatory system; <strong>5 pairs of aortic arches</strong> (hearts) pump blood</li>
+      <li>Earthworms are <strong>deposit feeders</strong> — ingest soil organic matter</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0044.jpg" alt="earthworm clitellum">
+      <div class="cap">
+        <div class="title">Earthworm External — Clitellum</div>
+        <div class="key">
+          <span>A</span> = clitellum — thickened band of glandular segments; secretes mucous cocoon for egg deposition; reproductive structure
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0141.jpg" alt="earthworm chaetae">
+      <div class="cap">
+        <div class="title">Earthworm — Chaetae (Setae)</div>
+        <div class="key">
+          <span>A</span> = chaetae (setae) — stiff chitinous hairs projecting from each segment; anchor in soil during locomotion
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0057.jpg" alt="earthworm dissection dorsal blood vessel">
+      <div class="cap">
+        <div class="title">Earthworm Dissection</div>
+        <div class="key">
+          <span>A</span> = dorsal blood vessel (red line — carries oxygenated blood anteriorly toward head)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0056.jpg" alt="earthworm dissection gizzard">
+      <div class="cap">
+        <div class="title">Earthworm Dissection — Gizzard</div>
+        <div class="key">
+          <span>A</span> = gizzard (muscular grinding chamber — mechanically breaks down soil/food with ingested sand grains)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0058.jpg" alt="earthworm crop">
+      <div class="cap">
+        <div class="title">Earthworm — Crop</div>
+        <div class="key">
+          <span>B</span> = crop (thin-walled storage pouch — temporarily holds ingested soil before it passes to gizzard)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0059.jpg" alt="earthworm seminal vesicle">
+      <div class="cap">
+        <div class="title">Earthworm Dissection — Seminal Vesicle</div>
+        <div class="key">
+          <span>B</span> = seminal vesicle (cream-colored lobes — stores and matures sperm before copulation)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0061.jpg" alt="earthworm hearts aortic arches">
+      <div class="cap">
+        <div class="title">Earthworm — Aortic Arches (Hearts)</div>
+        <div class="key">
+          <span>B</span> = hearts / aortic arches (red ring-like structures — 5 pairs connect dorsal and ventral blood vessels; pump blood)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Location</th><th>Function</th></tr>
+      <tr><td>Clitellum</td><td>Anterior region (segments 32–37)</td><td>Secretes mucous cocoon for egg fertilisation and deposition; reproductive</td></tr>
+      <tr><td>Setae / Chaetae</td><td>Ventral surface of each segment</td><td>Bristles anchor in soil during peristaltic locomotion</td></tr>
+      <tr><td>Crop</td><td>Anterior digestive tract</td><td>Temporary food storage before grinding</td></tr>
+      <tr><td>Gizzard</td><td>After crop</td><td>Muscular; mechanically grinds soil and organic matter with ingested sand grains</td></tr>
+      <tr><td>Intestine</td><td>Most of body length</td><td>Digestion and absorption of organic nutrients from soil</td></tr>
+      <tr><td>Dorsal Blood Vessel</td><td>Dorsal midline</td><td>Carries oxygenated blood anteriorly (toward head)</td></tr>
+      <tr><td>Hearts (Aortic Arches)</td><td>Segments 7–11 (5 pairs)</td><td>Pump blood between dorsal and ventral vessels; maintain circulation</td></tr>
+      <tr><td>Seminal Vesicles</td><td>Anterior segments</td><td>Store and mature sperm before copulation</td></tr>
+      <tr><td>Seminal Receptacles</td><td>Anterior segments</td><td>Store partner's sperm received during copulation</td></tr>
+      <tr><td>Nephridia</td><td>Most segments (paired)</td><td>Excretory organs — filter coelomic fluid and excrete metabolic waste (analogous to kidneys)</td></tr>
+      <tr><td>Coelom</td><td>Body cavity between gut and body wall</td><td>True fluid-filled cavity lined by mesoderm; hydrostatic skeleton; houses organs</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ MOLLUSCA -->
+<section class="section" id="mollu">
+  <div class="section-head" style="border-color:var(--mollu);color:var(--mollu)">
+    <span class="icon">🐚</span>
+    <h2>Mollusca</h2>
+    <span class="latin">Snails, Squid, Clams, Chitons</span>
+    <span class="badge" style="color:var(--mollu);border-color:var(--mollu)">Coelomate · Lophotrochozoa</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li>Body plan: <strong>Mantle</strong> (secretes shell) + <strong>Foot</strong> (locomotion) + <strong>Visceral Mass</strong> (organs)</li>
+      <li>Classes: <strong>Gastropoda</strong> (snails/slugs) · <strong>Cephalopoda</strong> (squid, octopus, cuttlefish) · <strong>Bivalvia</strong> (clams, oysters) · <strong>Polyplacophora</strong> (chitons)</li>
+      <li>Cephalopods have <strong>8 arms + 2 tentacles</strong> (squid/cuttlefish); octopus = 8 arms only</li>
+      <li><strong>Siphon</strong> — jet propulsion in cephalopods; water entry/exit in bivalves</li>
+      <li><strong>Radula</strong> — rasping tongue-like structure for feeding (absent in bivalves)</li>
+      <li><strong>Mantle cavity</strong> — space enclosed by mantle; contains gills (ctenidia)</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0035.jpg" alt="cuttlefish">
+      <div class="cap">
+        <div class="title">Cuttlefish — Class Cephalopoda</div>
+        <div class="key">
+          Phylum Mollusca · Class Cephalopoda. Note tentacles, arms, and mantle visible externally.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0053.jpg" alt="squid dissection tentacle">
+      <div class="cap">
+        <div class="title">Squid Dissection — Appendages</div>
+        <div class="key">
+          <span>B</span> = tentacle (one of 2 longer capture tentacles — longer than the 8 arms; rapid extension for prey capture)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0060.jpg" alt="squid dissection ovary">
+      <div class="cap">
+        <div class="title">Squid Dissection — Gonad</div>
+        <div class="key">
+          <span>A</span> = ovary (female; produces eggs) &nbsp;·&nbsp;
+          Testis in males occupies same position
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0063.jpg" alt="squid gills">
+      <div class="cap">
+        <div class="title">Squid Dissection — Gills</div>
+        <div class="key">
+          Red arrows = gills (ctenidia — feathery structures for gas exchange O₂/CO₂ in mantle cavity)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0034.jpg" alt="gastropod snail">
+      <div class="cap">
+        <div class="title">Gastropoda — Snail</div>
+        <div class="key">
+          Class Gastropoda. Coiled shell. Radula used for rasping food. Broad flat foot for locomotion.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0043.jpg" alt="chitons polyplacophora">
+      <div class="cap">
+        <div class="title">Polyplacophora — Chitons</div>
+        <div class="key">
+          8 overlapping shell plates (valves). Marine. Radula used to scrape algae from rocks.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0138.jpg" alt="mollusca gills mantle">
+      <div class="cap">
+        <div class="title">Bivalve / Cephalopod Internal</div>
+        <div class="key">
+          Red arrow = <span>mantle cavity</span> (space enclosed by mantle; houses gills and siphon)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Class(es)</th><th>Function</th></tr>
+      <tr><td>Mantle</td><td>All</td><td>Sheet of tissue enveloping visceral mass; secretes calcium carbonate shell</td></tr>
+      <tr><td>Mantle Cavity</td><td>All</td><td>Space between mantle and body; houses gills (ctenidia) and siphon</td></tr>
+      <tr><td>Foot</td><td>All</td><td>Muscular locomotion organ — creeping (gastropods), burrowing (bivalves), modified into arms/tentacles (cephalopods)</td></tr>
+      <tr><td>Radula</td><td>Most (not Bivalvia)</td><td>Toothed rasping tongue; scrapes algae or seizes prey</td></tr>
+      <tr><td>Gills (Ctenidia)</td><td>All aquatic</td><td>Gas exchange (O₂/CO₂); filter feeding in bivalves</td></tr>
+      <tr><td>Siphon</td><td>Cephalopoda, Bivalvia</td><td>Cephalopods: jet propulsion via forceful water expulsion. Bivalves: water inlet/outlet</td></tr>
+      <tr><td>Arms (8)</td><td>Cephalopoda</td><td>Shorter; lined with suckers; manipulate and hold prey</td></tr>
+      <tr><td>Tentacles (2)</td><td>Squid, Cuttlefish</td><td>Longer than arms; rapid extension to capture prey</td></tr>
+      <tr><td>Pen (Gladius)</td><td>Squid, Cuttlefish</td><td>Internal remnant of ancestral shell; structural support for mantle</td></tr>
+      <tr><td>Beak</td><td>Cephalopoda</td><td>Hard chitinous jaw; tears and bites prey</td></tr>
+      <tr><td>Testis / Ovary</td><td>Cephalopoda</td><td>Gonad; reproductive organ producing sperm or eggs</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ ARTHROPODA -->
+<section class="section" id="arthr">
+  <div class="section-head" style="border-color:var(--arthr);color:var(--arthr)">
+    <span class="icon">🦀</span>
+    <h2>Arthropoda</h2>
+    <span class="latin">Crayfish, Insects, Arachnids</span>
+    <span class="badge" style="color:var(--arthr);border-color:var(--arthr)">Ecdysozoa · Jointed Legs</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Biology</h3>
+    <ul>
+      <li>Largest animal phylum by species count</li>
+      <li>Exoskeleton of <strong>chitin</strong> — shed (molted) via <strong>ecdysis</strong> for growth</li>
+      <li>Jointed, paired appendages; segmented body</li>
+      <li>Classes: <strong>Insecta</strong> (6 legs, 3 body regions) · <strong>Malacostraca</strong> (crustaceans: crayfish, crabs) · <strong>Arachnida</strong> (8 legs: spiders, scorpions) · <strong>Myriapoda</strong> (centipedes, millipedes)</li>
+      <li>Crayfish body = <strong>Cephalothorax</strong> (fused head + thorax) + <strong>Abdomen</strong></li>
+      <li>Open circulatory system (hemolymph in sinuses) — exception to most body cavity fluid rules</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0146.jpg" alt="crayfish external anatomy">
+      <div class="cap">
+        <div class="title">Crayfish External Anatomy</div>
+        <div class="key">
+          <span>A</span> = cheliped (large claw — defense, food capture) &nbsp;·&nbsp;
+          <span>B</span> = cephalothorax &nbsp;·&nbsp;
+          <span>C</span> = walking legs
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0147.png" alt="crayfish rostrum telson">
+      <div class="cap">
+        <div class="title">Crayfish — Rostrum &amp; Telson</div>
+        <div class="key">
+          Blue arrow = <span>rostrum</span> (anterior spine on carapace — protection) &nbsp;·&nbsp;
+          Black arrow = <span>telson</span> (posterior plate — part of tail fan)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0018.png" alt="crayfish dissection green gland">
+      <div class="cap">
+        <div class="title">Crayfish Dissection — Green Gland</div>
+        <div class="key">
+          Green arrow = <span>green gland</span> (antennal gland — excretory organ, filters hemolymph and excretes nitrogenous waste)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0020.png" alt="crayfish cardiac stomach">
+      <div class="cap">
+        <div class="title">Crayfish Dissection — Stomach</div>
+        <div class="key">
+          Green arrow = <span>cardiac stomach</span> (anterior, larger — receives food; has gastric mill with teeth) &nbsp;·&nbsp;
+          Orange arrow = <span>pyloric stomach</span> (posterior, smaller — filters food before intestine)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0023.png" alt="crayfish heart">
+      <div class="cap">
+        <div class="title">Crayfish Dissection — Heart</div>
+        <div class="key">
+          Purple arrow = <span>heart</span> (dorsal, small — pumps hemolymph into open sinuses)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0033.png" alt="crayfish digestive gland">
+      <div class="cap">
+        <div class="title">Crayfish Dissection — Digestive Gland</div>
+        <div class="key">
+          Black arrow = <span>digestive gland</span> (hepatopancreas — large brown/green gland; secretes digestive enzymes, absorbs nutrients, stores glycogen)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure</th><th>Location</th><th>Function</th></tr>
+      <tr><td>Cephalothorax</td><td>Anterior body region</td><td>Fused head + thorax; covered by carapace; houses brain, stomach, gills, heart</td></tr>
+      <tr><td>Abdomen</td><td>Posterior body region</td><td>Houses intestine; bears swimmerets; tail fan for escape response</td></tr>
+      <tr><td>Rostrum</td><td>Anterior tip of carapace</td><td>Protective spine projecting forward; may help streamline body</td></tr>
+      <tr><td>Cheliped</td><td>First pair of walking legs</td><td>Large claws; prey capture, defense, and social signaling</td></tr>
+      <tr><td>Walking Legs</td><td>Cephalothorax (4 pairs)</td><td>Locomotion on substrate</td></tr>
+      <tr><td>Swimmerets (Pleopods)</td><td>Abdomen (ventral)</td><td>Swimming; in females, brood eggs; in males, first pair used in sperm transfer</td></tr>
+      <tr><td>Telson</td><td>Posterior tip</td><td>Middle plate of tail fan; with uropods forms fan for escape flip</td></tr>
+      <tr><td>Uropod</td><td>Flanking telson</td><td>Paired paddle-like plates; with telson = tail fan for rapid backward escape swimming</td></tr>
+      <tr><td>Cardiac Stomach</td><td>Anterior stomach</td><td>Receives food; gastric mill (calcified teeth) grinds food</td></tr>
+      <tr><td>Pyloric Stomach</td><td>Posterior to cardiac</td><td>Filters finely ground food; sends to digestive gland, coarse particles to intestine</td></tr>
+      <tr><td>Digestive Gland (Hepatopancreas)</td><td>Cephalothorax (large, paired)</td><td>Secretes digestive enzymes; absorbs nutrients; stores glycogen and lipids</td></tr>
+      <tr><td>Green Gland (Antennal Gland)</td><td>Anterior cephalothorax</td><td>Excretory organ; filters hemolymph and excretes nitrogenous waste at base of antennae</td></tr>
+      <tr><td>Heart</td><td>Dorsal cephalothorax</td><td>Pumps hemolymph into open hemocoel (sinuses); arthropods have open circulatory system</td></tr>
+      <tr><td>Gills</td><td>Lateral cephalothorax</td><td>Gas exchange; feathery extensions bathed in water flowing under carapace</td></tr>
+      <tr><td>Intestine</td><td>Runs dorsal through abdomen</td><td>Final digestion and absorption; waste exits at anus beneath telson</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ EMBRYOLOGY -->
+<section class="section" id="embryo">
+  <div class="section-head" style="border-color:var(--embryo);color:var(--embryo)">
+    <span class="icon">🥚</span>
+    <h2>Embryology</h2>
+    <span class="latin">Sea Star Gastrulation · Chick Embryo</span>
+    <span class="badge" style="color:var(--embryo);border-color:var(--embryo)">Developmental Stages</span>
+  </div>
+
+  <div class="facts">
+    <h3>Key Concepts</h3>
+    <ul>
+      <li>Developmental sequence: <strong>Unfertilized Egg → Fertilized Egg → Blastula → Gastrula → Early Neurula → Late Neurula</strong></li>
+      <li><strong>Blastula</strong> — hollow ball of cells; internal cavity = <strong>blastocoel</strong></li>
+      <li><strong>Gastrula</strong> — formed by invagination (gastrulation); establishes the three germ layers</li>
+      <li><strong>Blastopore</strong> — opening created by invagination during gastrulation</li>
+      <li><strong>Gastrocoel (Archenteron)</strong> — new internal cavity formed by invagination; becomes future gut</li>
+      <li>Three germ layers: <strong>Ectoderm</strong> (outer) · <strong>Mesoderm</strong> (middle) · <strong>Endoderm</strong> (inner)</li>
+      <li><strong>Somites</strong> — blocks of paraxial mesoderm in chick and frog embryos; give rise to vertebrae, muscles, dermis</li>
+      <li><strong>Neural plate</strong> — flat ectoderm thickening in <strong>early neurula</strong>; folds to form neural tube</li>
+      <li><strong>Neural tube</strong> — hollow ectodermal tube in <strong>late neurula</strong>; becomes brain (anterior) + spinal cord (posterior)</li>
+      <li><strong>Notochord</strong> — mesodermal rod beneath neural tube; induces neurulation; replaced by vertebral column in adults</li>
+    </ul>
+  </div>
+
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0073.jpg" alt="sea star embryonic stages">
+      <div class="cap">
+        <div class="title">Sea Star Development Stages</div>
+        <div class="key">
+          <span>A</span> = gastrula &nbsp;·&nbsp;
+          <span>B</span> = blastula &nbsp;·&nbsp;
+          <span>C</span> = blastopore &nbsp;·&nbsp;
+          <span>D</span> = fertilized egg &nbsp;·&nbsp;
+          <span>E</span> = blastocoel
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0072.jpg" alt="sea star gastrulation germ layers">
+      <div class="cap">
+        <div class="title">Sea Star Gastrulation — Germ Layers</div>
+        <div class="key">
+          <span>A</span> = gastrocoel / archenteron (new gut cavity formed by invagination) &nbsp;·&nbsp;
+          <span>B</span> = ectoderm (outermost germ layer) &nbsp;·&nbsp;
+          <span>C</span> = endoderm (innermost germ layer) &nbsp;·&nbsp;
+          <span>D</span> = mesoderm (middle germ layer)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0081.jpg" alt="chick embryo somites">
+      <div class="cap">
+        <div class="title">Chick Embryo — Somites</div>
+        <div class="key">
+          Indicated structures = <span>somites</span> — paired blocks of paraxial mesoderm; give rise to axial skeleton (vertebrae), skeletal muscles of trunk and limbs, and dermis
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0075.jpg" alt="sea star blastocoel">
+      <div class="cap">
+        <div class="title">Sea Star Development — Blastocoel</div>
+        <div class="key">
+          <span>E</span> = blastocoel (fluid-filled cavity inside blastula — collapses as archenteron expands during gastrulation)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Structure / Stage</th><th>When</th><th>Description &amp; Significance</th></tr>
+      <tr><td>Fertilized Egg (Zygote)</td><td>Stage 1</td><td>Single diploid cell; result of sperm + egg fusion</td></tr>
+      <tr><td>Blastula</td><td>After cleavage</td><td>Hollow ball of cells; interior = blastocoel</td></tr>
+      <tr><td>Blastocoel</td><td>Blastula</td><td>Fluid-filled cavity within blastula; collapses during gastrulation as gastrocoel expands</td></tr>
+      <tr><td>Gastrula</td><td>After gastrulation</td><td>Three-layered embryo; establishes body axes and germ layers</td></tr>
+      <tr><td>Blastopore</td><td>During gastrulation</td><td>Indentation/opening where cells invaginate; becomes mouth (protostomes) or anus (deuterostomes, e.g. sea stars)</td></tr>
+      <tr><td>Gastrocoel (Archenteron)</td><td>During gastrulation</td><td>New gut cavity formed by invagination; opens at blastopore; will become the digestive tract</td></tr>
+      <tr><td>Ectoderm</td><td>Germ layer</td><td>Outermost layer → skin (epidermis), nervous system, sense organs</td></tr>
+      <tr><td>Mesoderm</td><td>Germ layer</td><td>Middle layer → muscles, circulatory system, kidneys, gonads, skeleton</td></tr>
+      <tr><td>Endoderm</td><td>Germ layer</td><td>Innermost layer → gut lining, liver, lungs, pancreas</td></tr>
+      <tr><td>Unfertilized Egg</td><td>Before fertilization</td><td>Haploid (n); has completed meiosis; no developmental program activated yet</td></tr>
+      <tr><td>Somites</td><td>Chick embryo</td><td>Paired blocks of paraxial mesoderm flanking the neural tube; differentiate into vertebrae, skeletal muscles, and dermis</td></tr>
+      <tr><td>Neural Plate</td><td>Early neurula</td><td>Flat thickening of dorsal ectoderm; induced by notochord; will fold to form neural tube</td></tr>
+      <tr><td>Neural Tube</td><td>Late neurula</td><td>Hollow tube formed when neural plate edges roll up and fuse; becomes brain (anterior) + spinal cord (posterior)</td></tr>
+      <tr><td>Notochord</td><td>Neurula</td><td>Rod of mesoderm beneath neural tube; provides structural support; induces neural plate; replaced by vertebral column in adults</td></tr>
+    </table>
+  </div>
+
+  <!-- FROG NEURULA -->
+  <div class="sub" style="color:var(--embryo)">Frog Embryo — Neurula Stage</div>
+  <div class="facts" style="margin-bottom:18px">
+    <h3>Neurula Key Concepts</h3>
+    <ul>
+      <li>Neurulation = the process that converts the flat neural plate into the hollow neural tube</li>
+      <li><strong>Early neurula</strong> — neural plate visible; neural folds beginning to rise on each side</li>
+      <li><strong>Late neurula</strong> — neural folds have fused at midline, forming the closed neural tube</li>
+      <li>Dorsal-to-ventral cross-section order: <strong>Neural tube → Notochord → Gastrocoel (archenteron)</strong></li>
+      <li>Germ layer origins: Neural tube &amp; epidermis = <strong>ectoderm</strong> · Notochord &amp; somites = <strong>mesoderm</strong> · Gut lining = <strong>endoderm</strong></li>
+    </ul>
+  </div>
+  <div class="tbl-wrap" style="margin-bottom:18px">
+    <table>
+      <tr><th>Structure</th><th>Location in cross-section</th><th>Germ Layer</th><th>Function / Fate</th></tr>
+      <tr><td>Neural plate</td><td>Dorsal ectoderm (early neurula only)</td><td>Ectoderm</td><td>Flat sheet that folds inward; precursor to neural tube</td></tr>
+      <tr><td>Neural tube</td><td>Dorsal midline (late neurula)</td><td>Ectoderm</td><td>Hollow tube → anterior becomes brain, posterior becomes spinal cord</td></tr>
+      <tr><td>Notochord</td><td>Directly beneath neural tube</td><td>Mesoderm</td><td>Rod; induces neural plate; replaced by vertebral column in adults</td></tr>
+      <tr><td>Somites</td><td>Flanking notochord (paired)</td><td>Mesoderm</td><td>Segmental blocks → vertebrae, skeletal muscles, dermis</td></tr>
+      <tr><td>Gastrocoel (archenteron)</td><td>Ventral / central cavity</td><td>Endoderm-lined</td><td>Future gut; formed during earlier gastrulation</td></tr>
+      <tr><td>Epidermis</td><td>Outermost layer</td><td>Ectoderm</td><td>Covers embryo surface; will become skin</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ HISTOLOGY -->
+<section class="section" id="histo">
+  <div class="section-head" style="border-color:var(--histo);color:var(--histo)">
+    <span class="icon">🔬</span>
+    <h2>Histology</h2>
+    <span class="latin">Animal Tissue Types</span>
+    <span class="badge" style="color:var(--histo);border-color:var(--histo)">4 Major Tissues</span>
+  </div>
+
+  <div class="facts">
+    <h3>Four Major Tissue Types</h3>
+    <ul>
+      <li><strong>Epithelial</strong> — covers surfaces, lines cavities; cells tightly packed; avascular</li>
+      <li><strong>Connective</strong> — supports, binds, and fills; cells in abundant extracellular matrix (ECM)</li>
+      <li><strong>Muscle</strong> — contractile; produces movement</li>
+      <li><strong>Nervous</strong> — transmits electrical signals; coordinates responses</li>
+    </ul>
+  </div>
+
+  <!-- EPITHELIAL -->
+  <div class="sub" style="color:var(--histo)">Epithelial Tissue</div>
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0095.jpg" alt="simple squamous epithelium blood vessel">
+      <div class="cap">
+        <div class="title">Simple Squamous Epithelium</div>
+        <div class="key">
+          Single layer of flat (scale-like) cells. Lines blood vessels (endothelium) and alveoli. Function: rapid diffusion of gases and filtration.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0094.jpg" alt="simple cuboidal epithelium pancreas duct">
+      <div class="cap">
+        <div class="title">Simple Cuboidal Epithelium</div>
+        <div class="key">
+          Single layer of cube-shaped cells. Lines kidney tubules and pancreatic ducts. Function: secretion and absorption.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0102.jpg" alt="simple columnar epithelium trachea">
+      <div class="cap">
+        <div class="title">Simple Columnar Epithelium</div>
+        <div class="key">
+          Single layer of tall column-shaped cells. Lines trachea and intestines (jejunum). Function: secretion, absorption, mucus production. &nbsp;·&nbsp;
+          <span>Goblet cells</span> = scattered mucus-secreting cells interspersed among columnar cells (flask/goblet-shaped, pale cytoplasm) &nbsp;·&nbsp;
+          <span>Basal lamina</span> = thin acellular layer anchoring epithelium to connective tissue below
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0096.jpg" alt="stratified squamous epithelium skin">
+      <div class="cap">
+        <div class="title">Stratified Squamous Epithelium</div>
+        <div class="key">
+          Multiple layers; surface cells flat and squamous. Forms epidermis of skin, mouth lining, esophagus. Function: protection against abrasion. &nbsp;·&nbsp;
+          <span>Basal lamina</span> = visible as a thin pale line at the base of the epithelial layer (interface with connective tissue)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECTIVE -->
+  <div class="sub" style="color:var(--histo)">Connective Tissue</div>
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0087.jpg" alt="loose areolar connective tissue">
+      <div class="cap">
+        <div class="title">Loose Areolar Connective Tissue</div>
+        <div class="key">
+          <span>A</span> = fibroblast (produces fibers) &nbsp;·&nbsp;
+          <span>B</span> = elastin fiber (yellow, branching) &nbsp;·&nbsp;
+          <span>C</span> = collagen fibers (thick, wavy, pink bundles). Widely spaced fibers, abundant ground substance.
+        </div>
+      </div>
+    </div>
+    <div class="img-card" style="background:var(--surface2)">
+      <div style="padding:14px 14px 8px;font-size:12px;color:var(--muted);font-style:italic">Dense connective tissue — found at outer edge of tracheal cartilage on lab slide</div>
+      <div class="cap">
+        <div class="title">Dense Connective Tissue</div>
+        <div class="key">
+          <span>Fibroblasts</span> = cells present (fewer than in loose CT) &nbsp;·&nbsp;
+          <span>Collagen fibers</span> = tightly packed, parallel bundles — much denser than areolar CT &nbsp;·&nbsp;
+          No elastin; very little ground substance. Location on trachea slide: outer rim, wrapping cartilage ring. Forms tendons and ligaments.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0084.jpg" alt="hyaline cartilage chondrocytes">
+      <div class="cap">
+        <div class="title">Hyaline Cartilage</div>
+        <div class="key">
+          Cells = <span>chondrocytes</span> (in lacunae — small spaces within glassy ECM). Strong, flexible. Covers joint surfaces, forms tracheal rings.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0092.jpg" alt="bone osteocytes">
+      <div class="cap">
+        <div class="title">Bone (Osseous Tissue)</div>
+        <div class="key">
+          Cells = <span>osteocytes</span> (in lacunae within calcified ECM). Haversian systems visible. Function: structural support, mineral storage, protection.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0086.jpg" alt="blood erythrocytes leukocytes">
+      <div class="cap">
+        <div class="title">Blood (Fluid Connective Tissue)</div>
+        <div class="key">
+          <span>A</span> = leukocyte / white blood cell (large, nucleated — immune defense) &nbsp;·&nbsp;
+          <span>B</span> = erythrocytes / red blood cells (small, biconcave, anucleate — O₂ transport)
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0085.jpg" alt="adipose tissue">
+      <div class="cap">
+        <div class="title">Adipose Tissue</div>
+        <div class="key">
+          Loose connective tissue dominated by <span>adipocytes</span> (fat cells — large, cytoplasm nearly all lipid droplet, nucleus pushed to periphery). Function: energy storage, insulation, cushioning.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSCLE -->
+  <div class="sub" style="color:var(--histo)">Muscle Tissue</div>
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0091.jpg" alt="skeletal muscle">
+      <div class="cap">
+        <div class="title">Skeletal Muscle (Voluntary)</div>
+        <div class="key">
+          Long, cylindrical cells; <strong>multinucleated</strong>; visible striations (cross-banding). Attached to skeleton via tendons. Voluntary control.
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0103.jpg" alt="smooth muscle">
+      <div class="cap">
+        <div class="title">Smooth Muscle (Involuntary)</div>
+        <div class="cap" style="border:none;padding:0">
+        <div class="key" style="padding:10px 14px">
+          Spindle-shaped cells; single central nucleus; <strong>no striations</strong>. Lines walls of blood vessels, digestive tract, uterus. Involuntary control.
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="img-card">
+      <img src="quiz_images/qi_0105.jpg" alt="cardiac muscle">
+      <div class="cap">
+        <div class="title">Cardiac Muscle (Involuntary)</div>
+        <div class="key">
+          Branched cells; single nucleus; <strong>striations present</strong>; connected by intercalated discs. Heart wall only. Involuntary; rhythmic contraction.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NERVOUS -->
+  <div class="sub" style="color:var(--histo)">Nervous Tissue</div>
+  <div class="img-grid">
+    <div class="img-card">
+      <img src="quiz_images/qi_0082.jpg" alt="nervous tissue neurons glial">
+      <div class="cap">
+        <div class="title">Nervous Tissue</div>
+        <div class="key">
+          <span>A</span> = neuron (large cell body with branching dendrites and long axon — transmit electrical signals) &nbsp;·&nbsp;
+          <span>B</span> = glial cell (neuroglia — smaller; support, protect, and nourish neurons)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Tissue / Cell Type</th><th>Category</th><th>Key Identifying Features &amp; Function</th></tr>
+      <tr><td>Simple squamous epithelium</td><td>Epithelial</td><td>Single layer, flat cells; rapid diffusion; blood vessel lining</td></tr>
+      <tr><td>Simple cuboidal epithelium</td><td>Epithelial</td><td>Single layer, cube-shaped cells; secretion/absorption; kidney tubules, pancreatic ducts</td></tr>
+      <tr><td>Simple columnar epithelium</td><td>Epithelial</td><td>Single layer, tall cells; secretion/absorption; intestine, trachea. Contains <strong>goblet cells</strong> (mucus-secreting). Rests on <strong>basal lamina</strong>.</td></tr>
+      <tr><td>Stratified squamous epithelium</td><td>Epithelial</td><td>Multiple layers, flat at surface; protection; epidermis, mouth. <strong>Basal lamina</strong> visible at base.</td></tr>
+      <tr><td>Goblet cell</td><td>Epithelial (columnar)</td><td>Flask-shaped; pale cytoplasm packed with mucin granules; opens apically; secretes mucus; found in simple columnar epithelium of gut and trachea</td></tr>
+      <tr><td>Basal lamina</td><td>Epithelial (ECM)</td><td>Thin acellular sheet at base of all epithelia; anchors epithelial cells to underlying connective tissue; secreted by epithelial cells</td></tr>
+      <tr><td>Loose areolar connective tissue</td><td>Connective</td><td>Collagen + elastin fibers + fibroblasts in gel-like matrix; fills spaces, supports organs</td></tr>
+      <tr><td>Dense connective tissue</td><td>Connective</td><td>Tightly packed parallel collagen fibers; few cells (fibroblasts); little ground substance; great tensile strength; tendons, ligaments, outer tracheal cartilage ring</td></tr>
+      <tr><td>Adipose tissue</td><td>Connective</td><td>Adipocytes with large lipid vacuole; energy storage, insulation, cushioning</td></tr>
+      <tr><td>Hyaline cartilage</td><td>Connective (supporting)</td><td>Chondrocytes in lacunae; glassy ECM; flexible support; joint surfaces, tracheal rings</td></tr>
+      <tr><td>Bone</td><td>Connective (supporting)</td><td>Osteocytes in lacunae; calcified (mineralized) ECM; structural support, Ca²⁺ storage</td></tr>
+      <tr><td>Blood</td><td>Connective (fluid)</td><td>Erythrocytes (O₂ transport) + leukocytes (immune) + platelets; liquid matrix = plasma</td></tr>
+      <tr><td>Erythrocyte (RBC)</td><td>Blood cell</td><td>Biconcave disc; no nucleus; packed with hemoglobin; O₂ and CO₂ transport</td></tr>
+      <tr><td>Leukocyte (WBC)</td><td>Blood cell</td><td>Nucleated; various types; immune defense and surveillance</td></tr>
+      <tr><td>Fibroblast</td><td>Connective cell</td><td>Produces collagen, elastin, and ground substance; most common cell in loose connective tissue</td></tr>
+      <tr><td>Chondrocyte</td><td>Connective cell</td><td>Cartilage cell; sits in lacuna; maintains cartilage ECM</td></tr>
+      <tr><td>Osteocyte</td><td>Connective cell</td><td>Mature bone cell; sits in lacuna within calcified matrix; maintains bone tissue</td></tr>
+      <tr><td>Skeletal muscle</td><td>Muscle</td><td>Striated; multinucleated; voluntary; attached to skeleton</td></tr>
+      <tr><td>Smooth muscle</td><td>Muscle</td><td>No striations; spindle-shaped; involuntary; hollow organ walls</td></tr>
+      <tr><td>Cardiac muscle</td><td>Muscle</td><td>Striated; intercalated discs; involuntary; heart only</td></tr>
+      <tr><td>Neuron</td><td>Nervous</td><td>Large cell body + dendrites + axon; transmits action potentials</td></tr>
+      <tr><td>Glial cell (Neuroglia)</td><td>Nervous</td><td>Support cells; insulate, protect, and nourish neurons; far outnumber neurons</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ LAB REFERENCE TABLE -->
+<section class="section" id="lab-ref">
+  <div class="section-head" style="border-color:#94a3b8;color:#94a3b8">
+    <span class="icon">📋</span>
+    <h2>Animal Tissues &amp; Embryology — Lab Reference</h2>
+    <span class="badge" style="color:#94a3b8;border-color:#94a3b8">BIOL 212 LOs</span>
+  </div>
+
+  <div class="facts" style="margin-bottom:18px">
+    <h3>How to use this table</h3>
+    <ul>
+      <li>Items in <strong>bold</strong> in the original LO sheet are <strong>testable</strong> — know them by name</li>
+      <li>"Structures to identify" = what you must be able to point to on a slide or diagram</li>
+      <li>"Slide label" = the name of the microscope slide used in lab</li>
+    </ul>
+  </div>
+
+  <!-- PART I — ANIMAL TISSUES -->
+  <div class="sub" style="color:#94a3b8">Part I — Animal Tissues</div>
+  <div class="tbl-wrap" style="margin-bottom:28px">
+    <table>
+      <tr>
+        <th>Sub-category</th>
+        <th>Specific tissue type</th>
+        <th>Structures to identify</th>
+        <th>Slide label</th>
+        <th>Where to look</th>
+      </tr>
+
+      <!-- EPITHELIA header -->
+      <tr>
+        <td colspan="5" style="background:var(--surface2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Epithelia</td>
+      </tr>
+
+      <!-- Simple epithelium -->
+      <tr>
+        <td rowspan="3" style="color:var(--muted);font-size:12px">Simple epithelium</td>
+        <td><strong>Simple columnar epithelium</strong></td>
+        <td><strong>Goblet cells</strong>, <strong>basal lamina</strong></td>
+        <td>Jejunum<br>Trachea</td>
+        <td>Lining lumen</td>
+      </tr>
+      <tr>
+        <td><strong>Simple cuboidal epithelium</strong></td>
+        <td><strong>Basal lamina</strong></td>
+        <td>Kidney</td>
+        <td>Lining lumen of kidney tubules</td>
+      </tr>
+      <tr>
+        <td><strong>Simple squamous epithelium</strong></td>
+        <td>—</td>
+        <td>Skin<br>Artery, vein, &amp; nerve</td>
+        <td>Lining lumen of blood vessels</td>
+      </tr>
+
+      <!-- Stratified epithelium -->
+      <tr>
+        <td style="color:var(--muted);font-size:12px">Stratified epithelium</td>
+        <td><strong>Stratified squamous epithelium</strong></td>
+        <td><strong>Basal lamina</strong></td>
+        <td>Esophagus</td>
+        <td>Lining lumen</td>
+      </tr>
+
+      <!-- CONNECTIVE header -->
+      <tr>
+        <td colspan="5" style="background:var(--surface2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Connective tissue</td>
+      </tr>
+
+      <tr>
+        <td style="color:var(--muted);font-size:12px">Loose connective tissue</td>
+        <td><strong>Areolar connective tissue</strong></td>
+        <td>Identify tissue, <strong>fibroblasts</strong>, matrix, <strong>collagen fibers</strong>, <strong>elastin fibers</strong></td>
+        <td>Areolar tissue</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td style="color:var(--muted);font-size:12px">Dense connective tissue</td>
+        <td><strong>Dense connective tissue</strong></td>
+        <td>Identify tissue, <strong>fibroblasts</strong>, matrix, <strong>collagen fibers</strong></td>
+        <td>Trachea/esophagus</td>
+        <td>Outer edge of tracheal cartilage</td>
+      </tr>
+      <tr>
+        <td rowspan="2" style="color:var(--muted);font-size:12px">Supporting connective tissue</td>
+        <td><strong>Cartilage</strong></td>
+        <td>Identify tissue, <strong>chondrocytes</strong>, matrix</td>
+        <td>Trachea/esophagus</td>
+        <td>Wall of trachea</td>
+      </tr>
+      <tr>
+        <td><strong>Bone</strong></td>
+        <td>Identify tissue, <strong>osteocytes</strong>, matrix</td>
+        <td>Ground bone</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td style="color:var(--muted);font-size:12px">Fluid connective tissue</td>
+        <td><strong>Blood</strong></td>
+        <td>Identify tissue, <strong>erythrocytes (RBC)</strong>, <strong>leukocytes (WBC)</strong>, matrix (plasma)</td>
+        <td>Blood smear</td>
+        <td>—</td>
+      </tr>
+
+      <!-- MUSCLE header -->
+      <tr>
+        <td colspan="5" style="background:var(--surface2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Muscle tissue</td>
+      </tr>
+
+      <tr>
+        <td rowspan="3" style="color:var(--muted);font-size:12px">Muscle</td>
+        <td><strong>Skeletal muscle</strong></td>
+        <td>Identify tissue</td>
+        <td>Striated muscle</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>Smooth muscle</strong></td>
+        <td>Identify tissue</td>
+        <td>Artery, vein, &amp; nerve<br>Jejunum</td>
+        <td>Intestinal wall<br>Vessel walls</td>
+      </tr>
+      <tr>
+        <td><strong>Cardiac muscle</strong></td>
+        <td>Identify tissue</td>
+        <td>Cardiac muscle</td>
+        <td>—</td>
+      </tr>
+
+      <!-- NERVOUS header -->
+      <tr>
+        <td colspan="5" style="background:var(--surface2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Nervous tissue</td>
+      </tr>
+
+      <tr>
+        <td style="color:var(--muted);font-size:12px">Nervous tissue</td>
+        <td><strong>Nervous tissue</strong></td>
+        <td>Identify tissue, <strong>neurons</strong>, <strong>glial cells</strong></td>
+        <td>Motor neuron smear</td>
+        <td>—</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- PART II — EMBRYOLOGY -->
+  <div class="sub" style="color:#94a3b8">Part II — Embryology Learning Objectives</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Topic</th><th>What to identify</th><th>Organism / Stage</th></tr>
+      <tr>
+        <td>Developmental stages</td>
+        <td>Unfertilized egg, fertilized egg, blastula, gastrula</td>
+        <td>Frog &amp; starfish</td>
+      </tr>
+      <tr>
+        <td>Primary germ layers (gastrula)</td>
+        <td><strong>Ectoderm</strong>, <strong>mesoderm</strong>, <strong>endoderm</strong></td>
+        <td>Frog &amp; starfish gastrula</td>
+      </tr>
+      <tr>
+        <td>Embryonic cavities</td>
+        <td><strong>Blastocoel</strong> (in blastula) &amp; <strong>gastrocoel</strong> (in gastrula)</td>
+        <td>Frog &amp; starfish</td>
+      </tr>
+      <tr>
+        <td>Neurulation — early neurula</td>
+        <td><strong>Neural plate</strong>, notochord</td>
+        <td>Frog embryo</td>
+      </tr>
+      <tr>
+        <td>Neurulation — late neurula</td>
+        <td><strong>Neural tube</strong>, <strong>notochord</strong></td>
+        <td>Frog embryo</td>
+      </tr>
+      <tr>
+        <td>Chick embryo</td>
+        <td><strong>Somites</strong>, <strong>neural tube</strong></td>
+        <td>Chick (whole mount)</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<script>
+if (new URLSearchParams(location.search).get('bare') === '1') {
+  document.querySelector('nav.topnav').style.display = 'none';
+}
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))
+      ?.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+</script>
+</body>
+</html>

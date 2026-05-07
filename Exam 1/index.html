@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO 212 – Exam 1 Study Hub</title>
+<style>
+:root{
+  --bg:#0d0f18;--surface:#161926;--surface2:#1e2235;--surface3:#252a40;
+  --border:#252a40;--border2:#2f3554;
+  --text:#e2e8f0;--muted:#8892a4;--muted2:#5a6480;
+  --accent:#4f8ef7;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;
+  --phylo:#22c55e;--porifera:#f97316;--cnidaria:#4f8ef7;
+  --platy:#a855f7;--nema:#f59e0b;--annel:#ef4444;
+  --mollu:#ec4899;--arthr:#14b8a6;--embryo:#8b5cf6;--histo:#06b6d4;
+  --nav-h:52px;--sub-h:36px;--top-total:88px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+
+/* ══ TOP NAV (static, never changes) ══ */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:var(--nav-h);
+  background:rgba(13,15,24,.97);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;padding:0 20px;gap:0;
+}
+.logo{
+  font-weight:800;font-size:.95rem;color:var(--accent);text-decoration:none;
+  margin-right:20px;white-space:nowrap;letter-spacing:-.01em;flex-shrink:0;
+}
+.logo em{color:var(--muted);font-style:normal;font-weight:400}
+.nav-tabs{display:flex;align-items:center;gap:0;}
+.nav-tab{
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);font-size:.82rem;font-weight:500;
+  padding:0 14px;height:var(--nav-h);cursor:pointer;white-space:nowrap;
+  font-family:inherit;transition:color .15s,border-color .15s;flex-shrink:0;
+}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+
+/* ══ SUB NAV (below top nav, content changes) ══ */
+.subnav{
+  position:fixed;top:var(--nav-h);left:0;right:0;z-index:499;
+  height:var(--sub-h);
+  background:rgba(22,25,38,.97);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:0;overflow:hidden;
+}
+.subnav-pane{display:none;align-items:center;gap:0;width:100%;}
+.subnav-pane.active{display:flex;}
+.sub-tab{
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);font-size:.76rem;font-weight:500;
+  padding:0 12px;height:var(--sub-h);cursor:pointer;white-space:nowrap;
+  font-family:inherit;transition:color .15s,border-color .15s;flex-shrink:0;
+}
+.sub-tab:hover{color:var(--text)}
+.sub-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.sub-sep{width:1px;height:16px;background:var(--border2);margin:0 6px;flex-shrink:0;}
+.sub-cat{
+  font-size:.68rem;font-weight:600;text-decoration:none;
+  padding:3px 8px;border-radius:5px;border:1px solid transparent;
+  white-space:nowrap;opacity:.7;transition:opacity .15s,border-color .15s;flex-shrink:0;
+}
+.sub-cat:hover{opacity:1;border-color:currentColor}
+
+/* ══ PANELS ══ */
+.panel{
+  position:fixed;top:var(--top-total);left:0;right:0;bottom:0;
+  display:none;overflow:hidden;
+}
+.panel.active{display:flex;flex-direction:column}
+iframe.fill{flex:1;width:100%;border:none;background:var(--bg)}
+.anat-sub{display:none;flex:1;flex-direction:column;overflow:hidden}
+.anat-sub.active{display:flex}
+
+/* ══ HOME PANEL ══ */
+#panel-home{overflow-y:auto;display:none;flex-direction:column}
+#panel-home.active{display:flex}
+.home-inner{
+  max-width:980px;margin:0 auto;padding:48px 28px 80px;
+  display:flex;flex-direction:column;gap:48px;width:100%;
+}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:20px;padding:32px 0 8px}
+.hero-eyebrow{
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.hero-title{
+  font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.1;
+  background:linear-gradient(130deg,#e2e8f0 0%,#4f8ef7 45%,#a78bfa 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:.95rem;color:var(--muted);max-width:480px;line-height:1.6}
+.hero-stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat-chip{
+  background:var(--surface2);border:1px solid var(--border2);border-radius:99px;
+  font-size:.75rem;padding:4px 12px;color:var(--text);
+}
+.stat-chip strong{color:var(--accent)}
+
+/* tool cards */
+.section-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;
+}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.tool-card{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:16px;
+  padding:22px 20px;display:flex;flex-direction:column;gap:10px;
+  cursor:pointer;transition:transform .15s,border-color .2s;
+}
+.tool-card:hover{transform:translateY(-2px)}
+.tool-card .tc-icon{font-size:1.8rem;line-height:1}
+.tool-card h3{font-size:1rem;font-weight:700}
+.tool-card p{font-size:.8rem;color:var(--muted);line-height:1.55;flex:1}
+.tool-card .tc-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.tc-badge{font-size:.68rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--muted);}
+.tool-card .tc-cta{
+  margin-top:8px;display:inline-flex;align-items:center;gap:6px;
+  font-size:.82rem;font-weight:700;color:var(--accent);
+  background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);
+  border-radius:8px;padding:9px 16px;transition:background .15s;
+}
+.tool-card .tc-cta:hover{background:rgba(79,142,247,.18)}
+.tool-card.quiz-card{border-color:rgba(79,142,247,.25)}
+.tool-card.lo-card{border-color:rgba(139,92,246,.25)}
+.tool-card.guide-card{border-color:rgba(34,197,94,.25)}
+
+/* quiz sub-feature row */
+.quiz-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:2px;}
+.quiz-feat{
+  background:var(--surface2);border:1px solid var(--border2);border-radius:10px;
+  padding:10px 12px;cursor:pointer;transition:border-color .15s;
+}
+.quiz-feat:hover{border-color:var(--accent)}
+.quiz-feat .qf-label{font-size:.75rem;font-weight:700;margin-bottom:2px;}
+.quiz-feat .qf-sub{font-size:.68rem;color:var(--muted);}
+
+/* category grid */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;
+}
+.cat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px 14px;cursor:pointer;text-decoration:none;
+  transition:transform .15s,border-color .2s;
+  display:flex;flex-direction:column;gap:6px;
+}
+.cat-card:hover{transform:translateY(-2px)}
+.cat-card .icon{font-size:1.3rem;line-height:1}
+.cat-card .name{font-size:.82rem;font-weight:700;color:var(--text)}
+.cat-card .latin{font-size:.68rem;color:var(--muted);font-style:italic}
+.cat-card .count{
+  margin-top:auto;padding-top:6px;font-size:.67rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;opacity:.65;
+}
+.cat-card .bar{height:2px;border-radius:2px;background:currentColor;opacity:.3;margin-top:3px;width:100%;}
+</style>
+</head>
+<body>
+
+<!-- ══════════ TOP NAV (static) ══════════ -->
+<nav class="topnav">
+  <a class="logo" href="#" onclick="showPanel('home');return false">BIO 212 <em>· Exam 1</em></a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="ntab-home"  onclick="showPanel('home')">Home</button>
+    <button class="nav-tab"        id="ntab-quiz"  onclick="showPanel('quiz')">Exam Quiz</button>
+    <button class="nav-tab"        id="ntab-lo"    onclick="showPanel('lo')">LO Quiz</button>
+    <button class="nav-tab"        id="ntab-guide" onclick="showPanel('guide')">Study Guide</button>
+    <button class="nav-tab"        id="ntab-anat"  onclick="showPanel('anat')">🔬 Anatomy Exams</button>
+  </div>
+</nav>
+
+<!-- ══════════ SUB NAV (contextual) ══════════ -->
+<div class="subnav">
+
+  <!-- Home: empty placeholder -->
+  <div class="subnav-pane active" id="sub-home"></div>
+
+  <!-- Exam Quiz sub-tabs -->
+  <div class="subnav-pane" id="sub-quiz">
+    <button class="sub-tab active" id="qtab-quiz"     onclick="quizTab('quiz',this)">Practice</button>
+    <button class="sub-tab"        id="qtab-browse"   onclick="quizTab('browse',this)">Browse All</button>
+    <button class="sub-tab"        id="qtab-progress" onclick="quizTab('progress',this)">Progress</button>
+  </div>
+
+  <!-- LO Quiz sub-tabs -->
+  <div class="subnav-pane" id="sub-lo">
+    <button class="sub-tab active" id="lotab-quiz"       onclick="loTab('quiz',this)">Practice</button>
+    <button class="sub-tab"        id="lotab-browse"     onclick="loTab('browse',this)">Browse All</button>
+    <button class="sub-tab"        id="lotab-progress"   onclick="loTab('progress',this)">Progress</button>
+    <div class="sub-sep"></div>
+    <button class="sub-tab"        id="lotab-studyguide" onclick="showLoGuide(this)">Study Guide</button>
+  </div>
+
+  <!-- Anatomy Exams sub-tabs -->
+  <div class="subnav-pane" id="sub-anat">
+    <button class="sub-tab active" id="atab-worm"      onclick="anatTab('worm',this)">🪱 Earthworm</button>
+    <button class="sub-tab"        id="atab-nematoda"  onclick="anatTab('nematoda',this)">🔬 Nematoda</button>
+    <button class="sub-tab"        id="atab-arachnida" onclick="anatTab('arachnida',this)">🕷️ Arachnida</button>
+    <button class="sub-tab"        id="atab-crustacea" onclick="anatTab('crustacea',this)">🦞 Crustacea</button>
+    <button class="sub-tab"        id="atab-insecta"   onclick="anatTab('insecta',this)">🦗 Insecta</button>
+    <button class="sub-tab"        id="atab-myriapoda" onclick="anatTab('myriapoda',this)">🐛 Myriapoda</button>
+  </div>
+
+  <!-- Study Guide category jump links -->
+  <div class="subnav-pane" id="sub-guide" style="overflow-x:auto;scrollbar-width:none;gap:3px;">
+    <a class="sub-cat" style="color:var(--phylo)"    href="#" onclick="guideTo('phylo');return false">🌳 Phylo</a>
+    <a class="sub-cat" style="color:var(--porifera)" href="#" onclick="guideTo('porifera');return false">🧽 Porifera</a>
+    <a class="sub-cat" style="color:var(--cnidaria)"  href="#" onclick="guideTo('cnidaria');return false">🪼 Cnidaria</a>
+    <a class="sub-cat" style="color:var(--platy)"    href="#" onclick="guideTo('platy');return false">🪱 Platy</a>
+    <a class="sub-cat" style="color:var(--mollu)"    href="#" onclick="guideTo('mollu');return false">🐚 Mollusca</a>
+    <a class="sub-cat" style="color:var(--annel)"    href="#" onclick="guideTo('annel');return false">🐛 Annelida</a>
+    <a class="sub-cat" style="color:var(--nema)"     href="#" onclick="guideTo('nema');return false">🔬 Nematoda</a>
+    <a class="sub-cat" style="color:var(--arthr)"    href="#" onclick="guideTo('arthr');return false">🦞 Arthro</a>
+    <a class="sub-cat" style="color:var(--histo)"    href="#" onclick="guideTo('histo');return false">🔬 Tissues</a>
+    <a class="sub-cat" style="color:var(--embryo)"   href="#" onclick="guideTo('embryo');return false">🐸 Embryo</a>
+    <a class="sub-cat" style="color:#94a3b8"         href="#" onclick="guideTo('lab-ref');return false">📊 Lab Ref</a>
+  </div>
+
+</div>
+
+<!-- ══════════ HOME PANEL ══════════ -->
+<div class="panel active" id="panel-home">
+<div class="home-inner">
+
+  <div class="hero">
+    <div class="hero-eyebrow">BIOL 212 · Majors Animal Biology</div>
+    <h1 class="hero-title">Lab Practical<br>Exam 1</h1>
+    <p class="hero-sub">Practice quizzes, LO-based review, and a full study guide for all exam categories.</p>
+    <div class="hero-stats">
+      <div class="stat-chip"><strong>265</strong> exam questions</div>
+      <div class="stat-chip"><strong>172</strong> LO questions</div>
+      <div class="stat-chip"><strong>10</strong> categories</div>
+      <div class="stat-chip"><strong>6</strong> embryo stages</div>
+    </div>
+  </div>
+
+  <!-- Three tool cards -->
+  <div>
+    <div class="section-label">Tools</div>
+    <div class="tools-grid">
+
+      <div class="tool-card quiz-card" onclick="showPanel('quiz')">
+        <div class="tc-icon">🎯</div>
+        <h3>Exam Quiz</h3>
+        <p>Real exam questions from Canvas. Filter by category, shuffle, get instant feedback with explanations.</p>
+        <div class="tc-meta">
+          <span class="tc-badge">265 questions</span>
+          <span class="tc-badge">10 categories</span>
+          <span class="tc-badge">Multiple choice + free text</span>
+        </div>
+        <div class="tc-cta">Open Exam Quiz →</div>
+      </div>
+
+      <div class="tool-card lo-card" onclick="showPanel('lo')">
+        <div class="tc-icon">📋</div>
+        <h3>LO Quiz</h3>
+        <p>Questions written directly from the lab learning objectives. Covers all phyla, tissues, and embryology.</p>
+        <div class="tc-meta">
+          <span class="tc-badge">172 questions</span>
+          <span class="tc-badge">10 categories</span>
+          <span class="tc-badge">Multiple choice + free text</span>
+        </div>
+        <div class="tc-cta" style="color:#a78bfa;background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2)">Open LO Quiz →</div>
+      </div>
+
+      <div class="tool-card guide-card" onclick="showPanel('guide')">
+        <div class="tc-icon">📖</div>
+        <h3>Study Guide</h3>
+        <p>Collapsible reference sections for every phylum and tissue type. Structure tables, habitat/feeding info, comparison charts.</p>
+        <div class="tc-meta">
+          <span class="tc-badge">10 sections</span>
+          <span class="tc-badge">Structure + function tables</span>
+        </div>
+        <div class="tc-cta" style="color:var(--green);background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.2)">Open Study Guide →</div>
+      </div>
+
+      <div class="tool-card" style="border-color:rgba(249,115,22,.25)" onclick="showPanel('anat')">
+        <div class="tc-icon">🔬</div>
+        <h3>Anatomy Exams</h3>
+        <p>Image-based labeling quizzes. Identify structures from dissection photos and diagrams for 6 animal groups.</p>
+        <div class="tc-meta">
+          <span class="tc-badge">🪱 Earthworm</span>
+          <span class="tc-badge">🔬 Nematoda</span>
+          <span class="tc-badge">🕷️ Arachnida</span>
+          <span class="tc-badge">🦞 Crustacea</span>
+          <span class="tc-badge">🦗 Insecta</span>
+          <span class="tc-badge">🐛 Myriapoda</span>
+        </div>
+        <div class="tc-cta" style="color:#f97316;background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.2)">Open Anatomy Exams →</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quiz sub-features -->
+  <div>
+    <div class="section-label">Exam Quiz — Quick Access</div>
+    <div class="quiz-feats">
+      <div class="quiz-feat" onclick="showPanel('quiz');quizTabById('quiz')">
+        <div class="qf-label">Practice Mode</div>
+        <div class="qf-sub">Filtered quiz with instant feedback</div>
+      </div>
+      <div class="quiz-feat" onclick="showPanel('quiz');quizTabById('browse')">
+        <div class="qf-label">Browse All Questions</div>
+        <div class="qf-sub">Review every question &amp; answer</div>
+      </div>
+      <div class="quiz-feat" onclick="showPanel('quiz');quizTabById('progress')">
+        <div class="qf-label">Progress Tracker</div>
+        <div class="qf-sub">See correct/wrong by category</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category grid -->
+  <div>
+    <div class="section-label">Browse by Category</div>
+    <div class="cat-grid">
+      <a class="cat-card" style="color:var(--phylo);border-color:rgba(34,197,94,.2)" href="#" onclick="guideTo('phylo');return false">
+        <div class="icon">🌳</div><div class="name">Phylogenetics</div>
+        <div class="latin">Taxonomy &amp; trees</div>
+        <div class="count">37 exam Qs · 19 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--porifera);border-color:rgba(249,115,22,.2)" href="#" onclick="guideTo('porifera');return false">
+        <div class="icon">🧽</div><div class="name">Porifera</div>
+        <div class="latin">Sponges</div>
+        <div class="count">11 exam Qs · 10 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--cnidaria);border-color:rgba(79,142,247,.2)" href="#" onclick="guideTo('cnidaria');return false">
+        <div class="icon">🪼</div><div class="name">Cnidaria</div>
+        <div class="latin">Jellyfish, corals, hydra</div>
+        <div class="count">24 exam Qs · 15 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--platy);border-color:rgba(168,85,247,.2)" href="#" onclick="guideTo('platy');return false">
+        <div class="icon">🪱</div><div class="name">Platyhelminthes</div>
+        <div class="latin">Flatworms</div>
+        <div class="count">17 exam Qs · 17 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--mollu);border-color:rgba(236,72,153,.2)" href="#" onclick="guideTo('mollu');return false">
+        <div class="icon">🐚</div><div class="name">Mollusca</div>
+        <div class="latin">Squid, clam, snail</div>
+        <div class="count">21 exam Qs · 25 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--annel);border-color:rgba(239,68,68,.2)" href="#" onclick="guideTo('annel');return false">
+        <div class="icon">🐛</div><div class="name">Annelida</div>
+        <div class="latin">Segmented worms</div>
+        <div class="count">18 exam Qs · 20 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--nema);border-color:rgba(245,158,11,.2)" href="#" onclick="guideTo('nema');return false">
+        <div class="icon">🔬</div><div class="name">Nematoda</div>
+        <div class="latin">Roundworms — Ascaris</div>
+        <div class="count">13 exam Qs · 12 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--arthr);border-color:rgba(20,184,166,.2)" href="#" onclick="guideTo('arthr');return false">
+        <div class="icon">🦞</div><div class="name">Arthropoda</div>
+        <div class="latin">Crayfish, insects, spiders</div>
+        <div class="count">22 exam Qs · 21 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--histo);border-color:rgba(6,182,212,.2)" href="#" onclick="guideTo('histo');return false">
+        <div class="icon">🔬</div><div class="name">Histology</div>
+        <div class="latin">Animal tissues</div>
+        <div class="count">56 exam Qs · 20 LO Qs</div><div class="bar"></div>
+      </a>
+      <a class="cat-card" style="color:var(--embryo);border-color:rgba(139,92,246,.2)" href="#" onclick="guideTo('embryo');return false">
+        <div class="icon">🐸</div><div class="name">Embryology</div>
+        <div class="latin">Sea star · Frog · Chick</div>
+        <div class="count">28 exam Qs · 14 LO Qs</div><div class="bar"></div>
+      </a>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ EXAM QUIZ PANEL ══════════ -->
+<div class="panel" id="panel-quiz">
+  <iframe class="fill" id="quiz-frame" src="quiz.html?bare=1" title="Exam Quiz"></iframe>
+</div>
+
+<!-- ══════════ LO QUIZ PANEL ══════════ -->
+<div class="panel" id="panel-lo">
+  <iframe class="fill" id="lo-frame" src="quiz_lo.html?bare=1" title="LO Quiz"></iframe>
+</div>
+
+<!-- ══════════ LO STUDY GUIDE PANEL ══════════ -->
+<div class="panel" id="panel-lo-guide">
+  <iframe class="fill" id="lo-guide-frame" src="study_guide_lo.html?bare=1" title="LO Study Guide"></iframe>
+</div>
+
+<!-- ══════════ ANATOMY EXAMS PANEL ══════════ -->
+<div class="panel" id="panel-anat">
+  <div class="anat-sub active" id="anat-worm">
+    <iframe class="fill" id="worm-frame" src="quiz_earthworm.html?bare=1" title="Earthworm Quiz"></iframe>
+  </div>
+  <div class="anat-sub" id="anat-nematoda">
+    <iframe class="fill" id="nematoda-frame" src="quiz_nematoda.html?bare=1" title="Nematoda Quiz"></iframe>
+  </div>
+  <div class="anat-sub" id="anat-arachnida">
+    <iframe class="fill" id="arachnida-frame" src="quiz_arachnida.html?bare=1" title="Arachnida Quiz"></iframe>
+  </div>
+  <div class="anat-sub" id="anat-crustacea">
+    <iframe class="fill" id="crustacea-frame" src="quiz_crustacea.html?bare=1" title="Crustacea Quiz"></iframe>
+  </div>
+  <div class="anat-sub" id="anat-insecta">
+    <iframe class="fill" id="insecta-frame" src="quiz_insecta.html?bare=1" title="Insecta Quiz"></iframe>
+  </div>
+  <div class="anat-sub" id="anat-myriapoda">
+    <iframe class="fill" id="myriapoda-frame" src="quiz_myriapoda.html?bare=1" title="Myriapoda Quiz"></iframe>
+  </div>
+</div>
+
+<!-- ══════════ STUDY GUIDE PANEL ══════════ -->
+<div class="panel" id="panel-guide">
+  <iframe class="fill" id="guide-frame" src="study_guide.html?bare=1" title="Study Guide"></iframe>
+</div>
+
+<script>
+let currentPanel = 'home';
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('ntab-' + id).classList.add('active');
+
+  document.querySelectorAll('.subnav-pane').forEach(p => p.classList.remove('active'));
+  const subPane = document.getElementById('sub-' + id);
+  if (subPane) subPane.classList.add('active');
+
+  // Reset LO sub-tabs to Practice when navigating back to LO panel
+  if (id === 'lo') {
+    document.querySelectorAll('#sub-lo .sub-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('lotab-quiz').classList.add('active');
+  }
+
+  // Reset anatomy exams to Earthworm tab when navigating to it
+  if (id === 'anat') {
+    document.querySelectorAll('.anat-sub').forEach(s => s.classList.remove('active'));
+    document.getElementById('anat-worm').classList.add('active');
+    document.querySelectorAll('#sub-anat .sub-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('atab-worm').classList.add('active');
+  }
+
+  currentPanel = id;
+}
+
+function showLoGuide(btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-lo-guide').classList.add('active');
+
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('ntab-lo').classList.add('active');
+
+  document.querySelectorAll('.subnav-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('sub-lo').classList.add('active');
+
+  document.querySelectorAll('#sub-lo .sub-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  currentPanel = 'lo-guide';
+}
+
+/* ── Exam Quiz sub-tabs ── */
+function quizTab(tab, btn) {
+  document.querySelectorAll('#sub-quiz .sub-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('quiz-frame').contentWindow.postMessage({type:'gotoTab', tab:tab}, '*');
+}
+function quizTabById(tab) {
+  setTimeout(() => quizTab(tab, document.getElementById('qtab-' + tab)), 80);
+}
+
+/* ── Anatomy Exams sub-panels ── */
+function anatTab(tab, btn) {
+  document.querySelectorAll('.anat-sub').forEach(s => s.classList.remove('active'));
+  const sub = document.getElementById('anat-' + tab);
+  if (sub) sub.classList.add('active');
+  document.querySelectorAll('#sub-anat .sub-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // ensure the anatomy panel is active (in case called from a deep link)
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-anat').classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('ntab-anat').classList.add('active');
+  document.querySelectorAll('.subnav-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('sub-anat').classList.add('active');
+}
+
+/* ── LO Quiz sub-tabs ── */
+function loTab(tab, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-lo').classList.add('active');
+  document.querySelectorAll('#sub-lo .sub-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('lo-frame').contentWindow.postMessage({type:'gotoTab', tab:tab}, '*');
+}
+
+/* ── Study Guide section jump ── */
+function guideTo(section) {
+  showPanel('guide');
+  const frame = document.getElementById('guide-frame');
+  const doScroll = () => {
+    try {
+      const el = frame.contentWindow.document.getElementById(section);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    } catch(e) {}
+  };
+  // If guide already loaded, scroll immediately; otherwise wait for load
+  if (frame.contentDocument && frame.contentDocument.readyState === 'complete') {
+    doScroll();
+  } else {
+    frame.addEventListener('load', doScroll, {once: true});
+  }
+}
+
+/* ── Keep exam quiz sub-tabs in sync when iframe changes tab internally ── */
+window.addEventListener('message', e => {
+  if (!e.data) return;
+  if (e.data.type === 'tabChange') {
+    const panel = e.source === document.getElementById('quiz-frame').contentWindow ? 'quiz' : 'lo';
+    const prefix = panel === 'quiz' ? 'qtab' : 'lotab';
+    document.querySelectorAll(`#sub-${panel} .sub-tab`).forEach(b => b.classList.remove('active'));
+    const el = document.getElementById(`${prefix}-${e.data.tab}`);
+    if (el) el.classList.add('active');
+  }
+});
+
+// Init
+showPanel('home');
+</script>
+</body>
+</html>

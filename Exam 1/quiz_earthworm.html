@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 – Oligochaeta Anatomy Quiz</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#4f8ef7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+  --ext:#22c55e;--dig:#f97316;--circ:#ef4444;--xs:#4f8ef7;--rep:#ec4899;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:12px}
+.logo{font-weight:700;font-size:.9rem;color:var(--muted);text-decoration:none;white-space:nowrap}
+.logo:hover{color:var(--text)}
+.nav-title{font-weight:700;font-size:.95rem;color:var(--text)}
+.nav-latin{font-size:.78rem;color:var(--muted);font-style:italic}
+
+.page{max-width:820px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.4rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+
+/* ── SETUP ── */
+.setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.setup-title{font-size:1.1rem;font-weight:800;
+  background:linear-gradient(135deg,#4f8ef7,#a78bfa,#f472b6);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cat-label-row label{font-size:.78rem;color:var(--muted)}
+.cat-label-row button{font-size:.68rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0}
+.cat-label-row button:hover{text-decoration:underline}
+.cat-pills{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.cat-pill{display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--card);color:var(--muted);cursor:pointer;user-select:none;
+  transition:border-color .15s,background .15s,color .15s}
+.cat-pill:hover{color:var(--text)}
+.cat-pill.on{color:var(--text)}
+.cat-pill .cp-icon{font-size:1.3rem;line-height:1;margin-bottom:2px}
+.cat-pill .cp-label{font-size:.74rem;font-weight:600;line-height:1.3}
+.cat-pill .cp-count{font-size:.62rem;opacity:.55}
+.setup-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.count-seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.count-seg button{background:var(--card);border:none;border-right:1px solid var(--border);
+  color:var(--muted);font-size:.82rem;font-weight:500;padding:10px 14px;cursor:pointer;
+  transition:background .15s,color .15s;white-space:nowrap}
+.count-seg button:last-child{border-right:none}
+.count-seg button.active{background:var(--card2);color:var(--text);font-weight:700}
+.pool-preview{font-size:.74rem;color:var(--muted);margin-top:8px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;
+  border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;
+  transition:opacity .15s,transform .12s}
+.btn:hover{opacity:.88}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted)}
+.btn.ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,#4f8ef7,#7c3aed);
+  box-shadow:0 4px 20px rgba(79,142,247,.35);font-size:.95rem;padding:12px 28px}
+.btn.primary:hover{opacity:1;transform:translateY(-2px)}
+
+/* ── PROGRESS ── */
+.prog-wrap{margin-bottom:16px}
+.prog-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#4f8ef7,#a78bfa);border-radius:99px;transition:width .4s ease}
+.prog-label{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:5px}
+
+/* ── IMAGE ── */
+@keyframes pulse-dot{
+  0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 0 rgba(249,115,22,.6)}
+  50%{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 8px rgba(249,115,22,0)}
+}
+.img-wrap{position:relative;border-radius:12px;overflow:hidden;
+  background:#0a0c14;border:1px solid var(--border);margin-bottom:14px;cursor:default}
+.q-img{width:100%;height:auto;display:block;max-height:400px;object-fit:contain;object-position:center}
+.overlay-dot{position:absolute;width:28px;height:28px;border-radius:50%;
+  border:3px solid #f97316;background:rgba(249,115,22,.25);
+  transform:translate(-50%,-50%);pointer-events:none;
+  animation:pulse-dot 1.6s ease-in-out infinite;z-index:10}
+.img-credit{font-size:.65rem;color:var(--muted);padding:4px 10px;text-align:right;
+  background:rgba(0,0,0,.3);border-top:1px solid var(--border)}
+.img-error{display:none;padding:40px 20px;text-align:center;color:var(--muted);font-size:.85rem}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.q-header{padding:12px 18px 0;display:flex;align-items:center;gap:8px}
+.q-num{font-size:.77rem;color:var(--muted)}
+.q-tag{background:rgba(79,142,247,.12);color:var(--accent);font-size:.7rem;border-radius:99px;padding:2px 9px}
+.q-body{padding:14px 18px 16px;font-size:.95rem;line-height:1.65;font-weight:500}
+
+/* ── OPTIONS ── */
+@keyframes optIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.opts{padding:0 18px 4px;display:flex;flex-direction:column;gap:9px}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:11px;
+  padding:11px 14px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:11px;
+  transition:border-color .12s,background .12s,transform .1s;line-height:1.5;
+  animation:optIn .2s ease both}
+.opt:hover:not(.locked){border-color:var(--accent);background:rgba(79,142,247,.07);transform:translateX(3px)}
+.ltr{min-width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  flex-shrink:0;margin-top:1px;transition:all .15s}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08)}
+.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08)}
+.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff}
+.opt.locked{cursor:default}
+.opt.show-correct{border-color:rgba(34,197,94,.4)}
+.opt.show-correct .ltr{border-color:var(--green);color:var(--green)}
+
+/* ── FEEDBACK ── */
+@keyframes fbIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.feedback{margin:10px 18px 0;padding:12px 16px;border-radius:11px;
+  font-size:.84rem;line-height:1.65;display:none;font-weight:500}
+.feedback.show{display:block;animation:fbIn .2s ease both}
+.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac}
+.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
+.feedback .exp{font-size:.79rem;margin-top:7px;opacity:.85;font-weight:400;font-style:italic;
+  padding-top:7px;border-top:1px solid rgba(255,255,255,.1)}
+
+/* ── NAV BUTTONS ── */
+.q-nav{padding:12px 18px 16px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px}
+.q-nav .go{margin-left:auto}
+
+/* ── RESULTS ── */
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:36px 20px 20px}
+.ring-wrap{width:130px;height:130px;margin:0 auto 16px;position:relative}
+.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ring-sub{font-size:.66rem;color:var(--muted)}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:80px}
+.stat .val{font-size:1.35rem;font-weight:700;color:var(--accent)}
+.stat .lbl{font-size:.66rem;color:var(--muted);margin-top:2px}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.review-out{margin-top:28px;text-align:left}
+
+/* ── REVIEW CARDS ── */
+.rv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;margin-bottom:12px}
+.rv-img{width:100%;max-height:200px;object-fit:contain;background:#0a0c14;display:block}
+.rv-body{padding:12px 14px}
+.rv-status{font-size:.7rem;font-weight:700;margin-bottom:3px}
+.rv-cat{font-size:.72rem;margin-bottom:7px}
+.rv-q{font-size:.86rem;line-height:1.6;margin-bottom:8px}
+.rv-answer{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:6px;
+  margin-top:4px;font-size:.81rem}
+.rv-answer.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}
+.rv-answer .dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.55rem;margin-top:1px}
+.rv-answer.ok .dot{background:var(--green);color:#fff}
+.rv-exp{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:6px;
+  padding-top:6px;border-top:1px solid var(--border);line-height:1.55}
+
+@media(max-width:600px){
+  .cat-pills{grid-template-columns:repeat(3,1fr)}
+  .q-img{max-height:240px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">← BIO 212</a>
+  <span class="nav-title">Oligochaeta Anatomy</span>
+  <span class="nav-latin">Lumbricus terrestris</span>
+</nav>
+
+<!-- ══ SETUP ══ -->
+<div id="pane-setup">
+<div class="page">
+  <h1>Oligochaeta Anatomy Quiz</h1>
+  <p class="sub">Class Oligochaeta · <em>Lumbricus terrestris</em> · Point-and-identify image labeling</p>
+
+  <div class="setup-header">
+    <span class="setup-title">Select Systems</span>
+  </div>
+  <div class="cat-label-row">
+    <label>Choose which anatomical systems to study</label>
+    <button onclick="selectAll()">Select All</button>
+  </div>
+  <div class="cat-pills" id="cat-pills"></div>
+  <div class="pool-preview" id="pool-preview"></div>
+
+  <div class="setup-controls">
+    <div class="count-seg" id="count-seg">
+      <button onclick="setCount(10,this)">10</button>
+      <button onclick="setCount(20,this)" class="active">20</button>
+      <button onclick="setCount(999,this)">All</button>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div id="pane-quiz" style="display:none">
+<div class="page">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label">
+      <span id="prog-text">Question 1</span>
+      <span id="prog-score">0 correct</span>
+    </div>
+  </div>
+
+  <div class="img-wrap" id="img-wrap">
+    <img class="q-img" id="q-img" src="" alt="Anatomy diagram" onerror="imgError()">
+    <div class="overlay-dot" id="overlay-dot" style="left:50%;top:50%"></div>
+    <div class="img-error" id="img-error">⚠ Image failed to load. Check your internet connection.</div>
+  </div>
+  <div class="img-credit" id="img-credit"></div>
+
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num" id="q-num"></span>
+      <span class="q-tag" id="q-tag"></span>
+    </div>
+    <div class="q-body" id="q-body"></div>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb"></div>
+    <div class="q-nav">
+      <button class="btn ghost" onclick="goBack()">← Back</button>
+      <button class="btn sec" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" style="display:none" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="pane-results" style="display:none">
+<div class="page">
+  <div class="results">
+    <div class="ring-wrap">
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle id="ring-arc" cx="65" cy="65" r="54" fill="none" stroke="var(--accent)"
+          stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="339.3" stroke-dashoffset="339.3" style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div class="ring-txt">
+        <div class="ring-pct" id="r-pct">0%</div>
+        <div class="ring-sub">score</div>
+      </div>
+    </div>
+    <div id="r-grade" style="font-size:1.1rem;font-weight:700;margin-bottom:6px"></div>
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:16px" id="r-msg"></div>
+    <div class="stat-row">
+      <div class="stat"><div class="val" id="r-cor" style="color:var(--green)">0</div><div class="lbl">Correct</div></div>
+      <div class="stat"><div class="val" id="r-wrg" style="color:var(--red)">0</div><div class="lbl">Wrong</div></div>
+      <div class="stat"><div class="val" id="r-skp">0</div><div class="lbl">Skipped</div></div>
+    </div>
+    <div class="act-row">
+      <button class="btn primary" onclick="startQuiz()">Try Again</button>
+      <button class="btn sec" id="btn-retry-wrong" onclick="retryWrong()" style="display:none">↩ Retry Wrong</button>
+      <button class="btn sec" onclick="showSetup()">Change Settings</button>
+      <button class="btn sec" onclick="reviewAnswers()">Review Answers ↓</button>
+    </div>
+  </div>
+  <div class="review-out" id="review-out"></div>
+</div>
+</div>
+
+<script>
+// ── IMAGE URLS ───────────────────────────────────────────────────────────────
+const IMGS = {
+  D: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Lumbricus_terrestris_anatomy.jpg',
+  DL:'https://upload.wikimedia.org/wikipedia/commons/f/f4/Lumbricus_terrestris_anatomy_%2B_description.jpg',
+  XS:'https://upload.wikimedia.org/wikipedia/commons/e/ea/Annelid_redone_w_white_background.svg',
+  XJ:'https://upload.wikimedia.org/wikipedia/commons/3/34/Earthworm_cross_section.jpg',
+  RP:'https://omeka.uottawa.ca/biodidac/files/original/69d90f13d84a0a524caf5f98cbc32215.png',
+};
+const IMG_CREDIT = {
+  D: 'Wikimedia Commons · CC BY-SA 3.0 · Dissection specimen (unlabeled)',
+  DL:'Wikimedia Commons · CC BY-SA 3.0 · Dissection specimen (labeled)',
+  XS:'Wikimedia Commons · CC BY-SA 3.0 · KDS444 · Annelid cross-section',
+  XJ:'Wikimedia Commons · CC BY-SA 4.0 · Earthworm histological cross-section',
+  RP:'BIODIDAC · CC BY-NC 4.0 · Josée Soucie · Reproductive anatomy',
+};
+
+// ── CATEGORIES ───────────────────────────────────────────────────────────────
+const CATS = [
+  {id:'ext',  label:'External',      icon:'🐛', color:'#22c55e'},
+  {id:'dig',  label:'Digestive',     icon:'🫀', color:'#f97316'},
+  {id:'circ', label:'Circulatory',   icon:'🩸', color:'#ef4444'},
+  {id:'xs',   label:'Cross-Section', icon:'🔬', color:'#4f8ef7'},
+  {id:'rep',  label:'Reproductive',  icon:'🔁', color:'#ec4899'},
+];
+
+// ── QUESTIONS ────────────────────────────────────────────────────────────────
+// ox, oy = overlay dot position as % of image width / height
+const ALL_Q = [
+
+// ── EXTERNAL ANATOMY ─────────────────────────────────────────────────────────
+{id:1,cat:'ext',img:'DL',ox:3,oy:50,
+ q:'The orange circle points to the very ANTERIOR (front) tip of the earthworm. What structure is found here?',
+ a:['Mouth','Anus','Clitellum','Pharynx'],c:0,
+ exp:'The mouth is at the anterior end, sheltered by the prostomium — a muscular lobe that hangs over segment 1. Food enters here and passes into the pharynx.'},
+
+{id:2,cat:'ext',img:'DL',ox:97,oy:50,
+ q:'The orange circle marks the very POSTERIOR (rear) end of the earthworm. What structure opens here?',
+ a:['Anus','Mouth','Nephridiopore','Clitellum'],c:0,
+ exp:'The anus is the terminal opening of the digestive tract, located on the last segment (pygidium). Undigested soil and organic matter exit here.'},
+
+{id:3,cat:'ext',img:'DL',ox:22,oy:34,
+ q:'The orange circle highlights a swollen, glandular band on the DORSAL surface of the anterior third of the worm. What is this structure?',
+ a:['Clitellum','Segment groove','Nephridiopore','Prostomium'],c:0,
+ exp:'The clitellum is a smooth, saddl-like thickening covering segments 32–37 in Lumbricus. It secretes mucus during copulation and then forms the cocoon that encloses fertilized eggs.'},
+
+{id:4,cat:'ext',img:'DL',ox:60,oy:50,
+ q:'The orange circle points to one repeating unit of the earthworm body, delimited by grooves. What is this unit called?',
+ a:['Segment (metamere)','Proglottid','Somite','Clitellum'],c:0,
+ exp:'Segments (= metameres) are the repeating body units of annelids. Lumbricus has ~150 segments. Internally each is separated by a septum; externally visible as grooves around the body.'},
+
+{id:5,cat:'ext',img:'XS',ox:31,oy:10,
+ q:'The orange circle is on tiny bristle-like projections emerging from the outer body wall in cross-section. What are these structures used for locomotion?',
+ a:['Setae (chaetae)','Parapodia','Spicules','Cilia'],c:0,
+ exp:'Setae (= chaetae) are stiff, chitinous bristles anchored in the body wall. Earthworms have 4 pairs per segment. They grip the soil so that longitudinal and circular muscles can move the body forward.'},
+
+// ── DIGESTIVE SYSTEM ─────────────────────────────────────────────────────────
+{id:6,cat:'dig',img:'DL',ox:14,oy:50,
+ q:'The orange circle marks a narrow tube (just posterior to the pharynx) that passes through the aortic arch region. What is this structure?',
+ a:['Esophagus','Crop','Intestine','Ductus deferens'],c:0,
+ exp:'The esophagus is a narrow muscular tube connecting the pharynx to the crop. It passes through the segment region bearing the aortic arches (segments 7–11).'},
+
+{id:7,cat:'dig',img:'DL',ox:52,oy:50,
+ q:'The orange circle points to a thin-walled, rounded organ that acts as a STORAGE chamber for food before grinding. What is it?',
+ a:['Crop','Gizzard','Stomach','Intestine'],c:0,
+ exp:'The crop is thin-walled and expandable — it holds ingested soil and organic matter temporarily before the gizzard processes it. It sits between the esophagus and gizzard.'},
+
+{id:8,cat:'dig',img:'DL',ox:63,oy:50,
+ q:'The orange circle marks a THICK-WALLED, muscular organ just posterior to the crop. It uses ingested sand and grit to grind food. What is it?',
+ a:['Gizzard','Crop','Esophagus','Typhlosole'],c:0,
+ exp:'The gizzard has powerful muscular walls and uses swallowed mineral particles to mechanically grind organic matter. It is firmer to the touch than the adjacent crop.'},
+
+{id:9,cat:'dig',img:'DL',ox:79,oy:50,
+ q:'The orange circle points to the long tube occupying the posterior two-thirds of the body, responsible for chemical digestion and nutrient absorption.',
+ a:['Intestine','Gizzard','Crop','Esophagus'],c:0,
+ exp:'The intestine runs from the gizzard to the anus. Chloragogen cells on its outer surface aid metabolism. Inside, the typhlosole (a dorsal fold) dramatically increases the absorptive surface area.'},
+
+{id:10,cat:'dig',img:'XJ',ox:50,oy:39,
+ q:'In the cross-section, the orange circle points to a large dorsal fold INSIDE the intestinal lumen. What is this fold that increases surface area for absorption?',
+ a:['Typhlosole','Villus','Mesentery','Septum'],c:0,
+ exp:'The typhlosole is a tongue-like, longitudinal fold of the dorsal intestinal wall projecting into the lumen. It greatly increases the surface area available for nutrient absorption — analogous to intestinal villi.'},
+
+{id:11,cat:'dig',img:'DL',ox:41,oy:47,
+ q:'The orange circle highlights thin, transverse fibromuscular walls that divide the coelom into separate compartments — one per segment. What are they?',
+ a:['Septa','Parapodia','Nephridia','Mesenteries'],c:0,
+ exp:'Septa (sing. septum) are transverse walls made of two peritoneal layers enclosing a thin muscle layer. They compartmentalize the coelom so each segment can maintain independent hydraulic pressure for locomotion.'},
+
+// ── CIRCULATORY & NERVOUS ────────────────────────────────────────────────────
+{id:12,cat:'circ',img:'DL',ox:25,oy:50,
+ q:'The orange circle highlights looping, muscular vessels surrounding the esophagus in segments 7–11. These are commonly called the "hearts." What is their correct name?',
+ a:['Aortic arches','Capillaries','Afferent vessels','Lymph nodes'],c:0,
+ exp:'Five pairs of aortic arches (segments 7–11) connect the dorsal and ventral blood vessels. They are muscular and pulsate, pumping blood ventrally — but they are NOT true hearts (no chambers or valves).'},
+
+{id:13,cat:'circ',img:'DL',ox:75,oy:36,
+ q:'The orange circle marks a vessel running along the DORSAL surface of the intestine (top of the body). It carries blood ANTERIORLY toward the aortic arches. What is it?',
+ a:['Dorsal blood vessel','Ventral blood vessel','Aorta','Nerve cord'],c:0,
+ exp:'The dorsal blood vessel is the main pumping vessel of the earthworm. It runs along the top of the intestine and is contractile — pumping blood forward (anteriorly) with each peristaltic wave.'},
+
+{id:14,cat:'circ',img:'XS',ox:48,oy:64,
+ q:'In cross-section, the orange circle marks a small vessel directly BELOW the intestine (ventral side). It carries blood POSTERIORLY. What is it?',
+ a:['Ventral blood vessel','Dorsal blood vessel','Aortic arch','Lateral vessel'],c:0,
+ exp:'The ventral blood vessel carries oxygenated blood posteriorly to supply the body. It runs just ventral to the intestine and dorsal to the nerve cord, and is non-contractile (unlike the dorsal vessel).'},
+
+{id:15,cat:'circ',img:'XS',ox:50,oy:70,
+ q:'The orange circle is at the VENTRAL bottom of the cross-section, on a solid cord that transmits nerve signals throughout the worm. What is it?',
+ a:['Ventral nerve cord','Dorsal blood vessel','Sub-intestinal vessel','Oviduct'],c:0,
+ exp:'The ventral nerve cord runs along the ventral midline from the cerebral ganglia (brain) to the last segment. Each segment has a ganglion with lateral nerves controlling local muscles and sensory receptors.'},
+
+// ── CROSS-SECTION BODY WALL ──────────────────────────────────────────────────
+{id:16,cat:'xs',img:'XS',ox:50,oy:11,
+ q:'The orange circle is on the thin OUTERMOST cell layer of the body wall (just inside the thin secreted cuticle). What is this tissue layer?',
+ a:['Epidermis','Cuticle','Circular muscles','Peritoneum'],c:0,
+ exp:'The epidermis is a single layer of columnar cells forming the outer body wall. It secretes the thin, moist cuticle on its surface and contains mucus cells that keep the skin damp — essential for cutaneous gas exchange.'},
+
+{id:17,cat:'xs',img:'XS',ox:50,oy:15,
+ q:'Just inside the epidermis is a THIN muscle layer whose fibers wrap CIRCUMFERENTIALLY around the segment (like hoops on a barrel). What layer is this?',
+ a:['Circular muscles','Longitudinal muscles','Peritoneum','Mesoderm'],c:0,
+ exp:'Circular muscles run in rings around the body. When they contract, a segment becomes LONGER AND THINNER (elongates). They act antagonistically with the longitudinal muscles to produce peristaltic locomotion.'},
+
+{id:18,cat:'xs',img:'XS',ox:25,oy:33,
+ q:'The orange circle marks the THICK inner muscle layer whose fibers run parallel to the body axis (head to tail). What is this layer?',
+ a:['Longitudinal muscles','Circular muscles','Coelom','Peritoneum'],c:0,
+ exp:'Longitudinal muscles run lengthwise along the body. When they contract, a segment becomes SHORTER AND FATTER (widens). Alternating contraction of circular and longitudinal muscles produces the earthworm\'s characteristic crawling movement.'},
+
+{id:19,cat:'xs',img:'XS',ox:33,oy:50,
+ q:'The orange circle is in the large FLUID-FILLED space between the muscle layer and the intestine. This cavity acts as a hydrostatic skeleton. What is it?',
+ a:['Coelom','Pseudocoel','Hemocoel','Gastrovascular cavity'],c:0,
+ exp:'The true coelom is completely lined by mesoderm-derived peritoneum on both surfaces (body wall and gut). The pressurized coelomic fluid transmits forces from muscles, enabling the worm to extend and retract segments during locomotion.'},
+
+{id:20,cat:'xs',img:'XS',ox:52,oy:36,
+ q:'The orange circle points to a small circular structure located directly ABOVE the intestine on the dorsal side of the cross-section. What vessel is this?',
+ a:['Dorsal blood vessel','Ventral blood vessel','Typhlosole','Nephridium'],c:0,
+ exp:'The dorsal blood vessel appears as a small circle just above the intestine in cross-section. In histological slides it is often collapsed, but in life it is a contractile vessel pumping blood anteriorly.'},
+
+{id:21,cat:'xs',img:'XS',ox:68,oy:46,
+ q:'The orange circle marks a coiled tubular structure visible in the lateral coelom (one pair per segment). It removes nitrogenous waste from coelomic fluid. What is it?',
+ a:['Nephridium','Ovary','Seminal vesicle','Digestive gland'],c:0,
+ exp:'Each nephridium consists of a ciliated nephrostome funnel that collects coelomic fluid, a tubule that selectively reabsorbs useful ions, and a nephridiopore that excretes dilute urine. One pair of nephridia per segment (except segments 1–3 and the last).'},
+
+// ── REPRODUCTIVE SYSTEM ──────────────────────────────────────────────────────
+{id:22,cat:'rep',img:'RP',ox:50,oy:42,
+ q:'The orange circle highlights large, white, lobed organs in segments 11–13 (typically the most prominent structures in a dissection). They store and mature sperm. What are they?',
+ a:['Seminal vesicles','Seminal receptacles','Ovaries','Testes'],c:0,
+ exp:'Seminal vesicles (also called sperm sacs) bulge prominently on either side of the body in the anterior mid-region. Sperm produced by the testes are stored and nourished here until copulation.'},
+
+{id:23,cat:'rep',img:'RP',ox:27,oy:56,
+ q:'The orange circle marks smaller, paired organs located in segments 9–10 (anterior to the seminal vesicles). They RECEIVE sperm from the mating partner. What are they?',
+ a:['Seminal receptacles','Seminal vesicles','Ovaries','Nephridia'],c:0,
+ exp:'Seminal receptacles (= spermathecae) are storage pouches that receive and hold sperm from the partner during mutual copulation. Stored sperm are released later to fertilize eggs inside the clitellum\'s cocoon.'},
+
+{id:24,cat:'rep',img:'RP',ox:63,oy:55,
+ q:'The orange circle points to a small, paired organ in segment 13 responsible for producing eggs. What is it?',
+ a:['Ovary','Testis','Seminal vesicle','Seminal receptacle'],c:0,
+ exp:'Earthworms are simultaneous hermaphrodites — each individual has both ovaries (segment 13) and testes (segments 10–11). Eggs from the ovaries pass through oviducts and exit via female pores on segment 14.'},
+
+{id:25,cat:'rep',img:'RP',ox:37,oy:47,
+ q:'The orange circle is on small, compact organs in segments 10–11 that produce sperm. (Note: the large lobed organs nearby STORE the sperm.) What is the sperm-producing organ?',
+ a:['Testis','Ovary','Seminal vesicle','Seminal receptacle'],c:0,
+ exp:'Testes (two pairs, in segments 10–11) produce sperm by meiosis. They are small and often hidden by the large, adjacent seminal vesicles. Sperm pass through sperm funnels into the seminal vesicles for storage and maturation.'},
+
+{id:26,cat:'rep',img:'DL',ox:57,oy:43,
+ q:'The orange circle marks small, coiled tubular organs visible along the lateral sides of the intestine in a dorsal dissection. They excrete nitrogenous waste. What are they?',
+ a:['Nephridia','Ovaries','Aortic arches','Gonads'],c:0,
+ exp:'Nephridia are visible as pale, coiled tubes in the dissection, one pair per segment alongside the intestine. Their nephrostomes open into the coelom and draw in coelomic fluid; waste exits through nephridiopores on the body surface.'},
+
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let pool = [], qi = 0, answers = [], answered = false;
+let activeCats = new Set(CATS.map(c => c.id));
+let countLimit = 20;
+
+// ── SETUP ─────────────────────────────────────────────────────────────────────
+function init() {
+  renderCatPills();
+  updatePreview();
+  setCount(20, document.querySelector('#count-seg button.active'));
+}
+
+function renderCatPills() {
+  const el = document.getElementById('cat-pills');
+  el.innerHTML = CATS.map(cat => {
+    const cnt = ALL_Q.filter(q => q.cat === cat.id).length;
+    const on = activeCats.has(cat.id);
+    return `<div class="cat-pill${on ? ' on' : ''}" id="pill-${cat.id}"
+      style="${on ? `border-color:${cat.color};background:${cat.color}22` : ''}"
+      onclick="toggleCat('${cat.id}')">
+      <span class="cp-icon">${cat.icon}</span>
+      <span class="cp-label">${cat.label}</span>
+      <span class="cp-count">${cnt} questions</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleCat(id) {
+  if (activeCats.has(id)) {
+    if (activeCats.size <= 1) return;
+    activeCats.delete(id);
+  } else {
+    activeCats.add(id);
+  }
+  renderCatPills();
+  updatePreview();
+}
+
+function selectAll() {
+  CATS.forEach(c => activeCats.add(c.id));
+  renderCatPills();
+  updatePreview();
+}
+
+function setCount(n, btn) {
+  countLimit = n;
+  document.querySelectorAll('#count-seg button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  updatePreview();
+}
+
+function updatePreview() {
+  const total = ALL_Q.filter(q => activeCats.has(q.cat)).length;
+  const n = Math.min(total, countLimit);
+  document.getElementById('pool-preview').textContent =
+    total === 0 ? 'No questions selected.' :
+    `${n} question${n !== 1 ? 's' : ''} will be drawn from ${total} available`;
+}
+
+function startQuiz() {
+  let candidates = ALL_Q.filter(q => activeCats.has(q.cat));
+  shuffleArr(candidates);
+  pool = candidates.slice(0, countLimit === 999 ? candidates.length : countLimit);
+  qi = 0;
+  answers = new Array(pool.length).fill(null);
+  answered = false;
+  document.getElementById('pane-setup').style.display = 'none';
+  document.getElementById('pane-results').style.display = 'none';
+  document.getElementById('pane-quiz').style.display = 'block';
+  document.getElementById('review-out').innerHTML = '';
+  renderQ();
+}
+
+function showSetup() {
+  document.getElementById('pane-setup').style.display = 'block';
+  document.getElementById('pane-quiz').style.display = 'none';
+  document.getElementById('pane-results').style.display = 'none';
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderQ() {
+  if (qi >= pool.length) { showResults(); return; }
+  const q = pool[qi];
+  answered = answers[qi] !== null;
+  const letters = ['A','B','C','D'];
+  const catObj = CATS.find(c => c.id === q.cat);
+
+  // progress
+  const pct = Math.round(qi / pool.length * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = `Question ${qi + 1} of ${pool.length}`;
+  const cor = answers.slice(0, qi).filter((a, i) => a === pool[i].c).length;
+  document.getElementById('prog-score').textContent = `${cor} correct`;
+
+  // image
+  const img = document.getElementById('q-img');
+  const errEl = document.getElementById('img-error');
+  img.style.display = 'block';
+  errEl.style.display = 'none';
+  img.src = IMGS[q.img];
+  document.getElementById('img-credit').textContent = IMG_CREDIT[q.img] || '';
+
+  // overlay
+  const dot = document.getElementById('overlay-dot');
+  dot.style.left = q.ox + '%';
+  dot.style.top  = q.oy + '%';
+
+  // question header
+  document.getElementById('q-num').textContent = `Q${qi + 1}`;
+  document.getElementById('q-tag').textContent = catObj ? catObj.label : q.cat;
+  document.getElementById('q-tag').style.color = catObj ? catObj.color : 'var(--accent)';
+  document.getElementById('q-tag').style.background = catObj ? catObj.color + '22' : '';
+  document.getElementById('q-body').textContent = q.q;
+
+  // options
+  const optsEl = document.getElementById('opts');
+  optsEl.innerHTML = q.a.map((ans, i) => {
+    let cls = 'opt';
+    if (answered) {
+      cls += ' locked';
+      if (i === q.c) cls += ' correct';
+      else if (answers[qi] === i) cls += ' wrong';
+    }
+    return `<div class="${cls}" id="opt${i}" onclick="pickAnswer(${i})" style="animation-delay:${i*.06}s">
+      <div class="ltr">${letters[i]}</div>
+      <span>${escHtml(ans)}</span>
+    </div>`;
+  }).join('');
+
+  // feedback
+  const fb = document.getElementById('fb');
+  if (answered) {
+    const ok = answers[qi] === q.c;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+    fb.innerHTML = ok
+      ? `<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`
+      : `<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;
+    document.getElementById('btn-next').style.display = 'inline-flex';
+  } else {
+    fb.className = 'feedback';
+    fb.innerHTML = '';
+    document.getElementById('btn-next').style.display = 'none';
+  }
+
+  document.getElementById('pane-quiz').scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function imgError() {
+  document.getElementById('q-img').style.display = 'none';
+  document.getElementById('img-error').style.display = 'block';
+}
+
+// ── ANSWER ────────────────────────────────────────────────────────────────────
+function pickAnswer(i) {
+  if (answered) return;
+  const q = pool[qi];
+  answered = true;
+  answers[qi] = i;
+  document.querySelectorAll('.opt').forEach((el, j) => {
+    el.classList.add('locked');
+    if (j === q.c) el.classList.add('correct');
+    if (j === i && i !== q.c) el.classList.add('wrong');
+  });
+  const ok = (i === q.c);
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  fb.innerHTML = ok
+    ? `<strong>✓ Correct!</strong><div class="exp">${escHtml(q.exp)}</div>`
+    : `<strong>✗ Incorrect. Correct answer: ${escHtml(q.a[q.c])}</strong><div class="exp">${escHtml(q.exp)}</div>`;
+  document.getElementById('btn-next').style.display = 'inline-flex';
+}
+
+function skipQ() {
+  if (!answered) answers[qi] = null;
+  nextQ();
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= pool.length) { showResults(); return; }
+  answered = false;
+  renderQ();
+}
+
+function goBack() {
+  if (qi === 0) return;
+  qi--;
+  answered = answers[qi] !== null;
+  renderQ();
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('pane-quiz').style.display = 'none';
+  document.getElementById('pane-results').style.display = 'block';
+  const cor = answers.filter((a, i) => a === pool[i].c).length;
+  const skp = answers.filter(a => a === null).length;
+  const wrg = pool.length - cor - skp;
+  const pct = Math.round(cor / pool.length * 100);
+
+  document.getElementById('r-pct').textContent = pct + '%';
+  document.getElementById('r-cor').textContent = cor;
+  document.getElementById('r-wrg').textContent = wrg;
+  document.getElementById('r-skp').textContent = skp;
+  document.getElementById('r-msg').textContent = `${cor} of ${pool.length} correct · ${skp} skipped`;
+
+  const arc = document.getElementById('ring-arc');
+  const C = 339.3;
+  arc.style.strokeDashoffset = C - (pct / 100) * C;
+  arc.style.stroke = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  const grades = ['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];
+  document.getElementById('r-grade').textContent = grades[Math.min(Math.floor(pct / 20), 4)];
+
+  const retryBtn = document.getElementById('btn-retry-wrong');
+  retryBtn.style.display = (wrg + skp > 0) ? 'inline-flex' : 'none';
+}
+
+function retryWrong() {
+  const wrongPool = pool.filter((q, i) => answers[i] !== q.c);
+  if (!wrongPool.length) return;
+  pool = shuffleArr([...wrongPool]);
+  qi = 0;
+  answers = new Array(pool.length).fill(null);
+  answered = false;
+  document.getElementById('pane-results').style.display = 'none';
+  document.getElementById('review-out').innerHTML = '';
+  document.getElementById('pane-quiz').style.display = 'block';
+  renderQ();
+}
+
+function reviewAnswers() {
+  const letters = ['A','B','C','D'];
+  let html = '<h2 style="margin-bottom:14px;font-size:1rem">Answer Review</h2>';
+  pool.forEach((q, i) => {
+    const ua = answers[i];
+    const ok = ua === q.c;
+    const sk = ua === null;
+    const col = sk ? 'var(--muted)' : ok ? 'var(--green)' : 'var(--red)';
+    const status = sk ? '⊖ Skipped' : ok ? '✓ Correct' : '✗ Incorrect';
+    const catObj = CATS.find(c => c.id === q.cat);
+    html += `<div class="rv-card">
+      <img class="rv-img" src="${IMGS[q.img]}" alt="diagram" onerror="this.style.display='none'">
+      <div class="rv-body">
+        <div class="rv-status" style="color:${col}">${status}</div>
+        <div class="rv-cat" style="color:${catObj?.color||'var(--accent)'}">${catObj?.label||q.cat}</div>
+        <div class="rv-q">${escHtml(q.q)}</div>
+        ${q.a.map((ans, j) => {
+          const isC = j === q.c;
+          return `<div class="rv-answer${isC ? ' ok' : ''}">
+            <div class="dot">${isC ? '✓' : letters[j]}</div>
+            <span>${escHtml(ans)}</span>
+          </div>`;
+        }).join('')}
+        <div class="rv-exp">${escHtml(q.exp)}</div>
+      </div>
+    </div>`;
+  });
+  const el = document.getElementById('review-out');
+  el.innerHTML = html;
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────────
+function shuffleArr(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── KEYBOARD ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  const quizActive = document.getElementById('pane-quiz').style.display !== 'none';
+  if (!quizActive) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); skipQ(); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); goBack(); }
+  if (e.key === 'Enter') {
+    const btn = document.getElementById('btn-next');
+    if (btn && btn.style.display !== 'none') nextQ();
+  }
+  if (e.key === 'Escape') showSetup();
+  const letters = {'a':0,'b':1,'c':2,'d':3};
+  if (!answered && letters[e.key.toLowerCase()] !== undefined) pickAnswer(letters[e.key.toLowerCase()]);
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

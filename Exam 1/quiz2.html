@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 212 Lab Practical – Exam 2</title>
+<style>
+:root{
+  --bg:#0d0f18;--card:#161926;--card2:#1e2235;
+  --accent:#4f8ef7;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#e2e8f0;--muted:#8892a4;--border:#252a40;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(13,15,24,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;height:52px;gap:2px;}
+.logo{font-weight:700;font-size:.95rem;color:var(--accent);margin-right:auto;white-space:nowrap;text-decoration:none;}
+nav button{background:none;border:none;color:var(--muted);font-size:.8rem;padding:6px 14px;cursor:pointer;
+  border-bottom:2px solid transparent;height:52px;transition:all .15s;}
+nav button.active,nav button:hover{color:var(--text);border-bottom-color:var(--accent);}
+.badge{display:inline-block;background:var(--card2);border-radius:99px;
+  font-size:.65rem;padding:1px 7px;margin-left:4px;color:var(--muted);}
+
+/* ── PAGES ── */
+.page{display:none;max-width:860px;margin:0 auto;padding:28px 20px 60px;}
+.page.active{display:block;}
+h1{font-size:1.4rem;margin-bottom:6px;}
+.sub{color:var(--muted);font-size:.85rem;margin-bottom:24px;}
+
+/* ── SETUP SCREEN ── */
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+
+/* ── SETUP HERO ── */
+.setup-hero{text-align:center;padding:36px 20px 28px;}
+.setup-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;}
+.setup-title{font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:14px;
+  background:linear-gradient(135deg,#4f8ef7 0%,#a78bfa 60%,#f472b6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.setup-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.setup-chip{background:var(--card2);border:1px solid var(--border);border-radius:99px;
+  font-size:.72rem;padding:4px 12px;color:var(--muted);}
+.setup-chip span{color:var(--text);font-weight:600;}
+
+/* ── CATEGORY PILLS ── */
+.cat-section{margin-bottom:24px;}
+.cat-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cat-label-row label{font-size:.82rem;color:var(--muted);}
+.cat-label-row button{font-size:.72rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;}
+.cat-label-row button:hover{text-decoration:underline;}
+.cat-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.cat-pill{display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;
+  padding:11px 14px;border-radius:12px;min-width:108px;
+  border:1.5px solid var(--border);background:var(--card);color:var(--muted);
+  cursor:pointer;user-select:none;transition:border-color .15s,background .15s,transform .12s,color .15s;}
+.cat-pill:hover{color:var(--text);transform:translateY(-2px);}
+.cat-pill.on{color:var(--text);}
+.cat-pill .cp-icon{font-size:1.35rem;line-height:1;margin-bottom:3px;}
+.cat-pill .cp-label{font-size:.73rem;font-weight:600;line-height:1.3;}
+.cat-pill .cp-count{font-size:.63rem;opacity:.65;margin-top:1px;}
+.pool-preview{font-size:.78rem;color:var(--muted);margin-top:10px;min-height:1.2em;}
+
+/* ── MODE TOGGLE ── */
+.mode-toggle{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.mode-btn{background:var(--card);border:none;border-top:1px solid var(--border);color:var(--muted);font-size:.82rem;
+  padding:9px 14px;cursor:pointer;transition:background .15s,color .15s;text-align:left;}
+.mode-btn:first-child{border-top:none;}
+.mode-btn:hover{color:var(--text);}
+.mode-btn.active{background:var(--accent);color:#fff;font-weight:600;}
+.setup-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;
+  transition:border-color .15s,transform .1s;}
+.setup-card:hover{border-color:var(--accent);transform:translateY(-1px);}
+.setup-card.selected{border-color:var(--accent);background:rgba(79,142,247,.08);}
+.setup-card .sc-label{font-size:.8rem;color:var(--muted);margin-bottom:4px;}
+.setup-card .sc-val{font-size:1rem;font-weight:600;}
+select{background:var(--card);border:1px solid var(--border);color:var(--text);
+  border-radius:8px;padding:9px 12px;font-size:.875rem;width:100%;cursor:pointer;appearance:none;}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);border:none;color:#fff;
+  border-radius:8px;padding:10px 22px;cursor:pointer;font-size:.875rem;font-weight:600;
+  transition:opacity .15s,transform .12s,box-shadow .15s;}
+.btn:hover{opacity:.88;}
+.btn.sec{background:var(--card);border:1px solid var(--border);color:var(--text);}
+.btn.ghost{background:none;border:1px solid var(--border);color:var(--muted);}
+.btn.ghost:hover{color:var(--text);border-color:var(--accent);}
+.btn.primary{background:linear-gradient(135deg,#4f8ef7,#7c3aed);
+  box-shadow:0 4px 20px rgba(79,142,247,.35);font-size:.95rem;padding:12px 28px;}
+.btn.primary:hover{opacity:1;transform:translateY(-2px);box-shadow:0 6px 28px rgba(79,142,247,.5);}
+.btn.shuffle{background:linear-gradient(135deg,#059669,#0891b2);
+  box-shadow:0 4px 16px rgba(8,145,178,.3);}
+.btn.shuffle:hover{opacity:1;transform:translateY(-2px);}
+
+/* ── PROGRESS ── */
+.prog-wrap{margin-bottom:20px;}
+.prog-bar{height:7px;background:var(--border);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#4f8ef7,#a78bfa);border-radius:99px;transition:width .4s ease;}
+.prog-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:6px;}
+
+/* ── QUESTION CARD ── */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.q-header{padding:14px 20px 0;display:flex;align-items:center;gap:8px;}
+.q-num{font-size:.78rem;color:var(--muted);}
+.q-tag{background:rgba(79,142,247,.12);color:var(--accent);font-size:.7rem;border-radius:99px;padding:2px 9px;}
+.q-pts{font-size:.7rem;color:var(--muted);margin-left:auto;}
+
+/* Question body: the raw HTML from Canvas, images inline */
+.q-body{padding:16px 20px 20px;font-size:.95rem;line-height:1.65;}
+.q-body img{max-width:100%;height:auto;border-radius:8px;margin:8px 0;display:block;cursor:zoom-in;
+  border:1px solid var(--border);}
+.q-body p{margin-bottom:.5em;}
+
+/* ── OPTIONS ── */
+@keyframes optIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.opts{padding:0 20px 4px;display:flex;flex-direction:column;gap:9px;}
+.opt{background:#11141f;border:1px solid var(--border);border-radius:12px;
+  padding:12px 16px;cursor:pointer;font-size:.875rem;display:flex;align-items:flex-start;gap:12px;
+  transition:border-color .12s,background .12s,transform .1s,box-shadow .12s;line-height:1.5;
+  animation:optIn .22s ease both;}
+.opt:hover:not(.locked){border-color:var(--accent);background:rgba(79,142,247,.07);transform:translateX(3px);}
+.ltr{min-width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;
+  flex-shrink:0;margin-top:1px;transition:all .15s;}
+.opt.correct{border-color:var(--green);background:rgba(34,197,94,.08);box-shadow:0 0 0 1px rgba(34,197,94,.15);}
+.opt.correct .ltr{background:var(--green);border-color:var(--green);color:#fff;}
+.opt.wrong{border-color:var(--red);background:rgba(239,68,68,.08);box-shadow:0 0 0 1px rgba(239,68,68,.15);}
+.opt.wrong .ltr{background:var(--red);border-color:var(--red);color:#fff;}
+.opt.locked{cursor:default;}
+.opt.show-correct{border-color:rgba(34,197,94,.5);}
+.opt.show-correct .ltr{border-color:var(--green);color:var(--green);}
+
+/* Fill-in-blank */
+.fib-wrap{padding:0 20px 4px;}
+.fib-input{background:#11141f;border:1px solid var(--border);border-radius:10px;
+  padding:11px 16px;width:100%;font-size:.875rem;color:var(--text);outline:none;transition:border-color .12s;}
+.fib-input:focus{border-color:var(--accent);}
+.fib-input.correct{border-color:var(--green);background:rgba(34,197,94,.07);}
+.fib-input.wrong{border-color:var(--red);background:rgba(239,68,68,.07);}
+.fib-check-btn{margin-top:8px;}
+
+/* Matching */
+.match-wrap{padding:0 20px 4px;display:flex;flex-direction:column;gap:8px;}
+.match-row{background:#11141f;border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.match-left{font-size:.875rem;min-width:120px;}
+.match-sel{background:var(--card);border:1px solid var(--border);color:var(--text);
+  border-radius:6px;padding:6px 10px;font-size:.82rem;flex:1;cursor:pointer;}
+
+/* Feedback */
+@keyframes fbIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.feedback{margin:12px 20px 0;padding:14px 18px;border-radius:12px;
+  font-size:.84rem;line-height:1.65;display:none;font-weight:500;}
+.feedback.show{display:block;animation:fbIn .2s ease both;}
+.feedback.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;}
+.feedback.no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.feedback.info{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.3);color:#93c5fd;}
+
+/* Navigation */
+.q-nav{padding:14px 20px 18px;display:flex;gap:10px;border-top:1px solid var(--border);margin-top:10px;}
+.q-nav .go{margin-left:auto;}
+
+/* ── RESULTS ── */
+@keyframes ringPop{from{transform:rotate(-90deg) scale(.8);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+.results{text-align:center;padding:40px 20px 20px;}
+.ring-wrap{width:140px;height:140px;margin:0 auto 18px;position:relative;}
+.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both;}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-pct{font-size:2rem;font-weight:800;background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ring-sub{font-size:.68rem;color:var(--muted);}
+.stat-row{display:flex;gap:10px;justify-content:center;margin:16px 0 26px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;}
+.stat .val{font-size:1.4rem;font-weight:700;color:var(--accent);}
+.stat .lbl{font-size:.68rem;color:var(--muted);margin-top:2px;}
+.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+/* ── BROWSE MODE ── */
+.browse-q{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  margin-bottom:14px;overflow:hidden;}
+.browse-header{padding:12px 16px;border-bottom:1px solid var(--border);
+  font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.browse-body{padding:12px 16px;font-size:.88rem;line-height:1.6;}
+.browse-body img{max-width:100%;height:auto;border-radius:6px;margin:6px 0;border:1px solid var(--border);
+  cursor:zoom-in;}
+.browse-answers{padding:0 16px 12px;font-size:.82rem;}
+.browse-answers .ba{padding:5px 10px;border-radius:6px;margin-top:4px;display:flex;align-items:center;gap:8px;}
+.ba.ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);}
+.ba .bk{width:16px;height:16px;border-radius:50%;background:var(--border);
+  font-size:.6rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ba.ok .bk{background:var(--green);color:#fff;}
+
+/* ── MODAL ── */
+#modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.9);
+  align-items:center;justify-content:center;padding:20px;}
+#modal.open{display:flex;}
+#modal-inner{position:relative;max-width:92vw;max-height:92vh;overflow:auto;}
+#modal-img{max-width:100%;max-height:88vh;border-radius:10px;display:block;}
+#modal-close{position:fixed;top:16px;right:16px;background:rgba(0,0,0,.7);
+  border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:34px;height:34px;
+  font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty h2{font-size:1.1rem;margin-bottom:8px;color:var(--text);}
+
+/* ── PROGRESS PAGE ── */
+.pg-sect{margin-bottom:28px;}
+.pg-title{font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ov-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;flex:1;min-width:90px;text-align:center;}
+.ov-card .ov-v{font-size:1.5rem;font-weight:700;}
+.ov-card .ov-l{font-size:.67rem;color:var(--muted);margin-top:3px;line-height:1.3;}
+.struggle-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);
+  border-radius:12px;padding:16px 18px;margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.struggle-banner h3{font-size:.95rem;margin-bottom:4px;}
+.struggle-banner p{font-size:.78rem;color:var(--muted);}
+.cat-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
+.cat-row:last-child{border-bottom:none;}
+.cr-name{font-size:.84rem;min-width:175px;flex-shrink:0;}
+.cr-bar{flex:1;height:7px;background:var(--border);border-radius:99px;overflow:hidden;min-width:40px;}
+.cr-fill{height:100%;border-radius:99px;transition:width .4s;}
+.cr-acc{font-size:.78rem;font-weight:700;min-width:36px;text-align:right;}
+.cr-badge{font-size:.7rem;min-width:88px;text-align:right;line-height:1.4;}
+.cat-pill.struggling{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.06);color:var(--amber);}
+.cat-pill.struggling.on{border-color:var(--amber);background:rgba(245,158,11,.15);}
+
+@media(max-width:560px){
+  .setup-grid{grid-template-columns:1fr;}
+  .stat-row{gap:6px;}
+  .stat{padding:10px 12px;}
+  .cr-name{min-width:120px;}
+  .cr-badge{min-width:70px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="quiz2.html" class="logo">BIO 212 · Exam 2</a>
+  <button class="active" id="nav-btn-quiz" onclick="showTab('quiz',this)">Quiz</button>
+  <button onclick="showTab('browse',this)">Browse All</button>
+  <button onclick="showTab('progress',this)">Progress</button>
+  <a href="quiz.html" style="color:var(--muted);font-size:.8rem;padding:6px 14px;text-decoration:none;border-bottom:2px solid transparent;height:52px;display:flex;align-items:center;transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">← Exam 1</a>
+</nav>
+
+<!-- ══════════ QUIZ TAB ══════════ -->
+<div class="page active" id="page-quiz">
+
+  <!-- SETUP -->
+  <div id="pane-setup">
+    <div class="setup-hero">
+      <div class="setup-eyebrow">BIOL 212 · Majors Animal Biology</div>
+      <div class="setup-title">Lab Practical Exam 2</div>
+      <div class="setup-chips">
+        <div class="setup-chip"><span id="setup-q-count">…</span> questions</div>
+        <div class="setup-chip">10 categories</div>
+        <div class="setup-chip">Shuffle · Timed · Instant feedback</div>
+      </div>
+    </div>
+
+    <!-- Category filter -->
+    <div class="cat-section" id="cat-section">
+      <div class="cat-label-row">
+        <label>Category</label>
+        <button onclick="toggleAllCats()">Select all / none</button>
+      </div>
+      <div class="cat-pills" id="cat-pills"></div>
+      <div class="pool-preview" id="pool-preview"></div>
+    </div>
+
+<div style="margin-bottom:24px">
+      <label style="font-size:.82rem;color:var(--muted);display:block;margin-bottom:6px">Answer mode</label>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="mode-mc" onclick="setAnswerMode('mc')">Multiple Choice</button>
+        <button class="mode-btn" id="mode-ft" onclick="setAnswerMode('ft')">✏️ Free Text</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px">
+      <label style="font-size:.82rem;color:var(--muted);display:block;margin-bottom:6px">Number of questions</label>
+      <select id="sel-count" onchange="updatePoolPreview()">
+        <option value="10">10 questions</option>
+        <option value="25">25 questions</option>
+        <option value="50">50 questions</option>
+        <option value="all" selected>All questions</option>
+      </select>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" onclick="startQuiz()">▶ Start Quiz</button>
+      <button class="btn shuffle" onclick="startShuffle()">🔀 Shuffle &amp; Start</button>
+    </div>
+
+    <div id="no-data-msg" style="display:none" class="empty">
+      <h2>quiz_data2.js not found</h2>
+      <p>Run <code style="background:var(--card2);padding:2px 6px;border-radius:4px">python3 download_quiz.py</code> and save as <code style="background:var(--card2);padding:2px 6px;border-radius:4px">quiz_data2.js</code>.</p>
+    </div>
+  </div>
+
+  <!-- ACTIVE QUIZ -->
+  <div id="pane-quiz" style="display:none">
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+      <div class="prog-label">
+        <span id="prog-txt"></span>
+        <span id="prog-score"></span>
+      </div>
+    </div>
+    <div id="q-render"></div>
+    <div class="q-nav" id="q-nav">
+      <button class="btn ghost" onclick="exitToSetup()">✕ Exit</button>
+      <button class="btn ghost" id="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn ghost" onclick="resetQ()">↺ Reset</button>
+      <button class="btn ghost" onclick="skipQ()">Skip</button>
+      <button class="btn go" id="btn-next" onclick="nextQ()" style="display:none">Next →</button>
+      <button class="btn sec" onclick="showResults()">✓ Done</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="pane-results" style="display:none">
+    <div class="results">
+      <div class="ring-wrap">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--border)" stroke-width="11"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--accent)" stroke-width="11"
+            stroke-dasharray="339.3" stroke-dashoffset="339.3" id="ring-arc" stroke-linecap="round"/>
+        </svg>
+        <div class="ring-txt">
+          <div class="ring-pct" id="r-pct">–</div>
+          <div class="ring-sub">score</div>
+        </div>
+      </div>
+      <h2 id="r-grade" style="margin-bottom:6px"></h2>
+      <p id="r-msg" style="color:var(--muted);margin-bottom:20px"></p>
+      <div class="stat-row">
+        <div class="stat"><div class="val" id="r-cor">–</div><div class="lbl">Correct</div></div>
+        <div class="stat"><div class="val" id="r-wrg">–</div><div class="lbl">Wrong</div></div>
+        <div class="stat"><div class="val" id="r-skp">–</div><div class="lbl">Skipped</div></div>
+      </div>
+      <div class="act-row">
+        <button class="btn sec" onclick="reviewAnswers()">Review Answers</button>
+        <button class="btn" onclick="backToSetup()">Try Again</button>
+      </div>
+    </div>
+    <div id="review-out" style="margin-top:20px"></div>
+  </div>
+
+</div>
+
+<!-- ══════════ BROWSE TAB ══════════ -->
+<div class="page" id="page-browse">
+  <h1>Browse All Questions</h1>
+  <p class="sub">Scroll through every question with correct answers shown.</p>
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+    <input id="browse-search" type="text" placeholder="Search questions…"
+      style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);
+        border-radius:8px;padding:9px 14px;font-size:.875rem;min-width:180px;"
+      oninput="renderBrowse()">
+    <select id="browse-cat-filter" onchange="renderBrowse()"
+      style="background:var(--card);border:1px solid var(--border);color:var(--text);
+        border-radius:8px;padding:9px 12px;font-size:.875rem;cursor:pointer;appearance:none;min-width:160px;">
+      <option value="all">All categories</option>
+    </select>
+    <button class="btn sec" onclick="document.getElementById('browse-search').value='';document.getElementById('browse-cat-filter').value='all';renderBrowse()">Clear</button>
+  </div>
+  <div id="browse-out"></div>
+</div>
+
+<!-- ══════════ PROGRESS TAB ══════════ -->
+<div class="page" id="page-progress">
+  <h1>My Progress</h1>
+  <p class="sub">Saved across sessions — tracks every question you answer.</p>
+  <div id="progress-content"></div>
+  <div style="margin-top:12px">
+    <button class="btn ghost" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="clearProgress()">🗑 Clear All Progress</button>
+  </div>
+</div>
+
+<!-- ══════════ MODAL ══════════ -->
+<div id="modal" onclick="closeModal()">
+  <button id="modal-close" onclick="closeModal()">✕</button>
+  <div id="modal-inner" onclick="event.stopPropagation()">
+    <img id="modal-img" src="" alt="">
+  </div>
+</div>
+
+<!-- Load quiz data (generated by download_quiz.py, saved as quiz_data2.js) -->
+<script src="quiz_data2.js" onerror="onDataMissing()"></script>
+
+<script>
+// ── Globals ─────────────────────────────────────────────────────────────────
+let ALL_Q  = [];
+let pool   = [];
+let qi     = 0;
+let answers= [];
+let answered = false;
+let activeCats = new Set(['__none__']);
+let displayOrder = [];
+let freeTextMode = false;
+let augAnswers = null;
+let correctAugIdx = -1;
+
+// ── Category colors ───────────────────────────────────────────────────────────
+const CAT_COLORS = {
+  phylogenetics:   '#22c55e',
+  porifera:        '#f97316',
+  cnidaria:        '#4f8ef7',
+  platyhelminthes: '#a855f7',
+  nematoda:        '#f59e0b',
+  annelida:        '#ef4444',
+  mollusca:        '#ec4899',
+  arthropoda:      '#14b8a6',
+  embryology:      '#8b5cf6',
+  histology:       '#06b6d4',
+  other:           '#8892a4',
+};
+
+// ── Categories ───────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { id: 'phylogenetics', label: 'Phylogenetics & Taxonomy', icon: '🌳' },
+  { id: 'porifera',      label: 'Porifera',                  icon: '🧽' },
+  { id: 'cnidaria',      label: 'Cnidaria',                  icon: '🪼' },
+  { id: 'platyhelminthes', label: 'Platyhelminthes',         icon: '🪱' },
+  { id: 'nematoda',      label: 'Nematoda',                  icon: '🐛' },
+  { id: 'annelida',      label: 'Annelida',                  icon: '🐌' },
+  { id: 'mollusca',      label: 'Mollusca',                  icon: '🐚' },
+  { id: 'arthropoda',    label: 'Arthropoda',                icon: '🦀' },
+  { id: 'embryology',    label: 'Embryology',                icon: '🥚' },
+  { id: 'histology',     label: 'Histology',                 icon: '🔬' },
+];
+
+// Position → category map for all 229 questions
+const Q_CAT_MAP = {
+  // Phylogenetics & Taxonomy
+  1:'phylogenetics',2:'phylogenetics',3:'phylogenetics',4:'phylogenetics',
+  5:'phylogenetics',6:'phylogenetics',7:'phylogenetics',
+  110:'phylogenetics',111:'phylogenetics',112:'phylogenetics',113:'phylogenetics',
+  114:'phylogenetics',115:'phylogenetics',116:'phylogenetics',117:'phylogenetics',
+  118:'phylogenetics',119:'phylogenetics',
+  170:'phylogenetics',171:'phylogenetics',172:'phylogenetics',173:'phylogenetics',
+  174:'phylogenetics',175:'phylogenetics',176:'phylogenetics',177:'phylogenetics',
+  178:'phylogenetics',179:'phylogenetics',
+  // Cnidaria
+  8:'cnidaria',9:'cnidaria',10:'cnidaria',11:'cnidaria',12:'cnidaria',
+  13:'cnidaria',14:'cnidaria',15:'cnidaria',16:'cnidaria',
+  120:'cnidaria',121:'cnidaria',122:'cnidaria',123:'cnidaria',
+  126:'cnidaria',127:'cnidaria',128:'cnidaria',130:'cnidaria',131:'cnidaria',132:'cnidaria',135:'cnidaria',
+  180:'cnidaria',181:'cnidaria',182:'cnidaria',183:'cnidaria',
+  184:'cnidaria',185:'cnidaria',186:'cnidaria',
+  // Porifera
+  69:'porifera',70:'porifera',71:'porifera',72:'porifera',73:'porifera',74:'porifera',
+  124:'porifera',125:'porifera',129:'porifera',133:'porifera',134:'porifera',
+  // Platyhelminthes
+  39:'platyhelminthes',42:'platyhelminthes',43:'platyhelminthes',44:'platyhelminthes',
+  45:'platyhelminthes',48:'platyhelminthes',50:'platyhelminthes',51:'platyhelminthes',
+  53:'platyhelminthes',
+  187:'platyhelminthes',188:'platyhelminthes',189:'platyhelminthes',190:'platyhelminthes',
+  209:'platyhelminthes',210:'platyhelminthes',211:'platyhelminthes',212:'platyhelminthes',
+  213:'platyhelminthes',214:'platyhelminthes',215:'platyhelminthes',216:'platyhelminthes',
+  // Nematoda
+  20:'nematoda',22:'nematoda',24:'nematoda',27:'nematoda',28:'nematoda',
+  29:'nematoda',31:'nematoda',34:'nematoda',35:'nematoda',
+  195:'nematoda',196:'nematoda',197:'nematoda',198:'nematoda',
+  // Annelida
+  40:'annelida',47:'annelida',52:'annelida',54:'annelida',
+  59:'annelida',60:'annelida',61:'annelida',62:'annelida',
+  64:'annelida',65:'annelida',
+  193:'annelida',194:'annelida',
+  222:'annelida',223:'annelida',224:'annelida',225:'annelida',
+  226:'annelida',227:'annelida',228:'annelida',229:'annelida',
+  // Mollusca
+  37:'mollusca',38:'mollusca',41:'mollusca',46:'mollusca',49:'mollusca',
+  55:'mollusca',56:'mollusca',57:'mollusca',58:'mollusca',
+  63:'mollusca',66:'mollusca',67:'mollusca',68:'mollusca',
+  191:'mollusca',192:'mollusca',
+  217:'mollusca',218:'mollusca',219:'mollusca',220:'mollusca',221:'mollusca',
+  // Arthropoda
+  17:'arthropoda',18:'arthropoda',19:'arthropoda',
+  21:'arthropoda',23:'arthropoda',25:'arthropoda',26:'arthropoda',
+  30:'arthropoda',32:'arthropoda',33:'arthropoda',36:'arthropoda',
+  199:'arthropoda',200:'arthropoda',201:'arthropoda',202:'arthropoda',
+  203:'arthropoda',204:'arthropoda',205:'arthropoda',206:'arthropoda',
+  207:'arthropoda',208:'arthropoda',
+  // Embryology
+  75:'embryology',76:'embryology',77:'embryology',78:'embryology',79:'embryology',
+  80:'embryology',81:'embryology',82:'embryology',83:'embryology',84:'embryology',
+  160:'embryology',161:'embryology',162:'embryology',163:'embryology',164:'embryology',
+  165:'embryology',166:'embryology',167:'embryology',168:'embryology',169:'embryology',
+  // Histology
+  85:'histology',86:'histology',87:'histology',88:'histology',89:'histology',
+  90:'histology',91:'histology',92:'histology',93:'histology',94:'histology',
+  95:'histology',96:'histology',97:'histology',98:'histology',99:'histology',
+  100:'histology',101:'histology',102:'histology',103:'histology',104:'histology',
+  105:'histology',106:'histology',107:'histology',108:'histology',109:'histology',
+  136:'histology',137:'histology',138:'histology',139:'histology',140:'histology',
+  141:'histology',142:'histology',143:'histology',144:'histology',145:'histology',
+  146:'histology',147:'histology',148:'histology',149:'histology',150:'histology',
+  151:'histology',152:'histology',153:'histology',154:'histology',155:'histology',
+  156:'histology',157:'histology',158:'histology',159:'histology',
+};
+
+function tagQuestion(q) {
+  const cat = Q_CAT_MAP[q.position];
+  return cat ? [cat] : ['other'];
+}
+
+const EXCLUDE_POSITIONS = new Set([]);
+
+// Q128 match data is empty in source — patch correct values here.
+const Q_MATCH_FIX = {
+  128: { matches: [{left:'the picture on the left', right:'polyp'}, {left:'the picture on the right', right:'medusa'}] }
+};
+
+// ── Distractor bank ───────────────────────────────────────────────────────────
+const Q_DISTRACTORS = {
+  // ── PHYLOGENETICS ──────────────────────────────────────────────────────────
+  1:  ['monophyletic','polyphyletic','grade (evolutionary grade)','clade'],
+  2:  ['monophyletic','polyphyletic','grade (evolutionary grade)','clade'],
+  3:  ['kingdom','order','family','genus','species'],
+  4:  ['class','order','species','kingdom','genus'],
+  5:  ['polyphyletic','paraphyletic','grade (evolutionary grade)','clade'],
+  6:  ['monophyletic','paraphyletic','grade (evolutionary grade)','clade'],
+  7:  ['phylum','genus','class','family','species'],
+  110:['D','C','B','E'],
+  111:['grade (evolutionary grade)','phylogeny','taxon','lineage','evolutionary tree'],
+  112:['class','order','species','genus','kingdom','family'],
+  113:['grade','taxon','node','ancestor','lineage'],
+  114:['species','genus','family','domain','kingdom','order'],
+  115:['genus','domain','family','class','phylum','variety'],
+  116:['A','B','C','D'],
+  117:['kingdom','class','genus','species','domain','phylum'],
+  118:['monophyletic','polyphyletic','grade (evolutionary grade)'],
+  119:['paraphyletic','monophyletic','grade (evolutionary grade)'],
+  // ── CNIDARIA ───────────────────────────────────────────────────────────────
+  9:  ['cnidocytes','mesoglea','tentacles','gonad','epidermis','gastrodermis'],
+  10: ['choanocytes','amoebocytes','gastrodermal cells','pinacocytes','epithelial cells'],
+  11: ['medusa','planula larva','ephyra','strobilating form'],
+  12: ['epidermis','gastrodermis','mesoglea','coelom','spongocoel'],
+  13: ['polyp','planula larva','ephyra','strobilating form'],
+  14: ['Porifera','Nematoda','Arthropoda','Platyhelminthes','Mollusca','Annelida'],
+  15: ['epidermis','gastrodermis','cnidocyte layer','ectoderm','endoderm'],
+  16: ['Annelida','Mollusca','Arthropoda','Porifera','Platyhelminthes','Nematoda'],
+  120:['epidermis','mesoglea','cnidocyte layer','ectoderm','endoderm'],
+  121:['Porifera','Platyhelminthes','Mollusca','Nematoda','Annelida','Arthropoda'],
+  122:['mesoglea','gastrodermis','cnidocyte layer','ectoderm','endoderm'],
+  123:['polyp','planula larva','ephyra','strobilating form'],
+  126:['mouth','tentacles','gastrovascular cavity','mesoglea','nematocyst'],
+  127:['mouth/anus','gonads','gastrovascular cavity','mesoglea','oral arms'],
+  130:['tentacle','gastrovascular cavity','gonad','mesoglea','nematocyst'],
+  131:['gonads','gastrovascular cavity','mouth','mesoglea','oral arms'],
+  132:['mouth/anus','tentacles','gonad','mesoglea','nematocyst'],
+  135:['choanocytes','amoebocytes','gastrodermal cells','pinacocytes','epithelial cells'],
+  // ── PORIFERA ───────────────────────────────────────────────────────────────
+  69: ['Arthropoda','Nematoda','Cnidaria','Platyhelminthes','Mollusca'],
+  70: ['osculum','choanocyte','amoebocyte','spongocoel','pinacocyte'],
+  71: ['active predation (hunting)','herbivory (grazing)','parasitism (on host tissue)','deposit feeding (ingesting sediment)'],
+  72: ['osculum','ostia','amoebocyte','choanocyte','mesohyl'],
+  73: ['ostia','spongocoel','choanocyte','amoebocyte','mesohyl'],
+  74: ['amoebocyte','pinacocyte','archaeocyte','spongocoel','mesohyl'],
+  124:['osculum','choanocyte','amoebocyte','spongocoel','pinacocyte'],
+  125:['amoebocyte','pinacocyte','archaeocyte','spongocoel','mesohyl'],
+  129:['choanocyte','pinacocyte','archaeocyte','spongocoel','mesohyl'],
+  133:['ostia','spongocoel','amoebocyte','choanocyte','pinacocyte','mesohyl'],
+  134:['choanocyte','amoebocyte','osculum','ostia','mesohyl','pinacocyte'],
+  // ── ARTHROPODA ─────────────────────────────────────────────────────────────
+  17: ['Annelida','Mollusca','Cnidaria','Platyhelminthes','Echinodermata','Nematoda'],
+  18: ['Mollusca','Annelida','Platyhelminthes','Nematoda','Cnidaria','Echinodermata'],
+  19: ['Arachnida','Malacostraca','Diplopoda','Chilopoda','Branchiopoda','Merostomata'],
+  21: ['pyloric stomach','cardiac stomach','heart','gills','hepatopancreas','digestive gland'],
+  23: ['pyloric stomach','heart','digestive gland','intestine','green gland','gills'],
+  25: ['cardiac stomach','digestive gland','heart','green gland','gills','intestine'],
+  26: ['gills','digestive gland','pyloric stomach','cardiac stomach','green gland','hepatopancreas'],
+  30: ['intestine','pyloric stomach','cardiac stomach','digestive gland','green gland','hepatopancreas'],
+  33: ['gills','digestive gland','pyloric stomach','cardiac stomach','green gland','heart'],
+  36: ['green gland','heart','gills','cardiac stomach','pyloric stomach','hepatopancreas'],
+  199:['abdomen','head','uropod','telson','carapace'],
+  200:['eyes','antennae','mouth','cheliped','carapace'],
+  201:['Mollusca','Platyhelminthes','Annelida','Nematoda','Echinodermata'],
+  202:['uropod','abdomen','swimmerets (pleopods)','carapace','pleon'],
+  203:['swimmerets (pleopods)','cheliped','telson','uropod','maxilliped'],
+  204:['cephalothorax','carapace','telson','uropod','pleon'],
+  205:['chelipeds','telson','swimmerets (pleopods)','uropods','maxillipeds'],
+  206:['walking leg','swimmeret (pleopod)','maxilliped','antenna','uropod'],
+  207:['telson','swimmeret (pleopod)','cheliped','walking leg','maxilliped'],
+  208:['Annelida','Nematoda','Mollusca','Platyhelminthes','Echinodermata'],
+  // ── NEMATODA ───────────────────────────────────────────────────────────────
+  20: ['Red arrow is female: Yellow arrow is male','These are both male nematodes','These are both female nematodes','Cannot be determined without dissection'],
+  22: ['ovary','testes','intestine','oviduct','ductus deferens'],
+  24: ['ovary','uterus','oviduct','ductus deferens','testes'],
+  27: ['testes','uterus','intestine','ovary','ductus deferens'],
+  28: ['Circulatory: pumps blood throughout the body','Excretory: removes metabolic waste','Reproductive: produces and stores gametes','Nervous: transmits signals and coordinates movement'],
+  29: ['ductus deferens (vas deferens)','ovaries','uterus','intestine','oviduct'],
+  31: ['testes','ovaries','intestine','uterus','seminal vesicle'],
+  34: ['stores sperm until fertilization','transports eggs to the uterus','produces eggs by meiosis','secretes digestive enzymes'],
+  35: ['Arthropoda','Cnidaria','Annelida','Platyhelminthes','Porifera','Mollusca'],
+  195:['uterus','testes','intestine','ovary','ductus deferens'],
+  196:['uterus','oviducts','testes','ovary','ductus deferens'],
+  197:['oviducts','testes','intestine','ovary','ductus deferens'],
+  198:['Annelida','Arthropoda','Platyhelminthes','Mollusca','Cnidaria'],
+  // ── ANNELIDA ───────────────────────────────────────────────────────────────
+  40: ['Nematoda','Arthropoda','Platyhelminthes','Mollusca','Cnidaria'],
+  47: ['setae','nephridia','crop','gizzard','seminal vesicle','prostomium'],
+  52: ['Nematoda','Platyhelminthes','Arthropoda','Mollusca','Cnidaria'],
+  54: ['Nematoda','Platyhelminthes','Arthropoda','Mollusca','Cnidaria'],
+  59: ['crop','intestine','esophagus','pharynx','seminal vesicle'],
+  60: ['ventral blood vessel','hearts','aortic arches','capillary network','lateral blood vessel'],
+  61: ['gizzard','esophagus','intestine','pharynx','stomach'],
+  62: ['testes','seminal receptacles','ovary','oviduct','clitellum'],
+  63: ['testes','seminal vesicle','seminal receptacles','oviduct','clitellum'],
+  64: ['nephridia','seminal vesicles','crop','dorsal blood vessel','ventral blood vessel'],
+  65: ['hearts','nephridia','gizzard','seminal vesicle','ovary'],
+  222:['anus','clitellum','pharynx','prostomium','peristomium'],
+  223:['ovaries','testes','seminal receptacles','crop','gizzard'],
+  224:['Nematoda','Platyhelminthes','Mollusca','Arthropoda','Cnidaria'],
+  225:['ovaries','testes','nephridia','setae','seminal vesicle'],
+  226:['Arthropoda','Nematoda','Platyhelminthes','Mollusca','Cnidaria'],
+  227:['mouth','clitellum','pharynx','prostomium','peristomium'],
+  228:['crop','esophagus','intestine','pharynx','stomach'],
+  229:['pseudocoelom','acoelom','blastocoel','spongocoel','gastrovascular cavity'],
+  // ── MOLLUSCA ───────────────────────────────────────────────────────────────
+  37: ['Cephalopoda','Bivalvia','Polyplacophora','Scaphopoda','Aplacophora'],
+  38: ['Arthropoda','Nematoda','Annelida','Cnidaria','Platyhelminthes','Echinodermata'],
+  41: ['Arthropoda','Nematoda','Annelida','Platyhelminthes','Cnidaria','Echinodermata'],
+  46: ['Arthropoda','Nematoda','Platyhelminthes','Annelida','Echinodermata'],
+  49: ['Gastropoda','Bivalvia','Polyplacophora','Scaphopoda','Aplacophora'],
+  55: ['tentacle','siphon','fin','mantle','funnel'],
+  56: ['arm','siphon','fin','mantle','funnel'],
+  57: ['ovary','oviduct','pen (gladius)','nidamental gland','ink sac'],
+  58: ['pen (gladius)','radula','sucker','arm','tentacle'],
+  66: ['mantle','siphon','foot','adductor muscle','labial palps'],
+  67: ['gills','mantle','foot','adductor muscle','umbo'],
+  68: ['siphon','mantle','foot','gills','adductor muscle'],
+  217:['tentacle','siphon','fin','mantle','funnel'],
+  218:['foot','fin','siphon','funnel','mantle cavity'],
+  219:['Arthropoda','Nematoda','Platyhelminthes','Annelida','Echinodermata'],
+  220:['arm','tentacle','mantle','funnel','fin'],
+  221:['Arthropoda','Nematoda','Platyhelminthes','Annelida','Echinodermata'],
+  // ── PLATYHELMINTHES ────────────────────────────────────────────────────────
+  39: ['testes','genital pore','pharynx','gastrovascular cavity','oviduct'],
+  42: ['scolex','rostellum','uterus','proglottid','sucker'],
+  43: ['polychaete worm (Annelida)','tapeworm (Cestoda)','nematode roundworm (Nematoda)','freshwater oligochaete (Annelida)'],
+  44: ['scolex','rostellum','sucker','tegument','strobila'],
+  45: ['scolex','proglottid','sucker','hook','tegument'],
+  48: ['ovary','genital pore','uterus','oviduct','seminal vesicle'],
+  50: ['Annelida','Arthropoda','Nematoda','Mollusca','Cnidaria'],
+  51: ['Mollusca','Annelida','Nematoda','Arthropoda','Cnidaria'],
+  53: ['rostellum','proglottid','sucker','hook','tegument'],
+  209:['Mollusca','Nematoda','Annelida','Arthropoda','Cnidaria'],
+  210:['digestive system endoparasite','ectoparasite (skin/gill parasite)','suspension feeder (filter feeder)','deposit feeder (detritivore)'],
+  211:['gastrovascular cavity','auricle (sensory lobe)','eyespot','cephalic ganglion','nerve cord'],
+  213:['free-living carnivore','ectoparasite (skin/gill parasite)','suspension feeder (filter feeder)','blood parasite'],
+  214:['free-living carnivore','blood parasite','ectoparasite (skin/gill parasite)','suspension feeder (filter feeder)'],
+  215:['gastrovascular cavity','epidermis','gastrodermis','coelom','pseudocoelom'],
+  216:['mouth','pharynx','mesenchyme (parenchyma)','auricle','cephalic ganglion'],
+  // ── EMBRYOLOGY ─────────────────────────────────────────────────────────────
+  75: ['endoderm','mesoderm','blastoderm','neural crest'],
+  76: ['unfertilized egg','fertilized egg','blastula','morula','neurula'],
+  77: ['unfertilized egg','blastula','gastrula','morula','zygote'],
+  78: ['gastrocoel (archenteron)','blastopore','coelom','pseudocoelom','archenteron'],
+  79: ['gastrula','fertilized egg','morula','neurula','zygote'],
+  80: ['ectoderm','mesoderm','blastoderm','neural crest'],
+  81: ['endoderm','ectoderm','blastoderm','neural crest'],
+  82: ['gastrocoel (archenteron)','blastocoel','coelom','neuropore','archenteron opening'],
+  83: ['blastocoel','blastopore','coelom','pseudocoelom','notochord cavity'],
+  84: ['neural tube','notochord','neural plate','nephrotome','lateral plate mesoderm'],
+  // ── HISTOLOGY ──────────────────────────────────────────────────────────────
+  85: ['epithelial','muscle','connective','vascular'],
+  86: ['leukocyte (white blood cell)','platelets (thrombocytes)','plasma cells','lymphocytes','monocytes'],
+  87: ['fibroblasts','osteocytes','osteoblasts','chondroblasts','adipocytes'],
+  88: ['hyaline cartilage','bone','blood','loose areolar connective tissue','dense regular connective tissue'],
+  89: ['bone','hyaline cartilage','loose areolar connective tissue','dense regular connective tissue','adipose tissue'],
+  90: ['collagen fibers','reticular fibers','fibronectin','keratin fibers','ground substance'],
+  91: ['erythrocytes (red blood cells)','platelets (thrombocytes)','plasma cells','lymphocytes','monocytes'],
+  92: ['connective','nervous','muscle','vascular'],
+  93: ['dense irregular connective tissue','adipose tissue','blood','hyaline cartilage','dense regular connective tissue'],
+  94: ['smooth muscle','cardiac muscle','dense connective tissue','nervous tissue'],
+  95: ['chondrocytes','fibroblasts','osteoblasts','osteoclasts','adipocytes'],
+  96: ['blood','hyaline cartilage','elastic cartilage','fibrocartilage','dense connective tissue'],
+  97: ['Simple columnar epithelium','Simple squamous epithelium','Stratified squamous epithelium','Pseudostratified columnar epithelium','Transitional epithelium'],
+  98: ['Stratified squamous epithelium','Simple columnar epithelium','Simple cuboidal epithelium','Pseudostratified columnar epithelium','Transitional epithelium'],
+  99: ['Simple columnar epithelium','Simple squamous epithelium','Simple cuboidal epithelium','Stratified cuboidal epithelium','Pseudostratified columnar epithelium'],
+  100:['glial cells (neuroglia)','astrocytes','Schwann cells','oligodendrocytes','microglia'],
+  101:['nervous','muscle','epithelial','vascular'],
+  102:['chondrocyte','osteocyte','adipocyte','macrophage','mast cell'],
+  103:['bone','blood','dense regular connective tissue','fibrocartilage','elastic cartilage'],
+  104:['elastin fibers','reticular fibers','keratin fibers','fibronectin','fibrin'],
+  105:['Simple cuboidal epithelium','Simple squamous epithelium','Stratified squamous epithelium','Pseudostratified columnar epithelium','Transitional epithelium'],
+  106:['cardiac muscle','skeletal muscle','dense regular connective tissue','nervous tissue'],
+  107:['neuron','astrocyte','Schwann cell','oligodendrocyte','microglia'],
+  108:['skeletal muscle','smooth muscle','dense connective tissue','nervous tissue'],
+  109:['cardiac muscle','smooth muscle','dense connective tissue','nervous tissue'],
+  32: ['female is on the left - male is on the right','these are both male crayfish','these are both female crayfish','sex cannot be determined externally'],
+  // ── FIMB: CNIDARIA ────────────────────────────────────────────────────────
+  8:  ['Scyphozoa','Hydrozoa','Cubozoa','Staurozoa'],
+  180:['medusa','planula larva','ephyra','strobilating form'],
+  181:['gastrodermis','epidermis','mesoglea','coelenteron','mucous cell'],
+  182:['oral arm','siphon','manubrium','gonad','bell (umbrella)'],
+  183:['polyp','planula larva','ephyra','strobilating form'],
+  184:['Scyphozoa','Anthozoa','Cubozoa','Staurozoa'],
+  185:['Porifera','Platyhelminthes','Nematoda','Arthropoda','Mollusca'],
+  186:['gastrovascular cavity','mesoglea','manubrium','tentacle','oral arm'],
+  187:['testis','gastrovascular cavity','mesoglea','nematocyst','manubrium'],
+  188:['ovary','gastrovascular cavity','mesoglea','nematocyst','manubrium'],
+  // ── FIMB: HISTOLOGY ───────────────────────────────────────────────────────
+  136:['fibroblast','chondrocyte','osteocyte','astrocyte','Schwann cell'],
+  137:['bone','fibrocartilage','elastic cartilage','dense regular connective tissue','blood'],
+  138:['epithelial','muscle','nervous','vascular'],
+  139:['leukocyte (white blood cell)','platelet (thrombocyte)','lymphocyte','monocyte','plasma cell'],
+  140:['simple squamous epithelium','stratified squamous epithelium','simple columnar epithelium','pseudostratified columnar epithelium','transitional epithelium'],
+  141:['simple squamous epithelium','simple cuboidal epithelium','simple columnar epithelium','pseudostratified columnar epithelium','transitional epithelium'],
+  142:['elastin fiber','reticular fiber','fibronectin','ground substance','keratin fiber'],
+  143:['simple squamous epithelium','simple cuboidal epithelium','stratified squamous epithelium','pseudostratified columnar epithelium','transitional epithelium'],
+  144:['muscle','connective','nervous','vascular'],
+  145:['smooth muscle','cardiac muscle','dense regular connective tissue','nervous tissue'],
+  146:['osteoblast','chondrocyte','fibroblast','osteoclast','adipocyte'],
+  147:['osteocyte','fibroblast','adipocyte','osteoblast','macrophage'],
+  148:['hyaline cartilage','fibrocartilage','elastic cartilage','dense regular connective tissue','blood'],
+  149:['osteocyte','chondrocyte','adipocyte','macrophage','mast cell'],
+  150:['collagen fiber','reticular fiber','fibronectin','ground substance','keratin fiber'],
+  151:['hyaline cartilage','bone','loose areolar connective tissue','dense regular connective tissue','adipose tissue'],
+  152:['skeletal muscle','cardiac muscle','dense connective tissue','nervous tissue'],
+  153:['epithelial tissue','muscle tissue','connective tissue','vascular tissue'],
+  154:['hyaline cartilage','bone','blood','dense regular connective tissue','adipose tissue'],
+  155:['neuron','astrocyte','Schwann cell','oligodendrocyte','microglia'],
+  156:['epithelial','connective','nervous','vascular'],
+  157:['simple cuboidal epithelium','simple columnar epithelium','stratified squamous epithelium','pseudostratified columnar epithelium','transitional epithelium'],
+  158:['erythrocyte (red blood cell)','platelet (thrombocyte)','lymphocyte','monocyte','plasma cell'],
+  159:['skeletal muscle','smooth muscle','dense connective tissue','nervous tissue'],
+  // ── FIMB: EMBRYOLOGY ──────────────────────────────────────────────────────
+  160:['blastula','morula','neurula','zygote','late blastula'],
+  161:['blastula','morula','gastrula','zygote','unfertilized egg'],
+  162:['gastrocoel (archenteron)','coelom','blastocoel','pseudocoelom','neuropore'],
+  163:['ectoderm','mesoderm','neural crest','blastoderm','lateral plate'],
+  164:['notochord','neural tube','lateral plate mesoderm','nephrotome','coelom'],
+  165:['gastrocoel (archenteron)','coelom','pseudocoelom','neuropore','blastopore'],
+  166:['endoderm','mesoderm','neural crest','blastoderm','lateral plate'],
+  167:['blastocoel','coelom','pseudocoelom','neuropore','blastopore'],
+  168:['endoderm','ectoderm','neural crest','blastoderm','lateral plate'],
+  169:['gastrula','morula','neurula','zygote','late gastrula'],
+  // ── FIMB: PHYLOGENETICS ───────────────────────────────────────────────────
+  170:['A','B','C','D','F'],
+  171:['kingdom','phylum','class','family','genus','species'],
+  172:['grade (evolutionary grade)','lineage','taxon','ancestor','phylogeny'],
+  173:['monophyletic','paraphyletic','grade (evolutionary grade)','clade'],
+  174:['polyphyletic','paraphyletic','grade (evolutionary grade)','clade'],
+  175:['genus','family','order','class','phylum','kingdom'],
+  176:['B','C','D','E','F'],
+  177:['kingdom','class','order','family','genus','species'],
+  178:['kingdom','phylum','order','family','genus','species'],
+  179:['monophyletic','polyphyletic','grade (evolutionary grade)','clade'],
+  // ── FIMB: PLATYHELMINTHES ─────────────────────────────────────────────────
+  189:['Nematoda','Annelida','Mollusca','Arthropoda','Cnidaria'],
+  190:['scolex','rostellum','sucker','strobila','tegument'],
+  // ── FIMB: MOLLUSCA ────────────────────────────────────────────────────────
+  191:['Arthropoda','Nematoda','Annelida','Platyhelminthes','Echinodermata'],
+  192:['Arthropoda','Nematoda','Annelida','Platyhelminthes','Echinodermata'],
+  // ── FIMB: ANNELIDA ────────────────────────────────────────────────────────
+  193:['Nematoda','Platyhelminthes','Arthropoda','Mollusca','Cnidaria'],
+  194:['nephridia','clitellum','prostomium','parapodia','peristomium'],
+};
+
+// ── Distractor generation ────────────────────────────────────────────────────
+function buildDistractors(q, count) {
+  const correctLower = (q.answers[q.correct] || '').toLowerCase().trim();
+
+  let pool = Q_DISTRACTORS[q.position]
+    ? [...Q_DISTRACTORS[q.position]]
+    : (q.answers || []).filter((_, i) => i !== q.correct).map(t => (t || '').trim()).filter(Boolean);
+
+  shuffleArr(pool);
+
+  const seen = new Set([correctLower]);
+  const result = [];
+  for (const t of pool) {
+    const lower = (t || '').toLowerCase();
+    if (!lower || seen.has(lower)) continue;
+    seen.add(lower);
+    result.push(t);
+    if (result.length >= count) break;
+  }
+  return result;
+}
+
+// ── Progress tracking ────────────────────────────────────────────────────────
+const PROG_KEY = 'bio212_exam2_progress';
+
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(PROG_KEY) || '{}'); } catch { return {}; }
+}
+function saveProgress(d) { localStorage.setItem(PROG_KEY, JSON.stringify(d)); }
+
+function recordAnswer(q, ok) {
+  const d = loadProgress();
+  const k = String(q.position);
+  if (!d[k]) d[k] = { a:0, c:0, w:0, t:null };
+  d[k].a++;
+  if (ok) d[k].c++; else d[k].w++;
+  d[k].t = new Date().toISOString();
+  saveProgress(d);
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function isStruggling(s) {
+  return s && s.a >= 2 && s.c / s.a < 0.6;
+}
+
+function getStrugglingPositions() {
+  const d = loadProgress();
+  return Object.entries(d).filter(([,s]) => isStruggling(s)).map(([p]) => parseInt(p));
+}
+
+function clearProgress() {
+  if (!confirm('Clear all progress? This cannot be undone.')) return;
+  localStorage.removeItem(PROG_KEY);
+  renderProgress();
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function startStrugglingQuiz() {
+  activeCats = new Set(['__struggling__']);
+  renderCategoryPills();
+  updatePoolPreview();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-quiz').classList.add('active');
+  document.getElementById('nav-btn-quiz').classList.add('active');
+}
+
+function renderProgress() {
+  const d = loadProgress();
+  const keys = Object.keys(d);
+  if (!keys.length) {
+    document.getElementById('progress-content').innerHTML =
+      '<div class="empty"><h2>No data yet</h2><p>Answer some quiz questions to start tracking your progress.</p></div>';
+    return;
+  }
+
+  const totalA = keys.reduce((s,k) => s + d[k].a, 0);
+  const totalC = keys.reduce((s,k) => s + d[k].c, 0);
+  const totalW = keys.reduce((s,k) => s + d[k].w, 0);
+  const totalQ = keys.length;
+  const acc = totalA > 0 ? Math.round(totalC / totalA * 100) : 0;
+  const accColor = acc >= 80 ? 'var(--green)' : acc >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  const struggling = getStrugglingPositions();
+
+  let html = `<div class="pg-title">Overall</div>
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-v">${totalQ}</div><div class="ov-l">Questions<br>Attempted</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--green)">${totalC}</div><div class="ov-l">Correct<br>Answers</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--red)">${totalW}</div><div class="ov-l">Wrong<br>Answers</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:${accColor}">${acc}%</div><div class="ov-l">Overall<br>Accuracy</div></div>
+  </div>`;
+
+  if (struggling.length > 0) {
+    html += `<div class="struggle-banner">
+      <div>
+        <h3>⚠ ${struggling.length} Struggling Question${struggling.length !== 1 ? 's' : ''}</h3>
+        <p>Correct less than 60% of the time after 2+ attempts</p>
+      </div>
+      <button class="btn" style="background:var(--amber);color:#000;font-size:.82rem;white-space:nowrap"
+        onclick="startStrugglingQuiz()">Practice These →</button>
+    </div>`;
+  }
+
+  html += `<div class="pg-title">By Category</div><div>`;
+  for (const cat of CATEGORIES) {
+    const qs = ALL_Q.filter(q => q.categories.includes(cat.id));
+    if (!qs.length) continue;
+    const tried = qs.filter(q => d[String(q.position)]);
+    const catA = tried.reduce((s,q) => s + (d[String(q.position)]?.a || 0), 0);
+    const catC = tried.reduce((s,q) => s + (d[String(q.position)]?.c || 0), 0);
+    const catAcc = catA > 0 ? Math.round(catC / catA * 100) : null;
+    const catStruggling = qs.filter(q => isStruggling(d[String(q.position)])).length;
+
+    const barColor = catAcc === null ? 'var(--border)'
+      : catAcc >= 80 ? 'var(--green)' : catAcc >= 60 ? 'var(--amber)' : 'var(--red)';
+    const accText = catAcc !== null ? `${catAcc}%` : '—';
+
+    let badge = `<span style="color:var(--muted)">${tried.length}/${qs.length} tried</span>`;
+    if (catAcc !== null) {
+      if (catAcc >= 80)      badge = `<span style="color:var(--green)">✓ Doing well</span>`;
+      else if (catAcc >= 60) badge = `<span style="color:var(--amber)">~ Getting there</span>`;
+      else                   badge = `<span style="color:var(--red)">⚠ Needs work</span>`;
+    }
+    if (catStruggling > 0) badge += `<br><span style="color:var(--amber)">${catStruggling} struggling</span>`;
+
+    html += `<div class="cat-row">
+      <div class="cr-name">${cat.icon} ${cat.label}</div>
+      <div class="cr-bar"><div class="cr-fill" style="width:${catAcc||0}%;background:${barColor}"></div></div>
+      <div class="cr-acc" style="color:${barColor}">${accText}</div>
+      <div class="cr-badge">${badge}</div>
+    </div>`;
+  }
+  html += `</div>`;
+
+  document.getElementById('progress-content').innerHTML = html;
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+function onDataMissing() {
+  document.getElementById('no-data-msg').style.display = 'block';
+}
+
+(function init() {
+  if (typeof QUIZ_DATA === 'undefined') { onDataMissing(); return; }
+  ALL_Q = QUIZ_DATA.filter(q =>
+    ['multiple_choice_question','true_false_question',
+     'short_answer_question','matching_question',
+     'multiple_answers_question','fill_in_multiple_blanks_question'].includes(q.type)
+    && !EXCLUDE_POSITIONS.has(q.position)
+  );
+  ALL_Q.forEach(q => { q.categories = tagQuestion(q); });
+  const qCountEl = document.getElementById('setup-q-count');
+  if (qCountEl) qCountEl.textContent = ALL_Q.length;
+  renderCategoryPills();
+  updatePoolPreview();
+  const sel = document.getElementById('browse-cat-filter');
+  const counts = {};
+  ALL_Q.forEach(q => q.categories.forEach(c => { counts[c] = (counts[c]||0)+1; }));
+  for (const cat of CATEGORIES) {
+    if (!counts[cat.id]) continue;
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = `${cat.icon} ${cat.label} (${counts[cat.id]})`;
+    sel.appendChild(opt);
+  }
+  if (counts['other']) {
+    const opt = document.createElement('option');
+    opt.value = 'other'; opt.textContent = `📋 Other (${counts['other']})`;
+    sel.appendChild(opt);
+  }
+  renderBrowse();
+})();
+
+// ── Category UI ──────────────────────────────────────────────────────────────
+function renderCategoryPills() {
+  const container = document.getElementById('cat-pills');
+  const counts = {};
+  ALL_Q.forEach(q => q.categories.forEach(c => { counts[c] = (counts[c]||0)+1; }));
+
+  let html = '';
+  for (const cat of CATEGORIES) {
+    const n = counts[cat.id] || 0;
+    if (!n) continue;
+    const on = activeCats.size === 0 || activeCats.has(cat.id);
+    const color = CAT_COLORS[cat.id] || 'var(--accent)';
+    const borderStyle = on ? `border-color:${color};` : `border-color:${color}44;`;
+    const bgStyle = on ? `background:${color}18;color:var(--text);` : '';
+    html += `<span class="cat-pill${on ? ' on' : ''}" data-cat="${cat.id}" onclick="toggleCat('${cat.id}')"
+      style="${borderStyle}${bgStyle}">
+      <span class="cp-icon">${cat.icon}</span>
+      <span class="cp-label">${cat.label}</span>
+      <span class="cp-count">${n} q</span>
+    </span>`;
+  }
+  if (counts['other']) {
+    const on = activeCats.size === 0 || activeCats.has('other');
+    const color = CAT_COLORS['other'];
+    html += `<span class="cat-pill${on ? ' on' : ''}" data-cat="other" onclick="toggleCat('other')"
+      style="border-color:${on ? color : color+'44'};${on ? 'background:'+color+'18;color:var(--text);' : ''}">
+      <span class="cp-icon">📋</span>
+      <span class="cp-label">Other</span>
+      <span class="cp-count">${counts['other']} q</span>
+    </span>`;
+  }
+  const strugCount = getStrugglingPositions().length;
+  if (strugCount > 0) {
+    const on = activeCats.size === 0 || activeCats.has('__struggling__');
+    html += `<span class="cat-pill struggling${on ? ' on' : ''}" data-cat="__struggling__" onclick="toggleCat('__struggling__')">
+      <span class="cp-icon">⚠️</span>
+      <span class="cp-label">Struggling</span>
+      <span class="cp-count">${strugCount} q</span>
+    </span>`;
+  }
+  container.innerHTML = html;
+}
+
+function toggleCat(id) {
+  if (activeCats.size === 0) {
+    activeCats = new Set([id]);
+  } else if (activeCats.has('__none__')) {
+    activeCats = new Set([id]);
+  } else {
+    if (activeCats.has(id)) {
+      activeCats.delete(id);
+      if (activeCats.size === 0) activeCats = new Set(['__none__']);
+    } else {
+      activeCats.add(id);
+      const allIds = CATEGORIES.map(c => c.id);
+      if (allIds.every(c => activeCats.has(c))) activeCats = new Set();
+    }
+  }
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function toggleAllCats() {
+  activeCats = (activeCats.size === 0) ? new Set(['__none__']) : new Set();
+  renderCategoryPills();
+  updatePoolPreview();
+}
+
+function updatePoolPreview() {
+  const p = buildPool(false);
+  const el = document.getElementById('pool-preview');
+  if (el) el.textContent = p.length
+    ? `${p.length} question${p.length !== 1 ? 's' : ''} match your filters`
+    : 'No questions match — adjust filters above';
+}
+
+// ── Tab nav ──────────────────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'progress') renderProgress();
+  try { window.parent.postMessage({type:'tabChange', tab:id}, '*'); } catch(e){}
+}
+
+// ── Quiz setup ───────────────────────────────────────────────────────────────
+function buildPool(shuffle) {
+  const count = document.getElementById('sel-count').value;
+  let p = [...ALL_Q];
+
+  if (activeCats.size > 0) {
+    if (activeCats.has('__none__')) {
+      p = [];
+    } else {
+      const strugPos = activeCats.has('__struggling__')
+        ? new Set(getStrugglingPositions()) : null;
+      const regCats = new Set([...activeCats].filter(c => c !== '__struggling__'));
+      p = p.filter(q =>
+        (strugPos && strugPos.has(q.position)) ||
+        (regCats.size > 0 && q.categories.some(c => regCats.has(c)))
+      );
+    }
+  }
+
+  if (shuffle) p = shuffleArr(p);
+  if (count !== 'all') p = p.slice(0, parseInt(count));
+  return p;
+}
+
+function startQuiz()    { launch(true); }
+function startShuffle() { launch(true); }
+
+function launch(shuffle) {
+  pool    = buildPool(shuffle);
+  qi      = 0;
+  answers = new Array(pool.length).fill(null);
+  document.getElementById('pane-setup').style.display   = 'none';
+  document.getElementById('pane-quiz').style.display    = 'block';
+  document.getElementById('pane-results').style.display = 'none';
+  renderQ();
+}
+
+// ── Render question ──────────────────────────────────────────────────────────
+function renderQ() {
+  answered = false;
+  const q = pool[qi];
+  const pct = qi / pool.length * 100;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent   = `Question ${qi + 1} / ${pool.length}`;
+  const cor = answers.slice(0, qi).filter((a, i) => isCorrect(pool[i], a)).length;
+  document.getElementById('prog-score').textContent = `${cor} correct`;
+  document.getElementById('btn-next').style.display = 'none';
+
+  const catColor = CAT_COLORS[(q.categories||[])[0]] || 'var(--border)';
+  let html = `
+    <div class="q-card" style="border-top:3px solid ${catColor};">
+      <div class="q-header">
+        <span class="q-num">Q${q.position}</span>
+        <span class="q-tag" style="background:${catColor}18;color:${catColor}">${labelType(q.type)}</span>
+        <span class="q-pts">${q.points} pt${q.points !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="q-body">${rewriteImgClicks(q.question)}</div>`;
+
+  if (q.type === 'multiple_choice_question' || q.type === 'true_false_question' || q.type === 'multiple_answers_question') {
+    if (freeTextMode) {
+      html += `<div class="fib-wrap">
+        <input class="fib-input" id="fib-inp" placeholder="Type your answer…"
+          onkeydown="if(event.key==='Enter')checkFreeText()">
+        <button class="btn fib-check-btn" onclick="checkFreeText()">Check Answer</button>
+      </div>`;
+    } else {
+      html += `<div class="opts">`;
+      const letters = ['A','B','C','D','E','F','G','H'];
+      if (q.type === 'multiple_choice_question') {
+        const correctText = q.answers[q.correct];
+        const distractors = buildDistractors(q, 3);
+        augAnswers = [correctText, ...distractors];
+        shuffleArr(augAnswers);
+        correctAugIdx = augAnswers.indexOf(correctText);
+        augAnswers.forEach((text, idx) => {
+          html += `<div class="opt" id="opt${idx}" onclick="pickMC(${idx})" style="animation-delay:${idx*0.06}s">
+            <div class="ltr">${letters[idx]}</div>
+            <span>${escHtml(text)}</span>
+          </div>`;
+        });
+      } else {
+        augAnswers = null;
+        displayOrder = (q.answers || []).map((_, i) => i);
+        if (q.type !== 'true_false_question') shuffleArr(displayOrder);
+        displayOrder.forEach((origIdx, displayIdx) => {
+          html += `<div class="opt" id="opt${displayIdx}" onclick="pickMC(${displayIdx})" style="animation-delay:${displayIdx*0.06}s">
+            <div class="ltr">${letters[displayIdx] || displayIdx}</div>
+            <span>${escHtml(q.answers[origIdx])}</span>
+          </div>`;
+        });
+      }
+      html += `</div>`;
+    }
+
+  } else if (q.type === 'fill_in_multiple_blanks_question') {
+    if (freeTextMode) {
+      html += `<div class="fib-wrap">
+        <input class="fib-input" id="fib-inp" placeholder="Type your answer…"
+          onkeydown="if(event.key==='Enter')checkFIMB()">
+        <button class="btn fib-check-btn" onclick="checkFIMB()">Check Answer</button>
+      </div>`;
+    } else {
+      html += `<div class="opts">`;
+      const letters = ['A','B','C','D','E','F','G','H'];
+      const correctText = q.answers[q.correct];
+      const distractors = buildDistractors(q, 3);
+      augAnswers = [correctText, ...distractors];
+      shuffleArr(augAnswers);
+      correctAugIdx = augAnswers.indexOf(correctText);
+      augAnswers.forEach((text, idx) => {
+        html += `<div class="opt" id="opt${idx}" onclick="pickMC(${idx})" style="animation-delay:${idx*0.06}s">
+          <div class="ltr">${letters[idx]}</div>
+          <span>${escHtml(text)}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+  } else if (q.type === 'short_answer_question') {
+    html += `<div class="fib-wrap">
+      <input class="fib-input" id="fib-inp" placeholder="Type your answer…"
+        onkeydown="if(event.key==='Enter')checkFIB()">
+      <button class="btn fib-check-btn" onclick="checkFIB()">Check Answer</button>
+    </div>`;
+
+  } else if (q.type === 'matching_question') {
+    const matches = (Q_MATCH_FIX[q.position] || q).matches || [];
+    const rights = matches.map(m => m.right).sort(() => Math.random() - .5);
+    html += `<div class="match-wrap">`;
+    matches.forEach((m, i) => {
+      html += `<div class="match-row">
+        <span class="match-left">${escHtml(m.left)}</span>
+        <select class="match-sel" id="match${i}">
+          <option value="">– choose –</option>
+          ${rights.map(r => `<option value="${escAttr(r)}">${escHtml(r)}</option>`).join('')}
+        </select>
+      </div>`;
+    });
+    html += `</div>
+      <div style="padding:0 20px 4px;margin-top:8px">
+        <button class="btn" onclick="checkMatch()">Check Matching</button>
+      </div>`;
+  }
+
+  html += `<div class="feedback" id="fb"></div></div>`;
+  document.getElementById('q-render').innerHTML = html;
+  document.getElementById('btn-back').disabled = (qi === 0);
+  document.getElementById('q-render').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  hookImgClicks();
+}
+
+function labelType(t) {
+  return {
+    multiple_choice_question:      'Multiple Choice',
+    true_false_question:           'True / False',
+    short_answer_question:         'Fill in Blank',
+    fill_in_multiple_blanks_question: 'Fill in Blank',
+    matching_question:             'Matching',
+    multiple_answers_question:     'Multiple Answers',
+  }[t] || t;
+}
+
+// ── Answer handlers ──────────────────────────────────────────────────────────
+function pickMC(displayIdx) {
+  if (answered) return;
+  answered = true;
+  const q = pool[qi];
+
+  let ok, correctDisplayIdx;
+  if (augAnswers) {
+    ok = displayIdx === correctAugIdx;
+    correctDisplayIdx = correctAugIdx;
+    answers[qi] = { correct: ok, text: augAnswers[displayIdx] };
+  } else {
+    const origIdx = displayOrder[displayIdx];
+    ok = origIdx === q.correct;
+    correctDisplayIdx = displayOrder.indexOf(q.correct);
+    answers[qi] = origIdx;
+  }
+
+  document.querySelectorAll('.opt').forEach((el, j) => {
+    el.classList.add('locked');
+    if (j === correctDisplayIdx) el.classList.add('correct');
+    if (j === displayIdx && !ok) el.classList.add('wrong');
+  });
+  recordAnswer(q, ok);
+  showFeedback(ok, q);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function checkFIB() {
+  const inp = document.getElementById('fib-inp');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  const q   = pool[qi];
+  const corrects = (q.correct_texts || []).map(s => s.toLowerCase().trim());
+  const ok = corrects.some(c => val === c || val.includes(c) || c.includes(val));
+  answers[qi] = ok ? q.correct : -1;
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  recordAnswer(q, ok);
+  const correctStr = (q.correct_texts || []).join(' / ');
+  showFeedback(ok, q, ok ? '' : `Correct answer: ${correctStr}`);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function buildAcceptedForms(text) {
+  text = (text || '').toLowerCase().trim();
+  const forms = new Set();
+
+  function add(s) {
+    s = s.trim();
+    if (s.length < 2) return;
+    forms.add(s);
+    forms.add(s.replace(/\s+/g, ''));
+    if (s.endsWith('es')) forms.add(s.slice(0, -2));
+    else if (s.endsWith('s')) forms.add(s.slice(0, -1));
+    else { forms.add(s + 's'); forms.add(s + 'es'); }
+  }
+
+  add(text);
+
+  const aka = text.match(/\(aka\s*([^)]+)\)/i);
+  if (aka) add(aka[1]);
+
+  const stripped = text.replace(/\s*\([^)]+\)/g, '').trim();
+  if (stripped && stripped !== text) add(stripped);
+
+  return [...forms].filter(f => f.length > 1);
+}
+
+function fuzzyMatch(val, form) {
+  const nv = val.replace(/\s+/g, '');
+  const nf = form.replace(/\s+/g, '');
+  return nv === nf || nv.includes(nf) || nf.includes(nv);
+}
+
+function checkFreeText() {
+  const inp = document.getElementById('fib-inp');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  const q   = pool[qi];
+  const correctText = q.answers[q.correct] || '';
+  const accepted = buildAcceptedForms(correctText);
+  const ok = accepted.some(f => fuzzyMatch(val, f));
+  answers[qi] = ok ? q.correct : -1;
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  recordAnswer(q, ok);
+  showFeedback(ok, q, ok ? '' : `Correct answer: ${correctText}`);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function checkFIMB() {
+  const inp = document.getElementById('fib-inp');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  const q = pool[qi];
+  const variants = q.answers.filter(a => a);
+  const allForms = variants.flatMap(v => buildAcceptedForms(v));
+  const ok = allForms.some(f => fuzzyMatch(val, f));
+  answers[qi] = ok ? 0 : -1;
+  inp.classList.remove('correct', 'wrong');
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  inp.disabled = true;
+  recordAnswer(q, ok);
+  showFeedback(ok, q, ok ? '' : `Correct answer: ${variants.join(' / ')}`);
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function setAnswerMode(m) {
+  freeTextMode = m === 'ft';
+  document.getElementById('mode-mc').classList.toggle('active', !freeTextMode);
+  document.getElementById('mode-ft').classList.toggle('active',  freeTextMode);
+}
+
+function checkMatch() {
+  if (answered) return;
+  answered = true;
+  const q = pool[qi];
+  const matches = (Q_MATCH_FIX[q.position] || q).matches || [];
+  let allOk = true;
+  matches.forEach((m, i) => {
+    const sel = document.getElementById('match' + i);
+    const ok  = sel.value === m.right;
+    if (!ok) allOk = false;
+    sel.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+    sel.disabled = true;
+  });
+  answers[qi] = allOk ? 0 : -1;
+  recordAnswer(q, allOk);
+  if (!allOk) {
+    const correctMap = matches.map(m => `${m.left} → ${m.right}`).join(', ');
+    showFeedback(false, q, `Correct: ${correctMap}`);
+  } else {
+    showFeedback(true, q);
+  }
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function showFeedback(ok, q, extra) {
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  const header = ok
+    ? '✓ Correct!'
+    : `✗ Incorrect.${extra ? ' ' + escHtml(extra) : ''}`;
+  fb.innerHTML = `<strong>${header}</strong>`;
+}
+
+function isCorrect(q, ans) {
+  if (ans === null) return false;
+  if (typeof ans === 'object') return ans.correct === true;
+  if (q.type === 'multiple_choice_question' || q.type === 'true_false_question') return ans === q.correct;
+  if (q.type === 'short_answer_question' || q.type === 'matching_question' || q.type === 'fill_in_multiple_blanks_question') return ans === 0;
+  return false;
+}
+
+function goBack() {
+  if (qi === 0) return;
+  qi--;
+  answers[qi] = null;
+  answered = false;
+  renderQ();
+}
+
+function resetQ() {
+  answers[qi] = null;
+  answered = false;
+  renderQ();
+}
+
+function skipQ() {
+  if (!answered) answers[qi] = null;
+  nextQ();
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= pool.length) { showResults(); return; }
+  renderQ();
+}
+
+// ── Results ──────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('pane-quiz').style.display    = 'none';
+  document.getElementById('pane-results').style.display = 'block';
+  const cor = answers.filter((a, i) => isCorrect(pool[i], a)).length;
+  const skp = answers.filter(a => a === null).length;
+  const wrg = pool.length - cor - skp;
+  const pct = Math.round(cor / pool.length * 100);
+
+  document.getElementById('r-pct').textContent = pct + '%';
+  document.getElementById('r-cor').textContent = cor;
+  document.getElementById('r-wrg').textContent = wrg;
+  document.getElementById('r-skp').textContent = skp;
+  document.getElementById('r-msg').textContent  = `${cor} of ${pool.length} correct · ${skp} skipped`;
+
+  const arc = document.getElementById('ring-arc');
+  const C = 339.3;
+  arc.style.strokeDashoffset = C - (pct / 100) * C;
+  arc.style.stroke = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  const grades = ['Keep Studying 📖','Getting There 💪','Good Work 👍','Great Job ⭐','Excellent! 🏆'];
+  document.getElementById('r-grade').textContent = grades[Math.min(Math.floor(pct / 20), 4)];
+}
+
+function reviewAnswers() {
+  const letters = ['A','B','C','D','E','F','G','H'];
+  let html = '<h2 style="margin-bottom:14px">Answer Review</h2>';
+  pool.forEach((q, i) => {
+    const ua = answers[i];
+    const ok = isCorrect(q, ua);
+    const sk = ua === null;
+    const status = sk ? '⊖ Skipped' : ok ? '✓ Correct' : '✗ Incorrect';
+    const col    = sk ? 'var(--muted)' : ok ? 'var(--green)' : 'var(--red)';
+    let ansLine = '';
+    if (q.type === 'multiple_choice_question' || q.type === 'true_false_question') {
+      const correctText = escHtml(q.answers[q.correct] || '');
+      if (!sk) {
+        const userText = typeof ua === 'object' ? escHtml(ua.text || '') : escHtml(q.answers[ua] || '');
+        if (!ok) ansLine += `<div style="color:var(--red);font-size:.8rem">Your answer: ${userText}</div>`;
+        ansLine += `<div style="color:var(--green);font-size:.8rem">Correct: ${correctText}</div>`;
+      } else {
+        ansLine = `<div style="color:var(--green);font-size:.8rem">Correct: ${correctText}</div>`;
+      }
+    } else if (q.type === 'fill_in_multiple_blanks_question') {
+      const fibVariants = q.answers.filter(a => a);
+      const fibCorrectStr = escHtml(fibVariants.join(' / '));
+      if (!sk && typeof ua === 'object' && !ok) {
+        ansLine += `<div style="color:var(--red);font-size:.8rem">Your answer: ${escHtml(ua.text || '')}</div>`;
+      }
+      ansLine += `<div style="color:var(--green);font-size:.8rem">Correct: ${fibCorrectStr}</div>`;
+    } else if (q.type === 'short_answer_question') {
+      ansLine = `<div style="color:var(--green);font-size:.8rem">Correct answer(s): ${(q.correct_texts||[]).join(' / ')}</div>`;
+    }
+    html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;
+        padding:14px 16px;margin-bottom:10px">
+      <div style="font-size:.72rem;font-weight:700;color:${col};margin-bottom:6px">${status}</div>
+      <div style="font-size:.85rem;margin-bottom:8px">${rewriteImgClicks(q.question)}</div>
+      ${ansLine}
+    </div>`;
+  });
+  document.getElementById('review-out').innerHTML = html;
+  hookImgClicks();
+  document.getElementById('review-out').scrollIntoView({ behavior:'smooth' });
+}
+
+function exitToSetup() {
+  if (!confirm('Exit quiz? Your progress will be lost.')) return;
+  backToSetup();
+}
+
+function backToSetup() {
+  document.getElementById('pane-setup').style.display   = 'block';
+  document.getElementById('pane-quiz').style.display    = 'none';
+  document.getElementById('pane-results').style.display = 'none';
+  document.getElementById('review-out').innerHTML = '';
+}
+
+// ── Browse tab ───────────────────────────────────────────────────────────────
+function renderBrowse() {
+  if (!ALL_Q.length) {
+    document.getElementById('browse-out').innerHTML =
+      '<div class="empty"><h2>No data</h2><p>quiz_data2.js not found.</p></div>';
+    return;
+  }
+  const search = (document.getElementById('browse-search').value || '').toLowerCase();
+  const browseFilter = document.getElementById('browse-cat-filter').value;
+  const letters = ['A','B','C','D','E','F','G','H'];
+  let shown = 0;
+  let html = '';
+  ALL_Q.forEach(q => {
+    if (browseFilter !== 'all' && !(q.categories||[]).includes(browseFilter)) return;
+    const qText = stripTags(q.question).toLowerCase();
+    const aText = (q.answers || []).join(' ').toLowerCase();
+    if (search && !qText.includes(search) && !aText.includes(search)) return;
+    shown++;
+    const catLabels = (q.categories||[]).map(cid => {
+      const cat = CATEGORIES.find(c => c.id === cid);
+      return cat ? `<span style="color:var(--accent);font-size:.68rem">${cat.icon} ${cat.label}</span>` : '';
+    }).join(' ');
+    html += `<div class="browse-q">
+      <div class="browse-header">
+        <span>Q${q.position}</span>
+        <span style="color:var(--accent)">${labelType(q.type)}</span>
+        ${catLabels}
+        <span style="margin-left:auto">${q.points} pt</span>
+      </div>
+      <div class="browse-body">${rewriteImgClicks(q.question)}</div>
+      <div class="browse-answers">`;
+
+    if (q.type === 'multiple_choice_question' || q.type === 'true_false_question' || q.type === 'multiple_answers_question') {
+      (q.answers || []).forEach((ans, i) => {
+        const ok = i === q.correct;
+        html += `<div class="ba${ok ? ' ok' : ''}">
+          <div class="bk">${letters[i]}</div>
+          <span style="font-size:.82rem">${escHtml(ans)}</span>
+        </div>`;
+      });
+    } else if (q.type === 'short_answer_question') {
+      html += `<div class="ba ok"><div class="bk">✓</div>
+        <span style="font-size:.82rem">${escHtml((q.correct_texts||[]).join(' / '))}</span></div>`;
+    } else if (q.type === 'matching_question') {
+      (q.matches||[]).forEach(m => {
+        html += `<div class="ba ok"><div class="bk">→</div>
+          <span style="font-size:.82rem">${escHtml(m.left)} → ${escHtml(m.right)}</span></div>`;
+      });
+    } else if (q.type === 'fill_in_multiple_blanks_question') {
+      const fibVars = q.answers.filter(a => a);
+      html += `<div class="ba ok"><div class="bk">✓</div>
+        <span style="font-size:.82rem">${escHtml(fibVars.join(' / '))}</span></div>`;
+    }
+    html += `</div></div>`;
+  });
+  if (!shown) html = '<div class="empty"><h2>No matches</h2></div>';
+  document.getElementById('browse-out').innerHTML = html;
+  hookImgClicks();
+}
+
+// ── Image zoom ───────────────────────────────────────────────────────────────
+function rewriteImgClicks(html) {
+  if (!html) return '';
+  return html.replace(/<img([^>]*?)>/gi, (match, attrs) => {
+    const srcM = /src=["']([^"']+)["']/i.exec(attrs);
+    if (!srcM) return match;
+    const src = srcM[1];
+    return `<img${attrs} onclick="openModal('${src.replace(/'/g,"\\'")}'" style="cursor:zoom-in">`;
+  });
+}
+
+function hookImgClicks() {
+  document.querySelectorAll('.q-body img, .browse-body img, #review-out img').forEach(img => {
+    if (!img.dataset.hooked) {
+      img.dataset.hooked = '1';
+      img.addEventListener('click', () => openModal(img.src));
+    }
+  });
+}
+
+function openModal(src) {
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Utilities ────────────────────────────────────────────────────────────────
+function shuffleArr(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function escAttr(s) { return (s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function stripTags(html) { return (html||'').replace(/<[^>]*>/g,' '); }
+
+if (new URLSearchParams(location.search).get('bare') === '1') {
+  document.querySelector('nav').style.display = 'none';
+  document.querySelectorAll('.page').forEach(p => p.style.paddingTop = '28px');
+}
+</script>
+</body>
+</html>
