@@ -164,6 +164,21 @@ iframe.fill{flex:1;width:100%;border:none;background:var(--bg)}
   text-transform:uppercase;opacity:.65;
 }
 .cat-card .bar{height:2px;border-radius:2px;background:currentColor;opacity:.3;margin-top:3px;width:100%;}
+
+@media(max-width:767px){
+  .topnav{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;}
+  .topnav::-webkit-scrollbar{display:none}
+  .logo{margin-right:10px;font-size:.85rem;}
+  .nav-tab{padding:0 10px;font-size:.75rem;}
+  .subnav{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+  .subnav::-webkit-scrollbar{display:none}
+  .subnav-pane.active{min-width:max-content;}
+  .sub-tab{padding:0 10px;font-size:.72rem;}
+  .home-inner{padding:20px 14px 56px;gap:28px;}
+  .hero{padding:14px 0 4px;}
+  .quiz-feats{grid-template-columns:1fr;}
+  .tools-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>

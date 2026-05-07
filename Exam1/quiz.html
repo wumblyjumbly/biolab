@@ -249,11 +249,18 @@ select{background:var(--card);border:1px solid var(--border);color:var(--text);
 .cat-subpill .sp-icon{font-size:1rem;}
 
 @media(max-width:640px){
+  nav{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;}
+  nav::-webkit-scrollbar{display:none}
+  .page{padding:20px 14px 60px;}
   .cat-pills{grid-template-columns:repeat(2,1fr);}
   .stat-row{gap:6px;}
   .stat{padding:10px 12px;}
   .cr-name{min-width:120px;}
   .cr-badge{min-width:70px;}
+  .q-nav{padding:10px 12px 14px;gap:6px;flex-wrap:wrap;}
+  .q-nav .go{margin-left:0;}
+  .q-nav .btn{padding:8px 11px;font-size:.8rem;}
+  .setup-controls .btn.primary{margin-left:0;}
 }
 </style>
 </head>
@@ -402,6 +409,8 @@ select{background:var(--card);border:1px solid var(--border);color:var(--text);
 <script src="quiz_data.js" onerror="onDataMissing()"></script>
 <!-- Supplemental questions from Animal tissues & embryology PDF -->
 <script src="quiz_data_extra.js" onerror="console.warn('quiz_data_extra.js not found')"></script>
+<!-- Taxonomy ID text questions (common name ↔ phylum/class/order) -->
+<script src="quiz_data_taxonomy.js" onerror="console.warn('quiz_data_taxonomy.js not found')"></script>
 <!-- Explanations for every question position -->
 <script src="quiz_explanations.js" onerror="console.warn('quiz_explanations.js not found')"></script>
 
@@ -432,6 +441,7 @@ const CAT_COLORS = {
   arthropoda:      '#14b8a6',
   embryology:      '#8b5cf6',
   histology:       '#06b6d4',
+  taxonomy:        '#e879f9',
   other:           '#8892a4',
 };
 
@@ -447,6 +457,7 @@ const CATEGORIES = [
   { id: 'arthropoda',    label: 'Arthropoda',                icon: '🦀' },
   { id: 'embryology',    label: 'Embryology',                icon: '🥚' },
   { id: 'histology',     label: 'Histology',                 icon: '🔬' },
+  { id: 'taxonomy',      label: 'Taxonomy ID (Image)',        icon: '🔭' },
 ];
 
 const SUBCATEGORIES = [
@@ -554,13 +565,46 @@ const Q_CAT_MAP = {
   259:'mollusca',260:'mollusca',261:'mollusca',262:'mollusca',263:'mollusca',
   264:'mollusca',265:'mollusca',
   266:'mollusca',267:'mollusca',268:'mollusca',269:'mollusca',
+  // Taxonomy ID text questions (quiz_data_taxonomy.js, positions 270–332)
+  270:'cnidaria',271:'cnidaria',272:'cnidaria',273:'cnidaria',
+  274:'cnidaria',275:'cnidaria',276:'cnidaria',277:'cnidaria',
+  278:'platyhelminthes',279:'platyhelminthes',280:'platyhelminthes',281:'platyhelminthes',
+  282:'platyhelminthes',283:'platyhelminthes',284:'platyhelminthes',285:'platyhelminthes',
+  286:'annelida',287:'annelida',288:'annelida',289:'annelida',
+  290:'annelida',291:'annelida',292:'annelida',
+  293:'mollusca',294:'mollusca',295:'mollusca',296:'mollusca',
+  297:'mollusca',298:'mollusca',299:'mollusca',300:'mollusca',
+  301:'arthropoda',302:'arthropoda',303:'arthropoda',304:'arthropoda',
+  305:'arthropoda',306:'arthropoda',307:'arthropoda',308:'arthropoda',
+  309:'arthropoda',310:'arthropoda',311:'arthropoda',312:'arthropoda',
+  313:'arthropoda',314:'arthropoda',315:'arthropoda',316:'arthropoda',
+  317:'arthropoda',318:'arthropoda',319:'arthropoda',320:'arthropoda',
+  321:'arthropoda',322:'arthropoda',323:'arthropoda',324:'arthropoda',
+  325:'phylogenetics',326:'phylogenetics',327:'phylogenetics',328:'phylogenetics',
+  329:'phylogenetics',330:'phylogenetics',331:'phylogenetics',332:'phylogenetics',
 };
+
+// Image-based + text-based taxonomy identification questions
+const TAXONOMY_POSITIONS = new Set([
+  // image-based (from original quiz)
+  8,14,16,17,18,19,35,37,38,40,41,46,49,50,51,52,54,69,
+  121,184,185,189,191,192,193,198,201,208,209,219,221,224,226,
+  // text-based common name ↔ taxonomy (quiz_data_taxonomy.js)
+  270,271,272,273,274,275,276,277,           // Cnidaria classes
+  278,279,280,281,282,283,284,285,           // Platyhelminthes classes
+  286,287,288,289,290,291,292,               // Annelida classes
+  293,294,295,296,297,298,299,300,           // Mollusca classes
+  301,302,303,304,305,306,307,308,309,310,311,312, // Arthropoda subphyla/classes
+  313,314,315,316,317,318,319,320,321,322,323,324, // Insecta orders
+  325,326,327,328,329,330,331,332,           // cross-phylum species
+]);
 
 function tagQuestion(q) {
   const cat    = Q_CAT_MAP[q.position];
   const subcat = Q_SUBCAT_MAP[q.position];
   const tags   = cat ? [cat] : ['other'];
   if (subcat) tags.push(subcat);
+  if (TAXONOMY_POSITIONS.has(q.position)) tags.push('taxonomy');
   return tags;
 }
 
@@ -1040,9 +1084,11 @@ window.addEventListener('message', e => {
 (function init() {
   if (typeof QUIZ_DATA === 'undefined') { onDataMissing(); return; }
   // Merge supplemental questions (from PDF LOs) into the main pool
-  const combined = typeof QUIZ_DATA_EXTRA !== 'undefined'
-    ? [...QUIZ_DATA, ...QUIZ_DATA_EXTRA]
-    : QUIZ_DATA;
+  const combined = [
+    ...QUIZ_DATA,
+    ...(typeof QUIZ_DATA_EXTRA !== 'undefined' ? QUIZ_DATA_EXTRA : []),
+    ...(typeof QUIZ_DATA_TAXONOMY !== 'undefined' ? QUIZ_DATA_TAXONOMY : []),
+  ];
   ALL_Q = combined.filter(q =>
     ['multiple_choice_question','true_false_question',
      'short_answer_question','matching_question',

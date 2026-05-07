@@ -50,7 +50,14 @@ h1{font-size:1.4rem;margin-bottom:4px}.sub{color:var(--muted);font-size:.85rem;m
 .results{text-align:center;padding:36px 20px 20px}.ring-wrap{width:130px;height:130px;margin:0 auto 16px;position:relative}.ring-wrap svg{transform:rotate(-90deg);animation:ringPop .5s cubic-bezier(.34,1.56,.64,1) both}.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.ring-pct{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.ring-sub{font-size:.66rem;color:var(--muted)}
 .stat-row{display:flex;gap:10px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap}.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:80px}.stat .val{font-size:1.35rem;font-weight:700;color:var(--accent)}.stat .lbl{font-size:.66rem;color:var(--muted);margin-top:2px}.act-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .review-out{margin-top:28px;text-align:left}.rv-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}.rv-img{width:100%;max-height:200px;object-fit:contain;background:#0a0c14;display:block}.rv-body{padding:12px 14px}.rv-status{font-size:.7rem;font-weight:700;margin-bottom:3px}.rv-cat{font-size:.72rem;margin-bottom:7px}.rv-q{font-size:.86rem;line-height:1.6;margin-bottom:8px}.rv-answer{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:6px;margin-top:4px;font-size:.81rem}.rv-answer.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}.rv-answer .dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.55rem;margin-top:1px}.rv-answer.ok .dot{background:var(--green);color:#fff}.rv-exp{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);line-height:1.55}
-@media(max-width:600px){.cat-pills{grid-template-columns:repeat(2,1fr)}.q-img{max-height:260px}}
+@media(max-width:600px){
+  .cat-pills{grid-template-columns:repeat(2,1fr)}
+  .q-img{max-height:260px}
+  .page{padding:20px 14px 60px}
+  .q-nav{padding:10px 12px 14px;gap:6px;flex-wrap:wrap}
+  .q-nav .go{margin-left:0}
+  .q-nav .btn{padding:8px 11px;font-size:.8rem}
+}
 </style>
 </head>
 <body>

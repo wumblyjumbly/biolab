@@ -230,11 +230,18 @@ h1{font-size:1.4rem;margin-bottom:6px;}
 .cat-subpill .sp-icon{font-size:1rem;}
 
 @media(max-width:640px){
+  nav{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 12px;}
+  nav::-webkit-scrollbar{display:none}
+  .page{padding:20px 14px 60px;}
   .cat-pills{grid-template-columns:repeat(2,1fr);}
   .stat-row{gap:6px;}
   .stat{padding:10px 12px;}
   .cr-name{min-width:120px;}
   .cr-badge{min-width:70px;}
+  .q-nav{padding:10px 12px 14px;gap:6px;flex-wrap:wrap;}
+  .q-nav .go{margin-left:0;}
+  .q-nav .btn{padding:8px 11px;font-size:.8rem;}
+  .setup-controls .btn.primary{margin-left:0;}
 }
 </style>
 </head>
